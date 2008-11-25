@@ -1,0 +1,20 @@
+<h1>Editing zeit</h1>
+
+<% form_for(@zeit) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :bis %><br />
+    <%= f.datetime_select :bis %>
+  </p>
+  <p>
+    <%= f.label :dauer %><br />
+    <%= f.datetime_select :dauer %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @zeit %> |
+<%= link_to 'Back', zeiten_path %>

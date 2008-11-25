@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bis: 2008-10-14 11:31:31
+  dauer: 2008-10-14 11:31:31
+
+two:
+  bis: 2008-10-14 11:31:31
+  dauer: 2008-10-14 11:31:31

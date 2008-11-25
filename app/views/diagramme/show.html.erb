@@ -1,0 +1,18 @@
+<p>
+  <b>Name:</b>
+  <%=h @diagramm.name %>
+</p>
+
+<p>
+  <b>Beschreibung:</b>
+  <%=h @diagramm.beschreibung %>
+</p>
+
+<p>
+  <b>Zeit:</b>
+  <%=h @diagramm.zeit_id %>
+</p>
+
+
+<%= link_to 'Bearbeiten', edit_diagramm_path(@diagramm) %> |
+<%= link_to 'Zurueck', diagramme_path %>

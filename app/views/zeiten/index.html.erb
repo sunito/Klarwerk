@@ -1,0 +1,22 @@
+<h1>Listing zeiten</h1>
+
+<table>
+  <tr>
+    <th>Bis</th>
+    <th>Dauer</th>
+  </tr>
+
+<% for zeit in @zeiten %>
+  <tr>
+    <td><%=h zeit.bis %></td>
+    <td><%=h zeit.dauer %></td>
+    <td><%= link_to 'Show', zeit %></td>
+    <td><%= link_to 'Edit', edit_zeit_path(zeit) %></td>
+    <td><%= link_to 'Destroy', zeit, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New zeit', new_zeit_path %>

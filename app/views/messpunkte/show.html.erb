@@ -1,0 +1,18 @@
+<p>
+  <b>Zeit:</b>
+  <%=h @messpunkt.zeit %>
+</p>
+
+<p>
+  <b>Wert:</b>
+  <%=h @messpunkt.wert %>
+</p>
+
+<p>
+  <b>Diagramm:</b>
+  <%=h @messpunkt.diagramm_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_messpunkt_path(@messpunkt) %> |
+<%= link_to 'Back', messpunkte_path %>

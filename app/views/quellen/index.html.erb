@@ -1,0 +1,31 @@
+<h1>Messgr&ouml;&szlig;en</h1>
+
+<table>
+  <tr>
+    <th>Adresse</th>
+    <th>Name</th>
+    <th>Typ</th>
+    <th>Beschreibung</th>
+    <th>Einheit</th>
+    <th>Aktiv</th>
+    <th>Bearbeiten</th>
+  </tr>
+
+<% for quelle in @quellen %>
+  <tr>
+    <%  if quelle %>
+    <td><%=h quelle.adresse %></td>
+    <td><%=h quelle.name %></td>
+    <td><%=h quelle.typ %></td>
+    <td><%=h quelle.beschreibung %></td>
+    <td><%=h quelle.einheit && quelle.einheit.name %></td>
+    <td><%=h quelle.status %></td>
+    <td><%= link_to 'bearbeiten', edit_quelle_path(quelle) %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Neue Messgr&ouml;&szlig;e', new_quelle_path %>

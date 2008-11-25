@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  nomen: MyString
+  beschreibung: MyText
+  zeit_id: 1
+
+two:
+  nomen: MyString
+  beschreibung: MyText
+  zeit_id: 1

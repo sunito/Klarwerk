@@ -1,0 +1,27 @@
+<h1>Neue Einheit</h1>
+
+<% form_for(@einheit) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :Name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :Beschreibung %><br />
+    <%= f.text_area :beschreibung %>
+  </p>
+  <p>
+    <%= f.label :min %><br />
+    <%= f.text_field :min %>
+  </p>
+  <p>
+    <%= f.label :max %><br />
+    <%= f.text_field :max %>
+  </p>
+  <p>
+    <%= f.submit "Erstellen" %>
+  </p>
+<% end %>
+
+<%= link_to 'Liste', einheiten_path %>

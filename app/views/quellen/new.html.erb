@@ -1,0 +1,37 @@
+
+<h1>Neue Messgr&ouml;&szlig;e</h1>
+
+<% form_for(@quelle) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :adresse %><br />
+    <%= f.text_field :adresse %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :typ %><br />
+    <%= f.text_field :typ %>
+  </p>
+  <p>
+    <%= f.label :Beschreibung %><br />
+    <%= f.text_area :beschreibung %>
+  </p>
+  <p>
+    <%= f.label :einheit %><br />
+    <%= f.text_field :einheit_id %>
+  </p>
+  <p>
+    <%= f.label :aktiv %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.submit "Erstellen" %>
+  </p>
+<% end %>
+
+<%= link_to 'Zur&uuml;ck', quellen_path %>
+

@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  quelle_id: 1
+  diagramm_id: 1
+
+two:
+  quelle_id: 1
+  diagramm_id: 1

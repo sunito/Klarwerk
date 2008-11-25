@@ -1,0 +1,78 @@
+<% form_for(@diagramm) do |f| %>
+  <%= f.error_messages %>
+
+<TAble width="200">
+  <TR>
+    <TD VAlign="top">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+    </TD>
+    <TD VAlign="top">
+     <%= f.label :beschreibung %><br />
+    <%= f.text_area :beschreibung,:cols=>20,:rows=>3 %>
+    </TD>
+    <TD VAlign="top">
+    <%= f.label :zeit_id %><br />
+    <%= f.text_field :zeit_id %>
+</TD></TR>
+  <TR>
+     
+     <% verwendete_quellen = @diagramm.quellen %>
+     <% freie_quellen = (Quelle.find(:all).select{|q| true} - verwendete_quellen).map{|q| [q.name, q.id]}.sort %>
+    <TD colspan ="3" VAlign="top">
+      <TABLE WIDTH="40%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
+        <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
+        <TR>
+          <TD WIDTH="20%" ALIGN=CENTER>
+           <%= select_tag "uelle", 
+                
+                options_for_select(freie_quellen),
+                
+                { :size=>8, 
+                  :style=>"WIDTH:200px", 
+                  :onclick=>"WertUebertragen(this, this.form.Ziel, true)"
+                }
+     %>
+              <!--SELECT NAME="uelle" SIZE=8 ONCLICK="WertUebertragen(this, this.form.Ziel, true)" STYLE="WIDTH:200px">
+              <OPTION VALUE=1>Sauerstoff
+              <OPTION VALUE=2>Kessel1
+              <OPTION VALUE=3>Kessel2
+              <OPTION VALUE=4>Nitrat
+              <OPTION VALUE=5>Temperatur
+           </SELECT-->
+           </TD>
+         <TD WIDTH="20%" ALIGN=CENTER>
+           <!--SELECT NAME="Ziel" SIZE=8 ONCLICK="WertUebertragen(this, this.form.uelle, true)" STYLE="WIDTH:200px">
+
+           </SELECT-->
+            <%= f.select( 
+                "quellen_zuweiser",
+                freie_quellen,
+                {:multiple => true}, 
+                { :size=>8, 
+                  :style=>"WIDTH:200px", 
+                  :onclick=>"WertUebertragen(this, this.form.uelle, true)"
+                })
+     %>
+         </TD>
+       </TR>
+       <TR>
+         <TD>
+           <CENTER>
+           <INPUT TYPE="button" VALUE="Ausgabe" ONCLICK="Auslesen(this.form.uelle)" STYLE="WIDTH:200px">
+           </CENTER>
+         </TD>
+         <TD>
+           <CENTER>
+           <INPUT TYPE="button" VALUE="Ausgabe" ONCLICK="Auslesen(this.form.Ziel)" STYLE="WIDTH:200px">
+           </CENTER>
+         </TD>
+       </TR>
+     </TABLE>
+    </TD>
+  </TR>
+</TABLE>
+    <%= f.submit "Erstellen" %>
+
+
+<% end %>

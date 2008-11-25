@@ -1,0 +1,26 @@
+<h1>Einheiten</h1>
+
+<table>
+  <tr>
+    <th>Bezeichnung</th>
+    <th>Beschreibung</th>
+    <th>Min</th>
+    <th>Max</th>
+  </tr>
+
+<% for einheit in @einheiten %>
+  <tr>
+    <td><%=h einheit.name %></td>
+    <td><%=h einheit.beschreibung %></td>
+    <td><%=h einheit.min %></td>
+    <td><%=h einheit.max %></td>
+    <td><%= link_to 'Zeige', einheit %></td>
+    <td><%= link_to 'Bearbeiten', edit_einheit_path(einheit) %></td>
+    <td><%= link_to 'L&ouml;schen', einheit, :confirm => 'Siind Sie sicher?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Neue Einheit', new_einheit_path %>

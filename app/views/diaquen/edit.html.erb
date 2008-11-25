@@ -1,0 +1,20 @@
+<h1>Editing diaque</h1>
+
+<% form_for(@diaque) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :quelle_id %><br />
+    <%= f.text_field :quelle_id %>
+  </p>
+  <p>
+    <%= f.label :diagramm_id %><br />
+    <%= f.text_field :diagramm_id %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @diaque %> |
+<%= link_to 'Back', diaquen_path %>

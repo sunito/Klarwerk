@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title><%= @titelzeile || controller.controller_name.capitalize + " " + controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+
+<script type="text/javascript">
+		function bis () {
+//			if (document.formkurve.elements["kurve[bisjetzt]"][0].checked == true)
+//			if (document.getElementById("diagramm_zeit_bisjetzt").checked == true)
+//			{
+//				document.getElementById("bisdatum").style.visibility = "hidden";
+//			} else {
+//			  document.getElementById("bisdatum").style.visibility = "visible";
+//		  }
+		}
+
+    function WertUebertragen(uelle, Ziel, Entfernen) {
+      var WertVorhanden = false
+      var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
+      if (!ZielVorhanden) { Entfernen = true }
+      for (var Nr = 0; Nr < uelle.length; Nr++) {
+        var QuellOption = uelle.options[Nr]
+        if (QuellOption.selected) {
+          if(ZielVorhanden) {
+            // Prüft, ob der Wert schon im rechten Textfeld vorhanden ist
+            for (var Pos = 0; Pos < Ziel.length;) {
+              WertVorhanden = (Ziel.options[Pos++].text == QuellOption.text)
+              if (WertVorhanden) { break }
+            }
+            // Falls der Wert nicht vorhanden ist, wird er an das rechte
+            // Listenfeld angefügt
+            if (!WertVorhanden) {
+              Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
+            }
+          }
+          if (Entfernen) { uelle.options[Nr] = null }
+        }
+      }
+    }
+
+    // Löscht alle Werte aus dem Textfeld
+    function AlleWerteLoeschen(Ziel) {
+      for (var Nr = Ziel.length; Nr > 0;)
+        Ziel.options[--Nr] = null
+    }
+
+    // Beispiel: So liest man Werte aus einem Listenfeld
+    function Auslesen(ListenFeld) {
+      var AusgabeText = ""
+      for (var Nr = 0; Nr < ListenFeld.length;)
+        AusgabeText += ListenFeld.options[Nr++].text + "\n"
+      alert (AusgabeText)
+    }  // -->
+  </SCRIPT>
+	</head>
+
+<% if controller.controller_name == "kurven" and controller.action_name == "show" %>
+  <body>
+<% else %>
+  <body>
+<% end %>
+<Table width="100%" >
+	<TR>
+		<TD  align=left>
+			<table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999">
+				<tr>
+					<td bgcolor="#FFFFF3">
+						<%= link_to " Diagramme ", {:controller => :diagramme, :action => :index}, :class => "kopflink" %>
+					</td>
+					<td bgcolor="#FFFFF3">
+						<%= link_to " Messgr&ouml;&szlig;en ", {:controller => :quellen, :action => :index}, :class => "kopflink" %>
+					</td>
+					<td bgcolor="#FFFFF3">
+						<%= link_to " Einheiten ", {:controller => :einheiten, :action => :index}, :class => "kopflink" %>
+					</td>
+				</tr>
+			</table>
+
+		</TD>
+    <td>&nbsp;&nbsp;&nbsp;</td>
+		<TD align="LEFT" width="80%">
+			<font size=+2><strong><%= @ueberschrift %></font></strong>
+		</TD>
+	</TR>
+</Table>
+
+<hr noshade=1 size="1">

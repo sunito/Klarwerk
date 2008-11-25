@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  bez: MyString
+  beschreibung: MyText
+  min: 1.5
+  max: 1.5
+
+two:
+  bez: MyString
+  beschreibung: MyText
+  min: 1.5
+  max: 1.5

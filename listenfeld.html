@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 //EN">
+<html>
+ <head>
+  <title>listenfeld</title>
+  <meta name="generator" content="HTML Studio">
+  <SCRIPT LANGUAGE="JavaScript1.1" TYPE="text/javascript">
+
+    function WertUebertragen(Quelle, Ziel, Entfernen) {
+      var WertVorhanden = false
+      var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
+      if (!ZielVorhanden) { Entfernen = true }
+      for (var Nr = 0; Nr < Quelle.length; Nr++) {
+        var QuellOption = Quelle.options[Nr]
+        if (QuellOption.selected) {
+          if(ZielVorhanden) {
+            // Prüft, ob der Wert schon im rechten Textfeld vorhanden ist
+            for (var Pos = 0; Pos < Ziel.length;) {
+              WertVorhanden = (Ziel.options[Pos++].text == QuellOption.text)
+              if (WertVorhanden) { break }
+            }
+            // Falls der Wert nicht vorhanden ist, wird er an das rechte
+            // Listenfeld angefügt
+            if (!WertVorhanden) {
+              Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
+            }
+          }
+          if (Entfernen) { Quelle.options[Nr] = null }
+        }
+      }
+    }
+
+    // Löscht alle Werte aus dem Textfeld
+    function AlleWerteLoeschen(Ziel) {
+      for (var Nr = Ziel.length; Nr > 0;)
+        Ziel.options[--Nr] = null
+    }
+
+    // Beispiel: So liest man Werte aus einem Listenfeld
+    function Auslesen(ListenFeld) {
+      var AusgabeText = ""
+      for (var Nr = 0; Nr < ListenFeld.length;)
+        AusgabeText += ListenFeld.options[Nr++].text + "\n"
+      alert (AusgabeText)
+    }  
+  </SCRIPT>
+ </head>
+ <body>
+
+  <FORM>
+ <TABLE WIDTH="40%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
+    <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
+    <TR><TD WIDTH="20%" ALIGN=CENTER>
+        <SELECT NAME="uelle" SIZE=8 ONCLICK="WertUebertragen(this, this.form.Ziel, true)" STYLE="WIDTH:200px">
+<OPTION VALUE=1>Sauerstoff
+        <OPTION VALUE=2>Kessel1
+        <OPTION VALUE=3>Kessel2
+        <OPTION VALUE=4>Nitrat
+        <OPTION VALUE=5>Temperatur
+       </SELECT></TD>
+      <TD WIDTH="20%" ALIGN=CENTER>
+        <SELECT NAME="Ziel" SIZE=8 ONCLICK="WertUebertragen(this, this.form.uelle, true)" STYLE="WIDTH:200px"></SELECT></TD>
+    </TR>
+    <TR><TD><CENTER><INPUT TYPE="button" VALUE="Ausgabe" ONCLICK="Auslesen(this.form.uelle)" STYLE="WIDTH:200px"></CENTER></TD><TD><CENTER><INPUT TYPE="button" VALUE="Ausgabe" ONCLICK="Auslesen(this.form.Ziel)" STYLE="WIDTH:200px"></CENTER></TD></TR>
+
+    </TABLE>
+</FORM>
+ </body>
+</html>

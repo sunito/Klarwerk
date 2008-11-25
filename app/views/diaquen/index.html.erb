@@ -1,0 +1,22 @@
+<h1>Listing diaquen</h1>
+
+<table>
+  <tr>
+    <th>Quelle</th>
+    <th>Diagramm</th>
+  </tr>
+
+<% for diaque in @diaquen %>
+  <tr>
+    <td><%=h diaque.quelle_id %></td>
+    <td><%=h diaque.diagramm_id %></td>
+    <td><%= link_to 'Show', diaque %></td>
+    <td><%= link_to 'Edit', edit_diaque_path(diaque) %></td>
+    <td><%= link_to 'Destroy', diaque, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New diaque', new_diaque_path %>

@@ -1,0 +1,34 @@
+<p>
+  <b>Adresse:</b>
+  <%=h @quelle.adresse %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @quelle.name %>
+</p>
+
+<p>
+  <b>Typ:</b>
+  <%=h @quelle.typ %>
+</p>
+
+<p>
+  <b>Beschreibung:</b>
+  <%=h @quelle.beschreibung %>
+</p>
+
+<p>
+  <b>Einheit:</b>
+  <%=h @quelle.einheit ? @quelle.einheit.name : "--" %>
+</p>
+
+<p>
+  <b>Aktiv:</b>
+  <!--%=h @quelle.status %-->
+  <%=h @quelle.aktiv ? "ja" : "nein" %>
+</p>
+
+
+<%= link_to 'Bearbeiten', edit_quelle_path(@quelle) %> |
+

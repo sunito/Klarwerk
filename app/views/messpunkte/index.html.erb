@@ -1,0 +1,24 @@
+<h1>Listing messpunkte</h1>
+
+<table>
+  <tr>
+    <th>Zeit</th>
+    <th>Wert</th>
+    <th>Diagramm</th>
+  </tr>
+
+<% for messpunkt in @messpunkte %>
+  <tr>
+    <td><%=h messpunkt.zeit %></td>
+    <td><%=h messpunkt.wert %></td>
+    <td><%=h messpunkt.diagramm_id %></td>
+    <td><%= link_to 'Show', messpunkt %></td>
+    <td><%= link_to 'Edit', edit_messpunkt_path(messpunkt) %></td>
+    <td><%= link_to 'Destroy', messpunkt, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New messpunkt', new_messpunkt_path %>

@@ -1,0 +1,23 @@
+<p>
+  <b>Bezeichnung:</b>
+  <%=h @einheit.name %>
+</p>
+
+<p>
+  <b>Beschreibung:</b>
+  <%=h @einheit.beschreibung %>
+</p>
+
+<p>
+  <b>Min:</b>
+  <%=h @einheit.min %>
+</p>
+
+<p>
+  <b>Max:</b>
+  <%=h @einheit.max %>
+</p>
+
+
+<%= link_to 'Bearbeiten', edit_einheit_path(@einheit) %> |
+<%= link_to 'Liste', einheiten_path %>

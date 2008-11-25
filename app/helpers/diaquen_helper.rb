@@ -1,0 +1,2 @@
+module DiaquenHelper
+end

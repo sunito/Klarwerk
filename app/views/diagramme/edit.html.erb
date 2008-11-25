@@ -1,0 +1,29 @@
+<h1>Diagramm bearbeiten</h1>
+
+<% form_for(@diagramm) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :beschreibung %><br />
+    <%= f.text_area :beschreibung %>
+  </p>
+  <p>
+    <b>Bis</b><br />
+    <%= f.datetime_select :bis %>
+  </p>
+  <p>
+    <b>Zeitraum</b><br />
+    <%= f.text_field :dauer %>
+  </p>
+
+  <p>
+    <%= f.submit "Speichern" %>
+  </p>
+<% end %>
+
+<%= link_to 'Zeige', @diagramm %> |
+<%= link_to 'Zur&uuml;ck', diagramme_path %>

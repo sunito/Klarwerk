@@ -1,0 +1,24 @@
+<h1>Liste Diagramme</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Beschreibung</th>
+    <th>Zeit</th>
+  </tr>
+
+<% for diagramm in @diagramme %>
+  <tr>
+    <td><%=h diagramm.name %></td>
+    <td><%=h diagramm.beschreibung %></td>
+    <td><%=h diagramm.zeit_id %></td>
+    <td><%= link_to 'Zeige', diagramm %></td>
+    <td><%= link_to 'Bearbeite', edit_diagramm_path(diagramm) %></td>
+    <td><%= link_to 'L&ouml;sche', diagramm, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Neues Diagramm', new_diagramm_path %>
