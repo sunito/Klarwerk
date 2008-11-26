@@ -21,6 +21,7 @@ class Diagramm < ActiveRecord::Base
   end
 
   def bis=(wert)
+    p "############# bis-wert: #{wert}"
     @bis = wert
   end
 
