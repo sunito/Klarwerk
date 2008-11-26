@@ -8,11 +8,17 @@
   <%=h @diagramm.beschreibung %>
 </p>
 
-<p>
-  <b>Zeit:</b>
-  <%=h @diagramm.zeit_id %>
-</p>
+<% if @diagramm.zeit %>
+  <p>
+    <b>Zeit Bis:</b>
+    <%=h @diagramm.zeit.bis %>
+  </p>
 
+  <p>
+    <b>Zeit Dauer:</b>
+    <%=h @diagramm.zeit.dauer %>
+  </p>
+<% end %>
 
 <%= link_to 'Bearbeiten', edit_diagramm_path(@diagramm) %> |
 <%= link_to 'Zurueck', diagramme_path %>

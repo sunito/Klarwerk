@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081029065621) do
+ActiveRecord::Schema.define(:version => 20081126091212) do
 
   create_table "diagramme", :force => true do |t|
     t.string   "name"
@@ -54,9 +54,9 @@ ActiveRecord::Schema.define(:version => 20081029065621) do
 
   create_table "zeiten", :force => true do |t|
     t.datetime "bis"
-    t.datetime "dauer"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "dauer"
   end
 
 end
