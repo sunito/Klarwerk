@@ -60,6 +60,7 @@ class DiagrammeController < ApplicationController
     @diagramm = Diagramm.find(params[:id])
 
     respond_to do |format|
+      p [:XXXXXXXXXXXX, 'params[:diagramm]', params[:diagramm]]
       if @diagramm.update_attributes(params[:diagramm])
         flash[:notice] = 'Diagramm wurde gespeichert.'
         format.html { redirect_to(@diagramm) }
