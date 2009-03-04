@@ -51,7 +51,8 @@ class DiagrammeController < ApplicationController
 
     y_achse = YAxis.new
     abstand = (einheit.max - einheit.min) / 15.0
-    abstand = round(abstand / 10 ** (abstand.to_i.to_s.size-1))
+    grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
+    abstand = round(abstand / grob) * grob
     y_achse.set_range(einheit.min, einheit.max, abstand)
 
     chart.set_y_legend(y_legende)
