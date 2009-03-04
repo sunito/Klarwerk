@@ -1,6 +1,8 @@
 class Diagramm < ActiveRecord::Base
   has_many :diaquen
   has_many :quellen, :through => :diaquen
+
+  #has_many :einheiten, :through => :quellen, :source => :einheit
   belongs_to :zeit
 
   #, :mapping => [%w(balance amount), %w(currency currency)]
@@ -46,6 +48,14 @@ class Diagramm < ActiveRecord::Base
 
   def dauer=(wert)
     @dauer = wert
+  end
+
+  def einheiten
+    quellen.map{|q| q.einheit}.uniq
+  end
+
+  def zweite_skala?
+    einheiten.size > 1
   end
 end
  

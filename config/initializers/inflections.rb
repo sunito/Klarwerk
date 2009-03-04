@@ -8,7 +8,7 @@
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
 # end
-Inflector.inflections do |inflect|
+ActiveSupport::Inflector.inflections do |inflect|
   inflect.plural /^(.+)ung$/i, '\1ungen'
   inflect.singular /^(.+)ungen$/i, '\1ung'
 

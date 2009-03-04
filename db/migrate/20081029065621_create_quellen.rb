@@ -1,10 +1,10 @@
 class CreateQuellen < ActiveRecord::Migration
   def self.up
     create_table :quellen do |t|
-      t.string :adresse
-      t.string :name
-      t.string :typ
-      t.text :beschreibung
+      t.string  :adresse
+      t.string  :name
+      t.string  :variablen_art
+      t.text    :beschreibung
       t.integer :einheit_id
       t.integer :status
 

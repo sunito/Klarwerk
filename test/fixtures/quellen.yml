@@ -1,15 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  adresse: MyString
-  nome: MyString
+  adresse: 1/1/1
+  name: Sauerstoff1
   typ: MyString
   beschreibung: MyText
-  einheit: MyString
+#  einheit: MyString
 
 two:
-  adresse: MyString
-  nome: MyString
+  adresse: 2/2/2
+  name: Sauerstoff2
   typ: MyString
   beschreibung: MyText
-  einheit: MyString
+#  einheit: MyString

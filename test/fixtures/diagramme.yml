@@ -1,11 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  nomen: MyString
+  id: 3
+  name: Dia1
   beschreibung: MyText
   zeit_id: 1
 
 two:
-  nomen: MyString
+  id: 5
+  name: Dia2
   beschreibung: MyText
   zeit_id: 1
