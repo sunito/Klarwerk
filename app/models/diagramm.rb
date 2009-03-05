@@ -54,6 +54,10 @@ class Diagramm < ActiveRecord::Base
     quellen.map{|q| q.einheit}.uniq
   end
 
+  def haupt_einheit
+    einheiten[0]
+  end
+
   def zweite_skala?
     einheiten.size > 1
   end

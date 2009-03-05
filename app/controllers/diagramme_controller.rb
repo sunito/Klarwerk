@@ -1,4 +1,9 @@
 class DiagrammeController < ApplicationController
+
+  def akt_zeit
+    Zeit.die_aktuelle
+  end
+
   # GET /diagramme
   # GET /diagramme.xml
   def index
@@ -47,33 +52,33 @@ class DiagrammeController < ApplicationController
 
   def setze_y_einheit(chart, einheit)
     y_legende = YLegend.new(einheit.name)
-    y_legende.set_style("{font-size: 20px; color: #{einheit.farbe}}")
+    y_legende.set_style("{font-size: 20px; color: #778877}")
 
     y_achse = YAxis.new
-    abstand = (einheit.max - einheit.min) / 15.0
+    abstand = (einheit.max - einheit.min) / 20.0
     grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
-    abstand = round(abstand / grob) * grob
+    abstand = (abstand / grob).round * grob
     y_achse.set_range(einheit.min, einheit.max, abstand)
 
     chart.set_y_legend(y_legende)
-    chart.y_axis = y
+    chart.y_axis = y_achse
 
   end
 
   def chart_kurven
-    OpenFlashChart.new( "MY TITLE" ) do |chart|
+    OpenFlashChart.new( @diagramm.name ) do |chart|
       #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
-      chart.set_title(@diagramm.name)
+      #chart.set_title(@diagramm.name)
 
       kurven = {}
       @diagramm.diaquen.each do |diaque|
-        kurve = Kurve.new(diaque, aktuelle_zeit)
+        kurve = Kurve.new(diaque, akt_zeit)
         line = Line.new
         line.text = diaque.quelle.name
         line.width = 1
-        line.colour = diaque.farbe
+        line.colour = "#778877" #diaque.farbe
         line.dot_size = 5
-        line.values = kurve.linien_daten.map{|z| z * diaque.streckungsfaktor}
+        line.values = kurve.linien_daten.map{|z| z and z * (diaque.streckungsfaktor||1) }
         chart.add_element(line)
       end
 

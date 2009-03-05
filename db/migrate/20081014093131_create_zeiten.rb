@@ -2,7 +2,7 @@ class CreateZeiten < ActiveRecord::Migration
   def self.up
     create_table :zeiten do |t|
       t.datetime :bis
-      t.datetime :dauer
+      t.integer  :dauer
 
       t.timestamps
     end

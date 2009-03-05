@@ -14,4 +14,9 @@ class Zeit < ActiveRecord::Base
     erg
   end
 
+  def self.die_aktuelle
+    #stub
+    finde_oder_neu(nil, 12.hours)
+  end
+
 end

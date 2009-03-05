@@ -1,0 +1,40 @@
+
+<% form_for(@quelle) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :adresse %><br />
+    <%= f.text_field :adresse %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :farbe %><br />
+    <%= f.text_field :farbe %>
+  </p>
+  <p>
+    <%= f.label :variablen_art %><br />
+    <%= f.text_field :variablen_art %>
+  </p>
+  <p>
+    <%= f.label :Beschreibung %><br />
+    <%= f.text_area :beschreibung %>
+  </p>
+  <p>
+    <% einheiten_auswahl = Einheit.find(:all).map {|einheit| [einheit.name, einheit.id]}  %>
+    <%= f.label :einheit %><br />
+    <%= f.select("einheit_id", einheiten_auswahl) %>
+  </p>
+  <p>
+    <%= f.label :aktiv %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.submit knopf_text %>
+  </p>
+<% end %>
+
+<%= link_to 'Zeige', @quelle %> |
+<%= link_to 'Zur&uuml;ck', quellen_path %>

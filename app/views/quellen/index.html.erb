@@ -16,10 +16,11 @@
     <%  if quelle %>
     <td><%=h quelle.adresse %></td>
     <td><%=h quelle.name %></td>
-    <td><%=h quelle.typ %></td>
-    <td><%=h quelle.beschreibung %></td>
+    <td><%=h quelle.farbe %></td>
+    <td><%=h quelle.variablen_art %></td>
     <td><%=h quelle.einheit && quelle.einheit.name %></td>
     <td><%=h quelle.status %></td>
+    <td><%=h quelle.beschreibung %></td>
     <td><%= link_to 'bearbeiten', edit_quelle_path(quelle) %></td>
     <% end %>
   </tr>

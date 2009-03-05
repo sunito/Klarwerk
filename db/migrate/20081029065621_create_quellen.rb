@@ -6,6 +6,7 @@ class CreateQuellen < ActiveRecord::Migration
       t.string  :variablen_art
       t.text    :beschreibung
       t.integer :einheit_id
+      t.integer :farbe
       t.integer :status
 
       t.timestamps

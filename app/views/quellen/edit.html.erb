@@ -1,37 +1,6 @@
 <% einheiten_auswahl = Einheit.find(:all).map do |e| [e.name, e.id] end.sort %>
 <h1>Messgr&ouml;&szlig;e bearbeiten</h1>
 
-<% form_for(@quelle) do |f| %>
-  <%= f.error_messages %>
 
-  <p>
-    <%= f.label :adresse %><br />
-    <%= f.text_field :adresse %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :typ %><br />
-    <%= f.text_field :typ %>
-  </p>
-  <p>
-    <%= f.label :Beschreibung %><br />
-    <%= f.text_area :beschreibung %>
-  </p>
-  <p>
-    <%= f.label :einheit %><br />
-    <%= f.select("einheit_id", einheiten_auswahl) %>
-  </p>
-  <p>
-    <%= f.label :aktiv %><br />
-    <%= f.text_field :status %>
-  </p>
-  <p>
-    <%= f.submit "Speichern" %>
-  </p>
-<% end %>
 
-<%= link_to 'Zeige', @quelle %> |
-<%= link_to 'Zur&uuml;ck', quellen_path %>
+<%= render :partial => "haupt_form", :locals => {:knopf_text => "Speichern"} %>
