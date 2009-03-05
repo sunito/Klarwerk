@@ -70,17 +70,37 @@ class DiagrammeController < ApplicationController
       #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
       #chart.set_title(@diagramm.name)
 
-      kurven = {}
+      erstes_mal = true
       @diagramm.diaquen.each do |diaque|
         kurve = Kurve.new(diaque, akt_zeit)
-        line = Line.new
+        if erstes_mal then
+          erstes_mal = false
+          x_achse = XAxis.new
+          #x_achse.set_range(kurve.von, kurve.bis, 60)
+
+          x_labels = XAxisLabels.new
+          x_labels.set_vertical()
+
+          diff = kurve.von - kurve.bis
+          anz = GLOBAL_X_ANZAHL
+          x_labels.labels = (0..anz).map do |i|
+            text = (kurve.von + i*diff / anz).strftime("%H:%M")
+            XAxisLabel.new(text, '#0000ff', 10, 'diagonal')
+          end
+          x_achse.set_labels(x_labels)
+
+          chart.x_axis = x_achse
+        end
+        line = Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
         line.text = diaque.quelle.name
-        line.width = 1
-        line.colour = "#778877" #diaque.farbe
+        line.width = 3
+        line.colour = "#111111" #diaque.farbe
         line.dot_size = 5
         line.values = kurve.linien_daten.map{|z| z and z * (diaque.streckungsfaktor||1) }
         chart.add_element(line)
       end
+
+
 
       setze_y_einheit(chart, @diagramm.haupt_einheit)
 
