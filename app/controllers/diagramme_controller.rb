@@ -60,8 +60,23 @@ class DiagrammeController < ApplicationController
     abstand = (abstand / grob).round * grob
     y_achse.set_range(einheit.min, einheit.max, abstand)
 
-    chart.set_y_legend(y_legende)
+    #chart.set_y_legend(y_legende)
     chart.y_axis = y_achse
+
+    y_legende = YLegendRight.new(einheit.name)
+    #y_legende.set_style("{font-size: 20px; color: #778877}")
+    y_legende.style_right = '{font-size: 70px; color: #778877}'
+
+    chart.y_legend_right = y_legende
+
+    y_achse = YAxisRight.new
+    abstand = (einheit.max - einheit.min) / 20.0
+    grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
+    abstand = (abstand / grob).round * grob
+    y_achse.range_right = [einheit.min, einheit.max, abstand]
+    p abstand
+
+    chart.y_axis_right = y_achse
 
   end
 
