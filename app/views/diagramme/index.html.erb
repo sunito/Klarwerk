@@ -14,7 +14,7 @@
     <td><%=h diagramm.zeit_id %></td>
     <td><%= link_to 'Zeige', diagramm %></td>
     <td><%= link_to 'Bearbeite', edit_diagramm_path(diagramm) %></td>
-    <td><%= link_to 'L&ouml;sche', diagramm, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+    <td><%= link_to 'L&ouml;sche', diagramm, :confirm => 'Wollen Sie wirklich L&ouml;schen? Dann klicken Sie auf OK', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
