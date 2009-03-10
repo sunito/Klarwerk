@@ -12,6 +12,8 @@ CREATE TABLE `diaquen` (
   `id` int(11) NOT NULL auto_increment,
   `quelle_id` int(11) default NULL,
   `diagramm_id` int(11) default NULL,
+  `farbe` int(11) default NULL,
+  `streckungsfaktor` float default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
@@ -34,15 +36,16 @@ CREATE TABLE `messpunkte` (
   `wert` varchar(255) default NULL,
   `quelle_id` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `quellen` (
   `id` int(11) NOT NULL auto_increment,
   `adresse` varchar(255) default NULL,
   `name` varchar(255) default NULL,
-  `typ` varchar(255) default NULL,
+  `variablen_art` varchar(255) default NULL,
   `beschreibung` text,
   `einheit_id` int(11) default NULL,
+  `farbe` int(11) default NULL,
   `status` int(11) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
@@ -57,11 +60,11 @@ CREATE TABLE `schema_migrations` (
 CREATE TABLE `zeiten` (
   `id` int(11) NOT NULL auto_increment,
   `bis` datetime default NULL,
+  `dauer` int(11) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
-  `dauer` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
 INSERT INTO schema_migrations (version) VALUES ('20081014081525');
 

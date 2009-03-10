@@ -3,13 +3,13 @@
 one:
   adresse: 1/1/1
   name: Sauerstoff1
-  typ: MyString
+  variablen_art: Global
   beschreibung: MyText
-#  einheit: MyString
+  einheit_id: 1
 
 two:
   adresse: 2/2/2
   name: Sauerstoff2
-  typ: MyString
+  variablen_art: MyString
   beschreibung: MyText
 #  einheit: MyString
