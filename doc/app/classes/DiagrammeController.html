@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: DiagrammeController</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">DiagrammeController</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/app/controllers/diagramme_controller_rb.html">
+                app/controllers/diagramme_controller.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="ApplicationController.html">
+                ApplicationController
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000057">akt_zeit</a>&nbsp;&nbsp;
+      <a href="#M000062">chart_kurven</a>&nbsp;&nbsp;
+      <a href="#M000066">create</a>&nbsp;&nbsp;
+      <a href="#M000068">destroy</a>&nbsp;&nbsp;
+      <a href="#M000065">edit</a>&nbsp;&nbsp;
+      <a href="#M000059">erstelle_graph</a>&nbsp;&nbsp;
+      <a href="#M000058">index</a>&nbsp;&nbsp;
+      <a href="#M000064">new</a>&nbsp;&nbsp;
+      <a href="#M000061">setze_y_einheit</a>&nbsp;&nbsp;
+      <a href="#M000063">show</a>&nbsp;&nbsp;
+      <a href="#M000060">skala_chart</a>&nbsp;&nbsp;
+      <a href="#M000067">update</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+          <a href="#M000057" class="method-signature">
+          <span class="method-name">akt_zeit</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000057-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000057-source">
+<pre>
+   <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 3</span>
+3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">akt_zeit</span>
+4:     <span class="ruby-constant">Zeit</span>.<span class="ruby-identifier">die_aktuelle</span>
+5:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
+
+        <div class="method-heading">
+          <a href="#M000062" class="method-signature">
+          <span class="method-name">chart_kurven</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000062-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000062-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 83</span>
+ 83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chart_kurven</span>
+ 84:     <span class="ruby-constant">OpenFlashChart</span>.<span class="ruby-identifier">new</span>( <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">name</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chart</span><span class="ruby-operator">|</span>
+ 85:       <span class="ruby-comment cmt">#chart &lt;&lt; BarGlass.new( :values =&gt; (1..10).sort_by{rand} )</span>
+ 86:       <span class="ruby-comment cmt">#chart.set_title(@diagramm.name)</span>
+ 87: 
+ 88:       <span class="ruby-identifier">erstes_mal</span> = <span class="ruby-keyword kw">true</span>
+ 89:       <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">diaquen</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">diaque</span><span class="ruby-operator">|</span>
+ 90:         <span class="ruby-identifier">kurve</span> = <span class="ruby-constant">Kurve</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">diaque</span>, <span class="ruby-identifier">akt_zeit</span>)
+ 91:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">erstes_mal</span> <span class="ruby-keyword kw">then</span>
+ 92:           <span class="ruby-identifier">erstes_mal</span> = <span class="ruby-keyword kw">false</span>
+ 93:           <span class="ruby-identifier">x_achse</span> = <span class="ruby-constant">XAxis</span>.<span class="ruby-identifier">new</span>
+ 94:           <span class="ruby-comment cmt">#x_achse.set_range(kurve.von, kurve.bis, 60)</span>
+ 95: 
+ 96:           <span class="ruby-identifier">x_labels</span> = <span class="ruby-constant">XAxisLabels</span>.<span class="ruby-identifier">new</span>
+ 97:           <span class="ruby-identifier">x_labels</span>.<span class="ruby-identifier">set_vertical</span>()
+ 98: 
+ 99:           <span class="ruby-identifier">diff</span> = <span class="ruby-identifier">kurve</span>.<span class="ruby-identifier">von</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">kurve</span>.<span class="ruby-identifier">bis</span>
+100:           <span class="ruby-identifier">anz</span> = <span class="ruby-constant">GLOBAL_X_ANZAHL</span>
+101:           <span class="ruby-identifier">x_labels</span>.<span class="ruby-identifier">labels</span> = (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">anz</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+102:             <span class="ruby-identifier">text</span> = (<span class="ruby-identifier">kurve</span>.<span class="ruby-identifier">von</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">i</span><span class="ruby-operator">*</span><span class="ruby-identifier">diff</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">anz</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%H:%M&quot;</span>)
+103:             <span class="ruby-constant">XAxisLabel</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">text</span>, <span class="ruby-value str">'#0000ff'</span>, <span class="ruby-value">10</span>, <span class="ruby-value str">'diagonal'</span>)
+104:           <span class="ruby-keyword kw">end</span>
+105:           <span class="ruby-identifier">x_achse</span>.<span class="ruby-identifier">set_labels</span>(<span class="ruby-identifier">x_labels</span>)
+106: 
+107:           <span class="ruby-identifier">chart</span>.<span class="ruby-identifier">x_axis</span> = <span class="ruby-identifier">x_achse</span>
+108:         <span class="ruby-keyword kw">end</span>
+109:         <span class="ruby-identifier">line</span> = <span class="ruby-constant">Line</span>.<span class="ruby-identifier">new</span>   <span class="ruby-comment cmt">#([:a,:b,:c])#(2) #, &quot;#FF0000&quot;)</span>
+110:         <span class="ruby-identifier">line</span>.<span class="ruby-identifier">text</span> = <span class="ruby-identifier">diaque</span>.<span class="ruby-identifier">quelle</span>.<span class="ruby-identifier">name</span>
+111:         <span class="ruby-identifier">line</span>.<span class="ruby-identifier">width</span> = <span class="ruby-value">3</span>
+112:         <span class="ruby-identifier">line</span>.<span class="ruby-identifier">colour</span> = <span class="ruby-value str">&quot;#111111&quot;</span> <span class="ruby-comment cmt">#diaque.farbe</span>
+113:         <span class="ruby-identifier">line</span>.<span class="ruby-identifier">dot_size</span> = <span class="ruby-value">5</span>
+114:         <span class="ruby-identifier">line</span>.<span class="ruby-identifier">values</span> = <span class="ruby-identifier">kurve</span>.<span class="ruby-identifier">linien_daten</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-identifier">z</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">z</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">diaque</span>.<span class="ruby-identifier">streckungsfaktor</span><span class="ruby-operator">||</span><span class="ruby-value">1</span>) }
+115:         <span class="ruby-identifier">chart</span>.<span class="ruby-identifier">add_element</span>(<span class="ruby-identifier">line</span>)
+116:       <span class="ruby-keyword kw">end</span>
+117: 
+118: 
+119: 
+120:       <span class="ruby-identifier">setze_y_einheit</span>(<span class="ruby-identifier">chart</span>, <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">haupt_einheit</span>)
+121: 
+122:       <span class="ruby-comment cmt">#x_legend = XLegend.new(&quot;MY X Legend&quot;)</span>
+123:       <span class="ruby-comment cmt">#x_legend.set_style('{font-size: 20px; color: #778877}')</span>
+124:       <span class="ruby-comment cmt">#chart.set_x_legend(x_legend)</span>
+125: 
+126:    
+127: 
+128:     <span class="ruby-keyword kw">end</span>
+129:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
+
+        <div class="method-heading">
+          <a href="#M000066" class="method-signature">
+          <span class="method-name">create</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+POST /diagramme POST /diagramme.xml
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000066-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000066-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 169</span>
+169:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+170:     <span class="ruby-ivar">@diagramm</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:diagramm</span>])
+171: 
+172:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+173:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">save</span>
+174:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Diagramm wurde erstellt.'</span>
+175:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@diagramm</span>) }
+176:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@diagramm</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:created</span>, <span class="ruby-identifier">:location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@diagramm</span> }
+177:       <span class="ruby-keyword kw">else</span>
+178:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;new&quot;</span> }
+179:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unprocessable_entity</span> }
+180:       <span class="ruby-keyword kw">end</span>
+181:     <span class="ruby-keyword kw">end</span>
+182:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000068" class="method-detail">
+        <a name="M000068"></a>
+
+        <div class="method-heading">
+          <a href="#M000068" class="method-signature">
+          <span class="method-name">destroy</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+DELETE /diagramme/1 DELETE /diagramme/1.xml
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000068-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000068-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 204</span>
+204:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+205:     <span class="ruby-ivar">@diagramm</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+206:     <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">destroy</span>
+207: 
+208:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+209:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">diagramme_url</span>) }
+210:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
+211:     <span class="ruby-keyword kw">end</span>
+212:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
+
+        <div class="method-heading">
+          <a href="#M000065" class="method-signature">
+          <span class="method-name">edit</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /diagramme/1/edit
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000065-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000065-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 163</span>
+163:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
+164:     <span class="ruby-ivar">@diagramm</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+165:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+          <a href="#M000059" class="method-signature">
+          <span class="method-name">erstelle_graph</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000059-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000059-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 18</span>
+18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">erstelle_graph</span>
+19:     <span class="ruby-identifier">hoehe</span> = <span class="ruby-value">600</span>
+20:     <span class="ruby-ivar">@graph</span> = <span class="ruby-identifier">open_flash_chart_object</span>( <span class="ruby-value str">&quot;80%&quot;</span>, <span class="ruby-identifier">hoehe</span>, <span class="ruby-identifier">url_for</span>( <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'show'</span>, <span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:json</span> ) )
+21:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">zweite_skala?</span> <span class="ruby-keyword kw">then</span>
+22:       <span class="ruby-ivar">@zusatz_skala</span> = <span class="ruby-identifier">open_flash_chart_object</span>( <span class="ruby-value">55</span>, <span class="ruby-identifier">hoehe</span>, <span class="ruby-identifier">url_for</span>( <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'show'</span>, <span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:skala</span> ) )
+23:     <span class="ruby-keyword kw">end</span>
+24: 
+25:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+          <a href="#M000058" class="method-signature">
+          <span class="method-name">index</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /diagramme GET /diagramme.xml
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000058-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000058-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 9</span>
+ 9:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+10:     <span class="ruby-ivar">@diagramme</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
+11: 
+12:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+13:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># index.html.erb</span>
+14:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@diagramme</span> }
+15:     <span class="ruby-keyword kw">end</span>
+16:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
+
+        <div class="method-heading">
+          <a href="#M000064" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /diagramme/new GET /diagramme/new.xml
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000064-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000064-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 153</span>
+153:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
+154:     <span class="ruby-ivar">@diagramm</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">new</span>
+155: 
+156:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+157:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># new.html.erb</span>
+158:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@diagramm</span> }
+159:     <span class="ruby-keyword kw">end</span>
+160:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
+
+        <div class="method-heading">
+          <a href="#M000061" class="method-signature">
+          <span class="method-name">setze_y_einheit</span><span class="method-args">(chart, einheit)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000061-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000061-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 53</span>
+53:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setze_y_einheit</span>(<span class="ruby-identifier">chart</span>, <span class="ruby-identifier">einheit</span>)
+54:     <span class="ruby-identifier">y_legende</span> = <span class="ruby-constant">YLegend</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">name</span>)
+55:     <span class="ruby-identifier">y_legende</span>.<span class="ruby-identifier">set_style</span>(<span class="ruby-value str">&quot;{font-size: 20px; color: #778877}&quot;</span>)
+56: 
+57:     <span class="ruby-identifier">y_achse</span> = <span class="ruby-constant">YAxis</span>.<span class="ruby-identifier">new</span>
+58:     <span class="ruby-identifier">abstand</span> = (<span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">max</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">min</span>) <span class="ruby-operator">/</span> <span class="ruby-value">20.0</span>
+59:     <span class="ruby-identifier">grob</span> = <span class="ruby-value">10</span>   <span class="ruby-operator">**</span>   ((<span class="ruby-identifier">abstand</span><span class="ruby-operator">/</span><span class="ruby-value">1.6</span>).<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+60:     <span class="ruby-identifier">abstand</span> = (<span class="ruby-identifier">abstand</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">grob</span>).<span class="ruby-identifier">round</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">grob</span>
+61:     <span class="ruby-identifier">y_achse</span>.<span class="ruby-identifier">set_range</span>(<span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">max</span>, <span class="ruby-identifier">abstand</span>)
+62: 
+63:     <span class="ruby-comment cmt">#chart.set_y_legend(y_legende)</span>
+64:     <span class="ruby-identifier">chart</span>.<span class="ruby-identifier">y_axis</span> = <span class="ruby-identifier">y_achse</span>
+65: 
+66:     <span class="ruby-identifier">y_legende</span> = <span class="ruby-constant">YLegendRight</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">name</span>)
+67:     <span class="ruby-comment cmt">#y_legende.set_style(&quot;{font-size: 20px; color: #778877}&quot;)</span>
+68:     <span class="ruby-identifier">y_legende</span>.<span class="ruby-identifier">style_right</span> = <span class="ruby-value str">'{font-size: 70px; color: #778877}'</span>
+69: 
+70:     <span class="ruby-identifier">chart</span>.<span class="ruby-identifier">y_legend_right</span> = <span class="ruby-identifier">y_legende</span>
+71: 
+72:     <span class="ruby-identifier">y_achse</span> = <span class="ruby-constant">YAxisRight</span>.<span class="ruby-identifier">new</span>
+73:     <span class="ruby-identifier">abstand</span> = (<span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">max</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">min</span>) <span class="ruby-operator">/</span> <span class="ruby-value">20.0</span>
+74:     <span class="ruby-identifier">grob</span> = <span class="ruby-value">10</span>   <span class="ruby-operator">**</span>   ((<span class="ruby-identifier">abstand</span><span class="ruby-operator">/</span><span class="ruby-value">1.6</span>).<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+75:     <span class="ruby-identifier">abstand</span> = (<span class="ruby-identifier">abstand</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">grob</span>).<span class="ruby-identifier">round</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">grob</span>
+76:     <span class="ruby-identifier">y_achse</span>.<span class="ruby-identifier">range_right</span> = [<span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">min</span>, <span class="ruby-identifier">einheit</span>.<span class="ruby-identifier">max</span>, <span class="ruby-identifier">abstand</span>]
+77:     <span class="ruby-identifier">p</span> <span class="ruby-identifier">abstand</span>
+78: 
+79:     <span class="ruby-identifier">chart</span>.<span class="ruby-identifier">y_axis_right</span> = <span class="ruby-identifier">y_achse</span>
+80: 
+81:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
+
+        <div class="method-heading">
+          <a href="#M000063" class="method-signature">
+          <span class="method-name">show</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET /diagramme/1 GET /diagramme/1.xml
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000063-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000063-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 134</span>
+134:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
+135:     <span class="ruby-ivar">@diagramm</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+136: 
+137:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+138:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {
+139:         <span class="ruby-identifier">erstelle_graph</span>
+140:       }
+141:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">skala</span> {
+142:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">skala_chart</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+143:       }
+144:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {
+145:         <span class="ruby-identifier">chart</span> = <span class="ruby-identifier">chart_kurven</span>
+146:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">chart</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+147:       }
+148:     <span class="ruby-keyword kw">end</span>
+149:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
+
+        <div class="method-heading">
+          <a href="#M000060" class="method-signature">
+          <span class="method-name">skala_chart</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000060-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000060-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">skala_chart</span>
+28:     <span class="ruby-identifier">p</span> <span class="ruby-identifier">:skala</span>
+29:     <span class="ruby-comment cmt">#g = Graph.new</span>
+30:     <span class="ruby-identifier">chart</span> = <span class="ruby-constant">OpenFlashChart</span>.<span class="ruby-identifier">new</span>( <span class="ruby-value str">&quot;&quot;</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">g</span><span class="ruby-operator">|</span>
+31:       <span class="ruby-comment cmt">#g.title(&quot; &quot;, '{font-size: 26px;}')</span>
+32:       <span class="ruby-identifier">linie</span> = <span class="ruby-constant">Line</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2</span>, <span class="ruby-value str">'#FFFFFF'</span>)
+33:       <span class="ruby-identifier">linie</span>.<span class="ruby-identifier">key</span>(<span class="ruby-value str">&quot; &quot;</span>, <span class="ruby-value">10</span>)
+34:       [<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span>
+35:         <span class="ruby-identifier">linie</span>.<span class="ruby-identifier">add_data_tip</span>( <span class="ruby-identifier">w</span>, <span class="ruby-value str">&quot;&quot;</span>)
+36:       <span class="ruby-keyword kw">end</span>
+37:       <span class="ruby-identifier">g</span>.<span class="ruby-identifier">data_sets</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">linie</span>
+38: 
+39:       <span class="ruby-identifier">g</span>.<span class="ruby-identifier">set_x_labels</span>([<span class="ruby-value str">&quot;00:00:00&quot;</span>])
+40:       <span class="ruby-identifier">g</span>.<span class="ruby-identifier">set_x_label_style</span>(<span class="ruby-value">10</span>,<span class="ruby-value str">'#FFFFFF'</span>,<span class="ruby-value">2</span>,<span class="ruby-value">5</span>)
+41:   <span class="ruby-comment cmt">#        g.set_inner_background '#FFFFFF'</span>
+42:       <span class="ruby-identifier">g</span>.<span class="ruby-identifier">set_bg_color</span> <span class="ruby-value str">'#FFFFFF'</span>
+43: 
+44:       <span class="ruby-ivar">@diamo</span> = <span class="ruby-constant">Kurve</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@diagramm</span>)
+45: 
+46:       <span class="ruby-identifier">skala</span> = <span class="ruby-ivar">@diamo</span>.<span class="ruby-identifier">skalen</span>[<span class="ruby-value">1</span>]
+47:       <span class="ruby-identifier">p</span> <span class="ruby-identifier">:skala</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">skala</span>
+48:       <span class="ruby-identifier">setze_y_achse</span>(<span class="ruby-identifier">g</span>, <span class="ruby-identifier">skala</span>)
+49:     <span class="ruby-keyword kw">end</span>
+50:     <span class="ruby-identifier">chart</span>
+51:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000067" class="method-detail">
+        <a name="M000067"></a>
+
+        <div class="method-heading">
+          <a href="#M000067" class="method-signature">
+          <span class="method-name">update</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+PUT /diagramme/1 PUT /diagramme/1.xml
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000067-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000067-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/diagramme_controller.rb, line 186</span>
+186:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
+187:     <span class="ruby-ivar">@diagramm</span> = <span class="ruby-constant">Diagramm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+188: 
+189:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+190:       <span class="ruby-identifier">p</span> [<span class="ruby-identifier">:XXXXXXXXXXXX</span>, <span class="ruby-value str">'params[:diagramm]'</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:diagramm</span>]]
+191:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:diagramm</span>])
+192:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Diagramm wurde gespeichert.'</span>
+193:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@diagramm</span>) }
+194:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
+195:       <span class="ruby-keyword kw">else</span>
+196:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span> }
+197:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@diagramm</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unprocessable_entity</span> }
+198:       <span class="ruby-keyword kw">end</span>
+199:     <span class="ruby-keyword kw">end</span>
+200:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

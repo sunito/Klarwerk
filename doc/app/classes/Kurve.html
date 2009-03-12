@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Kurve</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Kurve</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/app/models/kurve_rb.html">
+                app/models/kurve.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Struct.new(:diaque, :von, :bis, :x_anzahl)
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000013">linien_daten</a>&nbsp;&nbsp;
+      <a href="#M000010">new</a>&nbsp;&nbsp;
+      <a href="#M000015">skalen</a>&nbsp;&nbsp;
+      <a href="#M000011">x_schritt</a>&nbsp;&nbsp;
+      <a href="#M000012">x_zeiten</a>&nbsp;&nbsp;
+      <a href="#M000014">y_bereich</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(diaque, diagramm_zeit = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/kurve.rb, line 8</span>
+ 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">diaque</span>, <span class="ruby-identifier">diagramm_zeit</span> = <span class="ruby-keyword kw">nil</span>)
+ 9:     <span class="ruby-comment cmt">#p :new_diamo</span>
+10:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">not</span> <span class="ruby-identifier">diagramm_zeit</span> <span class="ruby-keyword kw">then</span>
+11:       <span class="ruby-comment cmt">#diaque_zeit = DiagrammZeit.new</span>
+12:       <span class="ruby-identifier">diagramm_zeit</span> = <span class="ruby-identifier">diaque</span>.<span class="ruby-identifier">diagramm</span>.<span class="ruby-identifier">zeit</span>
+13:     <span class="ruby-keyword kw">end</span>
+14:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">not</span> <span class="ruby-identifier">diagramm_zeit</span>.<span class="ruby-identifier">bis</span> <span class="ruby-keyword kw">then</span>
+15:       <span class="ruby-identifier">bis</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+16:     <span class="ruby-keyword kw">else</span>
+17:       <span class="ruby-identifier">bis</span> = <span class="ruby-identifier">diagramm_zeit</span>.<span class="ruby-identifier">bis</span>
+18:     <span class="ruby-keyword kw">end</span>
+19:     <span class="ruby-identifier">dauer</span> = <span class="ruby-identifier">diagramm_zeit</span>.<span class="ruby-identifier">dauer</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">diaque</span>.<span class="ruby-identifier">diagramm</span>.<span class="ruby-identifier">zeit</span>.<span class="ruby-identifier">dauer</span>
+20:     <span class="ruby-identifier">von</span> = <span class="ruby-identifier">bis</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">dauer</span>
+21: 
+22:     <span class="ruby-keyword kw">super</span> <span class="ruby-identifier">diaque</span>, <span class="ruby-identifier">von</span>, <span class="ruby-identifier">bis</span>, <span class="ruby-constant">GLOBAL_X_ANZAHL</span>
+23: 
+24:     <span class="ruby-ivar">@linien_daten</span> = <span class="ruby-keyword kw">nil</span>
+25:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000013" class="method-detail">
+        <a name="M000013"></a>
+
+        <div class="method-heading">
+          <a href="#M000013" class="method-signature">
+          <span class="method-name">linien_daten</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000013-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000013-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/kurve.rb, line 37</span>
+37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">linien_daten</span>
+38:     <span class="ruby-ivar">@linien_daten</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">begin</span>
+39:       <span class="ruby-identifier">dyns</span> = <span class="ruby-constant">Messpunkt</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>,
+40:                       {<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;(quelle_id = ?) and (zeit &gt;= ?) and (zeit &lt;= ?)&quot;</span>,
+41:                                         <span class="ruby-identifier">diaque</span>.<span class="ruby-identifier">quelle</span>.<span class="ruby-identifier">id</span>,    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">von</span>,       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">bis</span>],
+42:                         <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:zeit</span>})
+43:       <span class="ruby-identifier">p</span> [<span class="ruby-identifier">:dyns</span>, <span class="ruby-identifier">dyns</span>.<span class="ruby-identifier">size</span>, <span class="ruby-identifier">dyns</span>.<span class="ruby-identifier">first</span>]
+44:       <span class="ruby-identifier">dyn_paare</span> = <span class="ruby-identifier">dyns</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">z</span> <span class="ruby-keyword kw">then</span> [<span class="ruby-identifier">z</span>.<span class="ruby-identifier">zeit</span>, <span class="ruby-identifier">z</span>.<span class="ruby-identifier">wert</span>] <span class="ruby-keyword kw">end</span> }.<span class="ruby-identifier">compact</span>
+45: 
+46:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">x_anzahl</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">x_anzahl</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span>
+47: 
+48:         <span class="ruby-identifier">orig_paare_uebrig</span> = <span class="ruby-identifier">dyn_paare</span>.<span class="ruby-identifier">clone</span>
+49:         <span class="ruby-identifier">erg_werte</span> = []
+50:         <span class="ruby-identifier">p</span> <span class="ruby-identifier">x_anzahl</span>
+51:         <span class="ruby-identifier">x_anzahl</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>
+52:           <span class="ruby-identifier">abschnitts_ende</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">von</span>  <span class="ruby-operator">+</span>  (<span class="ruby-identifier">n</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>) <span class="ruby-operator">*</span> <span class="ruby-identifier">x_schritt</span>
+53: 
+54:           <span class="ruby-identifier">werte_in_abschnitt</span> = <span class="ruby-identifier">werte_abspalten_bis</span>(<span class="ruby-identifier">orig_paare_uebrig</span>, <span class="ruby-identifier">abschnitts_ende</span>)
+55: 
+56:           <span class="ruby-identifier">erg</span> = <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">werte_in_abschnitt</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-keyword kw">then</span>
+57:             <span class="ruby-keyword kw">nil</span>
+58:           <span class="ruby-keyword kw">else</span>
+59:             <span class="ruby-comment cmt">#werte_in_abschnitt.sum  /  werte_in_abschnitt.size</span>
+60:             <span class="ruby-identifier">werte_in_abschnitt</span>[<span class="ruby-identifier">werte_in_abschnitt</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">/</span><span class="ruby-value">2</span>]
+61:           <span class="ruby-keyword kw">end</span>
+62: 
+63:           <span class="ruby-identifier">erg_werte</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">erg</span>
+64:         <span class="ruby-keyword kw">end</span>
+65:       <span class="ruby-keyword kw">else</span>
+66:         <span class="ruby-identifier">erg_werte</span> = <span class="ruby-identifier">dyn_werte</span>
+67: 
+68:       <span class="ruby-keyword kw">end</span>
+69: 
+70:       <span class="ruby-identifier">p</span> <span class="ruby-identifier">:linie_fertig</span>
+71:       <span class="ruby-identifier">erg_werte</span>
+72:     <span class="ruby-keyword kw">end</span>
+73:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000015" class="method-detail">
+        <a name="M000015"></a>
+
+        <div class="method-heading">
+          <a href="#M000015" class="method-signature">
+          <span class="method-name">skalen</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000015-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000015-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/kurve.rb, line 79</span>
+79:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">skalen</span>
+80:     <span class="ruby-ivar">@skalen</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">diagramm</span>.<span class="ruby-identifier">quellen</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">quelle</span><span class="ruby-operator">|</span>
+81:       <span class="ruby-identifier">ld</span> = <span class="ruby-identifier">linien_daten_fuer</span>(<span class="ruby-identifier">quelle</span>)
+82:       <span class="ruby-identifier">daten_ohne_nil</span> = <span class="ruby-identifier">ld</span>.<span class="ruby-identifier">compact</span>
+83:       <span class="ruby-identifier">min</span> = <span class="ruby-identifier">daten_ohne_nil</span>.<span class="ruby-identifier">min</span> <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
+84:       <span class="ruby-identifier">max</span> = <span class="ruby-identifier">daten_ohne_nil</span>.<span class="ruby-identifier">max</span> <span class="ruby-operator">||</span> <span class="ruby-value">1</span>
+85:       <span class="ruby-identifier">min</span><span class="ruby-operator">..</span><span class="ruby-identifier">max</span>
+86:     <span class="ruby-keyword kw">end</span>
+87:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
+
+        <div class="method-heading">
+          <a href="#M000011" class="method-signature">
+          <span class="method-name">x_schritt</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000011-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/kurve.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">x_schritt</span>
+28:     <span class="ruby-ivar">@x_schritt</span> <span class="ruby-operator">||=</span> (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">bis</span> <span class="ruby-operator">-</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">von</span>) <span class="ruby-operator">/</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">x_anzahl</span>
+29:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="#M000012" class="method-signature">
+          <span class="method-name">x_zeiten</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/kurve.rb, line 31</span>
+31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">x_zeiten</span>
+32:     (<span class="ruby-value">0</span> <span class="ruby-operator">..</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">x_anzahl</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>
+33:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">von</span>   <span class="ruby-operator">+</span>   <span class="ruby-identifier">n</span> <span class="ruby-operator">*</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">x_schritt</span>
+34:     <span class="ruby-keyword kw">end</span>
+35:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000014" class="method-detail">
+        <a name="M000014"></a>
+
+        <div class="method-heading">
+          <a href="#M000014" class="method-signature">
+          <span class="method-name">y_bereich</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000014-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000014-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/kurve.rb, line 75</span>
+75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">y_bereich</span>
+76: 
+77:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

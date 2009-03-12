@@ -17,6 +17,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :messpunkte
 
+  map.expert_modus 'expert_modus/:zustand', :controller => 'expert', :action => 'schalten'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
