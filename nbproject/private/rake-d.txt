@@ -39,6 +39,7 @@ doc\:clobber_rails=Remove rdoc products
 doc\:guides=Generate Rails guides
 doc\:plugins=Generate documentation for all installed plugins
 doc\:plugins\:open_flash_chart=Generate documentation for the open_flash_chart plugin
+doc\:plugins\:picky-color=Generate documentation for the picky-color plugin
 doc\:rails=Build the rails HTML Files
 doc\:reapp=Force a rebuild of the RDOC files
 doc\:rerails=Force a rebuild of the RDOC files
