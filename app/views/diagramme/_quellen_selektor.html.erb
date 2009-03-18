@@ -1,6 +1,3 @@
-<% form_for(@diagramm) do |f| %>
-  <%= f.error_messages %>
-
 <script language="javascript">
       function WertUebertragen(uelle, Ziel, Entfernen) {
       var WertVorhanden = false
@@ -41,6 +38,10 @@
     }  // -->
 </script>
 
+<% form_for(@diagramm) do |f| %>
+  <%= f.error_messages %>
+
+
 <TAble width="200">
   <TR>
     <TD VAlign="top">
@@ -58,7 +59,7 @@
   <TR>
      
      <% verwendete_quellen = @diagramm.quellen %>
-     <% freie_quellen = (Quelle.find(:all).select{|q| true} - verwendete_quellen).map{|q| [q.name, q.id]}.sort %>
+     <% freie_quellen_options =  options_for_select( (Quelle.find(:all).select{|q| true} - verwendete_quellen).map{|q| [q.name, q.id]}.sort) %>
     <TD colspan ="3" VAlign="top">
       <TABLE WIDTH="40%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
         <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
@@ -66,11 +67,11 @@
           <TD WIDTH="20%" ALIGN=CENTER>
            <%= select_tag "uelle", 
                 
-                options_for_select(freie_quellen),
+                freie_quellen_options,
                 
                 { :size=>8, 
                   :style=>"WIDTH:200px", 
-                  :onclick=>"WertUebertragen(this, this.form.quellen_, true)"
+                  :onclick=>"WertUebertragen(this, this.form.diagramm_quelle_ids_, true)"
                 }
      %>
               <!--SELECT NAME="uelle" SIZE=8 ONCLICK="WertUebertragen(this, this.form.Ziel, true)" STYLE="WIDTH:200px">
@@ -85,19 +86,19 @@
            <!--SELECT NAME="Ziel" SIZE=8 ONCLICK="WertUebertragen(this, this.form.uelle, true)" STYLE="WIDTH:200px">
 
            </SELECT-->
-              <%=  select_tag "quellen[]",
-                options_from_collection_for_select(@diagramm.quellen, :id, "name", nil),
+              <%=  select_tag "diagramm[quelle_ids][]",
+                options_from_collection_for_select(Quelle.find(:all), :id, "name", @diagramm.quelle_ids),
                 { :multiple => true,
                   :size=>8,
                   :style=>"WIDTH:200px",
-                  :onclick=>"WertUebertragen(this, this.form.uelle, true)"
+                  #:onclick=>"WertUebertragen(this, this.form.uelle, true)"
                 }
               %>
          </TD>
          <!--TD WIDTH="20%" ALIGN=CENTER>
             <%= f.select(
                 "quellen_zuweiser",
-                freie_quellen,
+                freie_quellen_options,
                 {:multiple => true},
                 { :size=>8,
                   :style=>"WIDTH:200px",

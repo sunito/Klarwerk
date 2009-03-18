@@ -13,9 +13,16 @@ class Diagramm < ActiveRecord::Base
   #end
 
   alias :diaquen_vorher= :diaquen=
-  def quellen=(neu)
+  def diaquen=(neu)
     p ["diaquen=", neu]
     self.diaquen_vorher=(neu)
+  end
+
+  alias :quelleids_vorher= :quelle_ids=
+
+  def quelle_ids=(neu)
+    p ["quelleids=", neu]
+    self.quelleids_vorher=(neu)
   end
 
 
