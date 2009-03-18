@@ -12,6 +12,14 @@ class Diagramm < ActiveRecord::Base
  #   DateTime.new [1..5].map {|i| params["bis#{i}i"]}
   #end
 
+  alias :diaquen_vorher= :diaquen=
+  def quellen=(neu)
+    p ["diaquen=", neu]
+    self.diaquen_vorher=(neu)
+  end
+
+
+
   def after_initialize
     if zeit then
       @bis = zeit.bis

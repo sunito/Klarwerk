@@ -20,43 +20,7 @@
 //		  }
 		}
 
-    function WertUebertragen(uelle, Ziel, Entfernen) {
-      var WertVorhanden = false
-      var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
-      if (!ZielVorhanden) { Entfernen = true }
-      for (var Nr = 0; Nr < uelle.length; Nr++) {
-        var QuellOption = uelle.options[Nr]
-        if (QuellOption.selected) {
-          if(ZielVorhanden) {
-            // Pr�ft, ob der Wert schon im rechten Textfeld vorhanden ist
-            for (var Pos = 0; Pos < Ziel.length;) {
-              WertVorhanden = (Ziel.options[Pos++].text == QuellOption.text)
-              if (WertVorhanden) { break }
-            }
-            // Falls der Wert nicht vorhanden ist, wird er an das rechte
-            // Listenfeld angef�gt
-            if (!WertVorhanden) {
-              Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
-            }
-          }
-          if (Entfernen) { uelle.options[Nr] = null }
-        }
-      }
-    }
 
-    // L�scht alle Werte aus dem Textfeld
-    function AlleWerteLoeschen(Ziel) {
-      for (var Nr = Ziel.length; Nr > 0;)
-        Ziel.options[--Nr] = null
-    }
-
-    // Beispiel: So liest man Werte aus einem Listenfeld
-    function Auslesen(ListenFeld) {
-      var AusgabeText = ""
-      for (var Nr = 0; Nr < ListenFeld.length;)
-        AusgabeText += ListenFeld.options[Nr++].text + "\n"
-      alert (AusgabeText)
-    }  // -->
   </SCRIPT>
 	</head>
 

@@ -1,6 +1,46 @@
 <% form_for(@diagramm) do |f| %>
   <%= f.error_messages %>
 
+<script language="javascript">
+      function WertUebertragen(uelle, Ziel, Entfernen) {
+      var WertVorhanden = false
+      var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
+      if (!ZielVorhanden) { Entfernen = true }
+      for (var Nr = 0; Nr < uelle.length; Nr++) {
+        var QuellOption = uelle.options[Nr]
+        if (QuellOption.selected) {
+          if(ZielVorhanden) {
+            // Pr�ft, ob der Wert schon im rechten Textfeld vorhanden ist
+            for (var Pos = 0; Pos < Ziel.length;) {
+              WertVorhanden = (Ziel.options[Pos++].text == QuellOption.text)
+              if (WertVorhanden) { break }
+            }
+            // Falls der Wert nicht vorhanden ist, wird er an das rechte
+            // Listenfeld angef�gt
+            if (!WertVorhanden) {
+              Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
+            }
+          }
+          if (Entfernen) { uelle.options[Nr] = null }
+        }
+      }
+    }
+
+    // L�scht alle Werte aus dem Textfeld
+    function AlleWerteLoeschen(Ziel) {
+      for (var Nr = Ziel.length; Nr > 0;)
+        Ziel.options[--Nr] = null
+    }
+
+    // Beispiel: So liest man Werte aus einem Listenfeld
+    function Auslesen(ListenFeld) {
+      var AusgabeText = ""
+      for (var Nr = 0; Nr < ListenFeld.length;)
+        AusgabeText += ListenFeld.options[Nr++].text + "\n"
+      alert (AusgabeText)
+    }  // -->
+</script>
+
 <TAble width="200">
   <TR>
     <TD VAlign="top">
@@ -30,7 +70,7 @@
                 
                 { :size=>8, 
                   :style=>"WIDTH:200px", 
-                  :onclick=>"WertUebertragen(this, this.form.Ziel, true)"
+                  :onclick=>"WertUebertragen(this, this.form.quellen_, true)"
                 }
      %>
               <!--SELECT NAME="uelle" SIZE=8 ONCLICK="WertUebertragen(this, this.form.Ziel, true)" STYLE="WIDTH:200px">
@@ -45,16 +85,26 @@
            <!--SELECT NAME="Ziel" SIZE=8 ONCLICK="WertUebertragen(this, this.form.uelle, true)" STYLE="WIDTH:200px">
 
            </SELECT-->
-            <%= f.select( 
+              <%=  select_tag "quellen[]",
+                options_from_collection_for_select(@diagramm.quellen, :id, "name", nil),
+                { :multiple => true,
+                  :size=>8,
+                  :style=>"WIDTH:200px",
+                  :onclick=>"WertUebertragen(this, this.form.uelle, true)"
+                }
+              %>
+         </TD>
+         <!--TD WIDTH="20%" ALIGN=CENTER>
+            <%= f.select(
                 "quellen_zuweiser",
                 freie_quellen,
-                {:multiple => true}, 
-                { :size=>8, 
-                  :style=>"WIDTH:200px", 
+                {:multiple => true},
+                { :size=>8,
+                  :style=>"WIDTH:200px",
                   :onclick=>"WertUebertragen(this, this.form.uelle, true)"
                 })
-     %>
-         </TD>
+             %>
+         </TD-->
        </TR>
        <TR>
          <TD>

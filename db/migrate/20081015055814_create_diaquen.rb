@@ -3,7 +3,7 @@ class CreateDiaquen < ActiveRecord::Migration
     create_table :diaquen do |t|
       t.integer :quelle_id
       t.integer :diagramm_id
-      t.integer :farbe
+      t.string  :farbe
       t.float   :streckungsfaktor
 
       t.timestamps
