@@ -45,7 +45,7 @@ class MesspunkteController < ApplicationController
     respond_to do |format|
       if @messpunkt.save
         flash[:notice] = 'Messpunkt was successfully created.'
-        format.html { redirect_to(@messpunkt) }
+        format.html { redirect_to(:action => "index") }
         format.xml  { render :xml => @messpunkt, :status => :created, :location => @messpunkt }
       else
         format.html { render :action => "new" }
