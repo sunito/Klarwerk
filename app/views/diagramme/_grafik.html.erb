@@ -1,0 +1,13 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<div id="grafik_bereich">
+  <!--%= @graph %-->
+    <%= @chart.js_open_flash_chart_object("my_chart_js_1", 550,300) %>
+    <br/><br/>
+    <%= @chart.link_to_ofc_load("Normal", "my_chart_js_1") %> ||
+    <%= @chart.link_to_remote_ofc_load("Re-e-chts", "my_chart_js_1", "/diagramme/rechts") %>
+
+</div>

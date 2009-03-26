@@ -1,0 +1,4 @@
+# TODO Operate on the page object
+#page.replace :grafik_bereich, :partial => "grafik"
+
+#document.graph:___.update

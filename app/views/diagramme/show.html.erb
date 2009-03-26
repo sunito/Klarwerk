@@ -6,8 +6,10 @@
   <%=h @diagramm.name %>
 </p>
 
-<%= @graph %>
-1234
+<%= render :partial => "grafik" %>
+
+<%= link_to_remote "Nach Rechts",  :url => { :action => "rechts" }  %>
+
 <p>
   <b>Beschreibung:</b>
   <%=h @diagramm.beschreibung %>

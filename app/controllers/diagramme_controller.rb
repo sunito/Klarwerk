@@ -24,6 +24,14 @@ class DiagrammeController < ApplicationController
 
   end
 
+  def rechts
+    akt_zeit.zurueck!
+    #erstelle_graph
+    chart_kurven
+    #@graph = "<hr><hr>"
+    render :template => "diagramme/grafik_aktualisierer.rjs", :layout => false
+  end
+
   def skala_chart
     p :skala
     #g = Graph.new
@@ -81,7 +89,7 @@ class DiagrammeController < ApplicationController
   end
 
   def chart_kurven
-    OpenFlashChart.new( @diagramm.name ) do |chart|
+    @chart = OpenFlashChart.new( @diagramm.name ) do |chart|
       #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
       #chart.set_title(@diagramm.name)
 
@@ -137,6 +145,7 @@ class DiagrammeController < ApplicationController
     respond_to do |format|
       format.html {
         erstelle_graph
+        chart_kurven
       }
       format.skala {
         render :text => skala_chart, :layout => false
