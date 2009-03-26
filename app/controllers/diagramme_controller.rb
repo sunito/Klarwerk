@@ -15,7 +15,7 @@ class DiagrammeController < ApplicationController
     end
   end
 
-  def erstelle_graph
+  def xx_erstelle_graph
     hoehe = 600
     @graph = open_flash_chart_object( "80%", hoehe, url_for( :action => 'show', :format => :json ) )
     if @diagramm.zweite_skala? then
@@ -24,12 +24,16 @@ class DiagrammeController < ApplicationController
 
   end
 
-  def rechts
+  def links
     akt_zeit.zurueck!
-    #erstelle_graph
     chart_kurven
-    #@graph = "<hr><hr>"
-    render :template => "diagramme/grafik_aktualisierer.rjs", :layout => false
+    render :inline => @chart
+  end
+
+  def rechts
+    akt_zeit.weiter!
+    chart_kurven
+    render :inline => @chart
   end
 
   def skala_chart
@@ -89,6 +93,7 @@ class DiagrammeController < ApplicationController
   end
 
   def chart_kurven
+    @diagramm = Diagramm.find(params[:id])
     @chart = OpenFlashChart.new( @diagramm.name ) do |chart|
       #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
       #chart.set_title(@diagramm.name)
@@ -104,8 +109,8 @@ class DiagrammeController < ApplicationController
           x_labels = XAxisLabels.new
           x_labels.set_vertical()
 
-          diff = kurve.von - kurve.bis
-          anz = GLOBAL_X_ANZAHL
+          diff = kurve.bis - kurve.von
+          anz = GLOBAL_X_ANZAHL 
           x_labels.labels = (0..anz).map do |i|
             text = (kurve.von + i*diff / anz).strftime("%H:%M")
             XAxisLabel.new(text, '#0000ff', 10, 'diagonal')
@@ -140,11 +145,11 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1
   # GET /diagramme/1.xml
   def show
-    @diagramm = Diagramm.find(params[:id])
+    #@diagramm = Diagramm.find(params[:id])
 
     respond_to do |format|
       format.html {
-        erstelle_graph
+        #erstelle_graph
         chart_kurven
       }
       format.skala {
