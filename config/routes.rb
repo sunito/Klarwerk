@@ -19,6 +19,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.expert_modus 'expert_modus/:zustand', :controller => 'expert', :action => 'schalten'
 
+  map.root :controller => "diagramme", :action => "index"
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
