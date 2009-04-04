@@ -3,6 +3,8 @@ DAUER_EINRASTPUNKTE_ABWAERTS = [365, 182, 91, 61, 30, 21, 14, 7, 3, 2, 1].map(&:
                       [12, 6, 3, 2, 1, 0.5].map(&:hours) #  {|std| std.hours }
 DAUER_EINRASTPUNKTE_AUFWAERTS = DAUER_EINRASTPUNKTE_ABWAERTS.reverse
 
+DAUER_EINRASTPUNKTE = DAUER_EINRASTPUNKTE_AUFWAERTS
+
 DAUER_STANDARD = 12.hours
 
 class Zeit < ActiveRecord::Base
@@ -93,28 +95,32 @@ public
       raise "Zeitangabe nicht erkannt. Typ:#{andere_zeit.class}, Wert:#{andere_zeit.inspect}"
     end
   end
-
   def dauer_lesbar
-    return "???" unless dauer
-    if dauer < 1.hours then
-      "#{dauer/1.minutes} min"
-    elsif dauer < 24.hours then
-      "#{dauer/1.hours} Std."
+    Object::dauer_lesbar(dauer)
+  end
+
+end
+
+# Macht aus dauer (in Sekunden) einen lesbaren Strring
+def dauer_lesbar(dauer)
+  return "???" unless dauer
+  if dauer < 1.hours then
+    "#{dauer/1.minutes} min"
+  elsif dauer < 24.hours then
+    "#{dauer/1.hours} Std."
+  else
+    tage = ep / 1.days
+    case tage
+    when 1 then "1 Tag"
+    when 7 then "1 Woche"
+    when 30..31 then "1 Monat"
+    when 60..61 then "2 Monate"
+    when 90..92 then "3 Monate"
+    when 180..183 then "6 Monate"
+    when 360..366 then "1 Jahr"
     else
-      tage = ep / 1.days
-      case tage
-      when 1 then "1 Tag"
-      when 7 then "1 Woche"
-      when 30..31 then "1 Monat"
-      when 60..61 then "2 Monate"
-      when 90..92 then "3 Monate"
-      when 180..183 then "6 Monate"
-      when 360..366 then "1 Jahr"
-      else
-        "#{tage} Tage"
-      end
+      "#{tage} Tage"
     end
   end
 end
-
 

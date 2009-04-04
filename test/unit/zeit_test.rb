@@ -38,4 +38,8 @@ class ZeitTest < ActiveSupport::TestCase
     assert_equal DAUER_EINRASTPUNKTE_AUFWAERTS.first, Zeit.die_aktuelle.dauer, "Dauer geht auf den Anfang hoch bei zu kleinen Werten bei kuerzer!"
 
   end
+
+  def test_dauer_lesbar
+    assert_equal "12 Std", DAUER_STANDARD.dauer_lesbar    
+  end
 end
