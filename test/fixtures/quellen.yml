@@ -1,6 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   adresse: 1/1/1
   name: Sauerstoff1
   variablen_art: Global
@@ -8,8 +9,10 @@ one:
   einheit_id: 1
 
 two:
+  id: 2
   adresse: 2/2/2
   name: Sauerstoff2
   variablen_art: MyString
   beschreibung: MyText
+  einheit_id: 2
 #  einheit: MyString

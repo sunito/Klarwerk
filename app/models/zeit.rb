@@ -96,7 +96,7 @@ public
     end
   end
   def dauer_lesbar
-    Object::dauer_lesbar(dauer)
+    super(dauer)
   end
 
 end

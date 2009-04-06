@@ -17,7 +17,7 @@ class MesspunkteControllerTest < ActionController::TestCase
       post :create, :messpunkt => { }
     end
 
-    assert_redirected_to messpunkt_path(assigns(:messpunkt))
+    assert_redirected_to messpunkte_path #(assigns(:messpunkt))
   end
 
   def test_should_show_messpunkt

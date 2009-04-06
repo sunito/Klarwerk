@@ -31,6 +31,7 @@ class DiagrammeControllerTest < ActionController::TestCase
   end
 
   def test_should_update_diagramm
+    assert_equal einheiten(:one), diagramme(:one).haupt_einheit
     put :update, :id => diagramme(:one).id, :diagramm => { }
     assert_redirected_to diagramm_path(assigns(:diagramm))
   end

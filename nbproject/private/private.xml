@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/dat/Jobs/KabDiag/kabdiag/app/controllers/diagramme_controller.rb</file>
+        <file>file:/dat/Jobs/KabDiag/kabdiag/app/models/kurve.rb</file>
+        <file>file:/dat/Jobs/KabDiag/kabdiag/app/models/zeit.rb</file>
+        <file>file:/dat/Jobs/KabDiag/kabdiag/app/views/diagramme/index.html.erb</file>
+        <file>file:/dat/Jobs/KabDiag/kabdiag/app/views/diagramme/show.html.erb</file>
+        <file>file:/dat/Jobs/KabDiag/kabdiag/test/unit/zeit_test.rb</file>
+    </open-files>
 </project-private>

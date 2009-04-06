@@ -2,8 +2,8 @@
 
 one:
   quelle_id: 1
-  diagramm_id: 1
+  diagramm_id: 111
 
 two:
-  quelle_id: 1
-  diagramm_id: 1
+  quelle_id: 2
+  diagramm_id: 111

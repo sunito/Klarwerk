@@ -22,7 +22,7 @@ class DiagrammTest < ActiveSupport::TestCase
     dias = Diagramm.find(:all)
     assert_equal 2, dias.size
     d1, d2 = dias
-    assert_equal diagramme(:one).name, d1.name
+    assert_equal [diagramme(:one), diagramme(:two)].sort_by(&:name), dias.sort_by(&:name)
 
     assert q1.name != q2.name
 
@@ -42,12 +42,13 @@ class DiagrammTest < ActiveSupport::TestCase
     d1.save!
 
     assert_equal 2, d1.quellen.size
-    assert_equal q2.name, d1.quellen.first.name
+    assert_equal q1.name, d1.quellen.first.name
+    assert_equal q2.name, d1.quellen.last.name
 
     assert_equal 1, d1.einheiten.size
     assert_equal @prozent.name, d1.einheiten.first.name
 
-    deny d1.zweite_skala?
+    assert ! d1.zweite_skala?
 
   end
 end

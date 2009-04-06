@@ -1,13 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   name: Prozent
   beschreibung: MyText
   min: 0
   max: 100
 
 two:
-  name: MyString
+  id: 2
+  name: KiloWatt
   beschreibung: MyText
-  min: 1.5
-  max: 1.5
+  min: 1
+  max: 1000

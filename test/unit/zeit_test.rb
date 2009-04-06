@@ -40,6 +40,10 @@ class ZeitTest < ActiveSupport::TestCase
   end
 
   def test_dauer_lesbar
-    assert_equal "12 Std", DAUER_STANDARD.dauer_lesbar    
+    Zeit.die_aktuelle.dauer = 12.hours
+    assert Zeit.die_aktuelle
+    assert_equal DAUER_STANDARD, Zeit.die_aktuelle.dauer
+    assert_equal "5 min", dauer_lesbar(300)
+    assert_equal "12 Std.", Zeit.die_aktuelle.dauer_lesbar
   end
 end
