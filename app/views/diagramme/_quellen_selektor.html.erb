@@ -35,7 +35,14 @@
         Ziel.options[--Nr] = null
     }
 </script>
-
+<style type="text/css">
+  <% Quelle.all.each do |q| %>
+    option.farbe<%= q.id %>  {
+        color: #<%= q.farbe %>;
+        background-color: #ffffff;
+    }
+  <% end %>
+</style>
 <% form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
   <script>
     function MarkiereErgebnisse() {
@@ -64,7 +71,13 @@
      
     <% verwendete_quellen = @diagramm.quellen %>
     <% verwendete_quellen_options = options_from_collection_for_select(verwendete_quellen, :id, :name, nil) %>
-    <% freie_quellen_options =  options_for_select( (Quelle.find(:all).select{|q| true} - verwendete_quellen).map{|q| [q.name, q.id]}.sort) %>
+    <% farbe = Quelle.first.farbe %>
+    <% p "FARBE=#{farbe}" %>
+    <!--% freie_quellen_options =  options_for_select( (Quelle.find(:all).select{|q| true} - verwendete_quellen).map{|q| [q.name, q.id]}.sort) %-->
+    <% freie_quellen_options =  (Quelle.find(:all) - verwendete_quellen).map do |q|
+         %Q(<option class="farbe#{q.id}" value="#{q.id}">#{q.name}</option>)
+       end.join("\n")
+    %>
     <TD colspan ="3" VAlign="top">
       <TABLE WIDTH="40%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
         <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
@@ -93,7 +106,11 @@
     </TD>
   </TR>
 </TABLE>
-    <%= f.submit "Erstellen" %>
+  <% @diagramm.diaquen.each do |diaque| %>
+    <%=  render :partial => "diaquen/mini_form", :locals => {:diaque => diaque} %>
+  <% end %>
+
+<%= f.submit "Erstellen" %>
 <% end %>
 <script>
   AusgrauenWennErgebnisLeer();

@@ -1,0 +1,26 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<%= javascript_include_tag :defaults %>
+
+<%= javascript_include_tag 'picky_color' %>
+<%= stylesheet_link_tag 'picky_color' %>
+
+
+<%= "_mini_form.html" %>
+<% form_for(diaque) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.hidden_field :quelle_id %>
+  </p>
+  <p>
+    <%= f.hidden_field :diagramm_id %>
+    <%= diaque.quelle.name %>
+    <%= f.picky_color :farbe, :size => 6 %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
