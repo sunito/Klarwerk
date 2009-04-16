@@ -2,14 +2,20 @@
 
 <table>
   <tr>
-    <th>Quelle</th>
-    <th>Diagramm</th>
+    <th colspan="2">Quelle</th>
+    <th> &nbsp; &nbsp; &nbsp; </th>
+    <th colspan="2">Diagramm</th>
+    <th>Farbe</th>
   </tr>
 
 <% for diaque in @diaquen %>
   <tr>
     <td><%=h diaque.quelle_id %></td>
+    <td><%=h diaque.quelle && diaque.quelle.name %></td>
+    <td></td>
     <td><%=h diaque.diagramm_id %></td>
+    <td><%=h diaque.diagramm && diaque.diagramm.name %></td>
+    <td><%=h diaque.farbe %></td>
     <td><%= link_to 'Show', diaque %></td>
     <td><%= link_to 'Edit', edit_diaque_path(diaque) %></td>
     <td><%= link_to 'Destroy', diaque, :confirm => 'Are you sure?', :method => :delete %></td>
