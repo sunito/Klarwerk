@@ -1,21 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :spaltennamen_aenderns
-
-  map.resources :quellen
-
-  map.resources :quellen
-
-  map.resources :diagramme
-
+  map.resources :messpunkte
   map.resources :einheiten
-
-  map.resources :diaquen
-
+  map.resources :quellen
   map.resources :zeiten
 
-  map.resources :quellen
-
-  map.resources :messpunkte
+  map.resources :diagramme, :has_many => :diaquen  # Verschachtelt ("nested ressource")
+  map.resources :diaquen  # Damit sind die diaquen auch nichtverschachtelt zugreifbar.
 
   map.expert_modus 'expert_modus/:zustand', :controller => 'expert', :action => 'schalten'
 

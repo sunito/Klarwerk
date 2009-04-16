@@ -224,4 +224,16 @@ class DiagrammeController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def update_diaque
+    @diagramm = Diagramm.find(params[:id])
+    @diaque = Diagramm.find(params[:diaque_id])
+    p ["XXXXXX UPDATE_DIAQUE XXXXXX", 'params[:diagramm]', params[:diagramm], @diaque]
+    if @diaque.update_attributes(params[:diaque])
+      flash[:notice] = 'Farbe der Messqröße wurde gespeichert.'
+      render :text, "OK"
+    else
+      render :text, "schiefgegangen"
+    end
+  end
 end
