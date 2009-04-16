@@ -8,6 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :diaquen  # Damit sind die diaquen auch nichtverschachtelt zugreifbar.
 
   map.expert_modus 'expert_modus/:zustand', :controller => 'expert', :action => 'schalten'
+  map.quellenfarbe 'diagramme/:id/quellenfarbe/:quelle_id/:farbe', :controller => 'diagramme', :action => 'quellenfarbe'
 
   map.root :controller => "diagramme", :action => "index"
 

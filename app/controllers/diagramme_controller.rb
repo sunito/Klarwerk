@@ -225,6 +225,21 @@ class DiagrammeController < ApplicationController
     end
   end
 
+
+  def quellenfarbe
+    @diagramm = Diagramm.find(params[:id])
+    quelle_id = params[:quelle_id]
+    farbe = params[:farbe]
+    if farbe then
+      session[:quellenfarben] += { quelle_id => farbe }
+    else
+      session[:quellenfarben].delete(quelle_id)
+    end
+    render :layout => false
+    # oder:
+    # render :action => "farben_bereich", :layout => false
+  end
+
   def update_diaque
     @diagramm = Diagramm.find(params[:id])
     @diaque = Diagramm.find(params[:diaque_id])
