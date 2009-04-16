@@ -122,7 +122,7 @@ class DiagrammeController < ApplicationController
         line = Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
         line.text = diaque.quelle.name
         line.width = 3
-        line.colour = "#111111" #diaque.farbe
+        line.colour = diaque.farbe || diaque.quelle.farbe
         line.dot_size = 5
         line.values = kurve.linien_daten.map{|z| z and z * (diaque.streckungsfaktor||1) }
         chart.add_element(line)
