@@ -1,3 +1,8 @@
+<%= javascript_include_tag :defaults %>
+
+<%= javascript_include_tag 'picky_color' %>
+<%= stylesheet_link_tag 'picky_color' %>
+
 <script language="javascript">
     function WertUebertragen(uelle, Ziel, Entfernen) {
       var WertVorhanden = false
@@ -53,7 +58,7 @@
   </script>
   <%= f.error_messages %>
 
-<TABLE width="200">
+<TABLE width="100%">
   <TR>
     <TD VAlign="top">
     <%= f.label :name %><br />
@@ -79,7 +84,7 @@
        end.join("\n")
     %>
     <TD colspan ="3" VAlign="top">
-      <TABLE WIDTH="40%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
+      <TABLE WIDTH="100%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
         <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
         <TR>
           <TD WIDTH="20%" ALIGN=CENTER>
@@ -101,14 +106,20 @@
               }
             %>
           </TD>
+          <!-- von Sven -->
+          <TD WIDTH="200" VAlign="top">
+            <% f.fields_for :diaquen do |diaque_f| %>
+              <font color="#<%= diaque_f.object.quelle.farbe %>">
+              <%= diaque_f.object.quelle.name %> <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque_f.object.quelle.farbe %><br>
+              </font>
+            <% end %>
+          </TD>
+          <!-- Ende von Sven -->
         </TR>
       </TABLE>
     </TD>
   </TR>
 </TABLE>
-  <% @diagramm.diaquen.each do |diaque| %>
-    <%=  render :partial => "diaquen/mini_form", :locals => {:diaque => diaque} %>
-  <% end %>
 
 <%= f.submit "Erstellen" %>
 <% end %>

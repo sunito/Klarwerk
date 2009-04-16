@@ -1,5 +1,7 @@
 class Diagramm < ActiveRecord::Base
   has_many :diaquen
+  accepts_nested_attributes_for :diaquen
+  
   has_many :quellen, :through => :diaquen
 
   #has_many :einheiten, :through => :quellen, :source => :einheit
