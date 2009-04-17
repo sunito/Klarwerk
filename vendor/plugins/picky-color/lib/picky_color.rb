@@ -20,11 +20,13 @@ module PickyColor
     
     # include to the output the span and javascript tag needed for the helper
     def picky_color_output(input, object_name, method, id, picky_options = {})
-      name = method.nil? ? "#{id}" : "#{object_name}_#{method}"
-      
+      name = method.nil? ? "#{id}" : "#{object_name_to_id(object_name)}_#{method}".gsub("__","_")
+
+      color_well_id = "color_well_#{name}"
+
       out = "<div>"
       out << input
-      out << content_tag(:span, :id => "color_well_#{name}", :class => "color-picker-box") do end
+      out << content_tag(:span, :id => color_well_id, :class => "color-picker-box") do end
       
       out << (javascript_tag %{
       color_value = $('#{name}').value
@@ -34,7 +36,7 @@ module PickyColor
       new PickyColor({
           color: color_value,
           field: '#{name}',
-          colorWell: 'color_well_#{name}',
+          colorWell: '#{color_well_id}',
           draggable: #{picky_options[:draggable]},
           closeText: '#{picky_options[:close_text]}',
           imageBase: '/images/picky_color/'
@@ -73,8 +75,13 @@ module PickyColor
       end
       return picky_color_output input.to_input_field_tag("text", options), object, method, nil, picky_options   
     end
+
+    private
+    def object_name_to_id(name)
+      name.gsub(/\]\[|[^-a-zA-Z0-9:.]/, "_").sub(/_$/, "")
+    end
     
-  end 
+  end
 end
 
 module ActionView
