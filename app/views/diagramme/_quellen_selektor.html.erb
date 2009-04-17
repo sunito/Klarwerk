@@ -8,6 +8,14 @@
     function WertUebertragen(uelle, Ziel, Entfernen) {
       var WertVorhanden = false
       var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
+
+      // Thomas UL-Liste bestücken
+      //Listenelement hinzufügen ist noch auskommentiert
+      var neuesLi = document.createElement("li")
+      //neuesLi.appendChild(QuellOption.text, QuellOption.value)
+      var Farbliste = document.getElementByID("freie_Quellen_Farbe")
+      //Farbliste.appendChild(neuesLI)
+
       if (!ZielVorhanden) { Entfernen = true }
       for (var Nr = 0; Nr < uelle.length; Nr++) {
         var QuellOption = uelle.options[Nr]
@@ -107,6 +115,13 @@
               }
             %>
           </TD>
+           <!-- von Thomas, die Liste kann in enem eigenen Formular stehen -->
+          <TD>
+           <UL id="freie_Quellen_Farbe" name=freie_Quellen_Farbe">
+            <LI>Eintrag1     <%= f.picky_color :name, :size => 6 %></LI>
+            <LI> Eintrag2</LI>
+         </UL>
+         </TD>
           <!-- von Sven -->
           <TD WIDTH="200" VAlign="top">
             <% f.fields_for :diaquen do |diaque_f| %>
