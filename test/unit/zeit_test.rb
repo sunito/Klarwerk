@@ -1,7 +1,10 @@
 require 'test_helper'
 
 class ZeitTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
+  def setup
+
+  end
+
   def test_aktuelle
     assert Zeit.die_aktuelle
     assert_equal DAUER_STANDARD, Zeit.die_aktuelle.dauer
@@ -10,13 +13,25 @@ class ZeitTest < ActiveSupport::TestCase
     Zeit.die_aktuelle.zurueck!
     assert_equal DAUER_STANDARD, Zeit.die_aktuelle.dauer, "Dauer bleibt gleich bei Rückwärtsschritt"
     assert Zeit.die_aktuelle.bis
-    assert_in_delta Time.now - DAUER_STANDARD/4, Zeit.die_aktuelle.bis, 10.seconds, "halbe Dauer zurueck"
+    assert_in_delta Time.now - DAUER_STANDARD/4, Zeit.die_aktuelle.bis, 10.seconds, "viertel Dauer zurueck"
 
     bis_vorher = Zeit.die_aktuelle.bis
     Zeit.die_aktuelle.weiter!
     assert_equal DAUER_STANDARD, Zeit.die_aktuelle.dauer, "Dauer bleibt gleich bei Vorwärtsschritt"
     assert Zeit.die_aktuelle.bis
-    assert_equal bis_vorher + DAUER_STANDARD/4, Zeit.die_aktuelle.bis, "halbe Dauer weiter"
+    assert_equal bis_vorher + DAUER_STANDARD/4, Zeit.die_aktuelle.bis, "Viertel Dauer weiter"
+
+    zeit_bis_vorher = Zeit.die_aktuelle.bis
+
+    Zeit.die_aktuelle.zurueck!
+    assert_equal DAUER_STANDARD, Zeit.die_aktuelle.dauer, "Dauer bleibt gleich bei Rückwärtsschritt"
+    assert Zeit.die_aktuelle.bis
+    assert_equal zeit_bis_vorher - DAUER_STANDARD/4, Zeit.die_aktuelle.bis, "exakt viertel Dauer zurueck"
+
+    Zeit.die_aktuelle.zurueck!
+    assert_equal DAUER_STANDARD, Zeit.die_aktuelle.dauer, "Dauer bleibt gleich bei Rückwärtsschritt"
+    assert Zeit.die_aktuelle.bis
+    assert_equal zeit_bis_vorher - DAUER_STANDARD/2, Zeit.die_aktuelle.bis, "zweimal viertel Dauer zurueck"
 
     Zeit.die_aktuelle.kuerzer!
     assert_equal DAUER_STANDARD/2, Zeit.die_aktuelle.dauer, "Dauer reduziert sich auf 6 Std bei kuerzer!"
@@ -37,6 +52,9 @@ class ZeitTest < ActiveSupport::TestCase
     Zeit.die_aktuelle.kuerzer!
     assert_equal DAUER_EINRASTPUNKTE_AUFWAERTS.first, Zeit.die_aktuelle.dauer, "Dauer geht auf den Anfang hoch bei zu kleinen Werten bei kuerzer!"
 
+  end
+
+  def test_zurueck
   end
 
   def test_dauer_lesbar

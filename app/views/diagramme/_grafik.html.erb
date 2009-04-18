@@ -10,5 +10,7 @@
     <%= @chart.link_to_ofc_load("Normal", "my_chart_js_1") %> ||
     <%= @chart.link_to_remote_ofc_load("Links", "my_chart_js_1",  url_for({ :action => "links", :id => params[:id] })) %>
     <%= @chart.link_to_remote_ofc_load("Rechts", "my_chart_js_1",  url_for({ :action => "rechts", :id => params[:id] })) %>
+    <%= @chart.link_to_remote_ofc_load("Zoom hinaus", "my_chart_js_1",  url_for({ :action => "zoom_out", :id => params[:id] })) %>
+    <%= @chart.link_to_remote_ofc_load("Zoom hinein", "my_chart_js_1",  url_for({ :action => "zoom_in", :id => params[:id] })) %>
 
 </div>
