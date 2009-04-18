@@ -9,12 +9,6 @@
       var WertVorhanden = false
       var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
 
-      // Thomas UL-Liste bestücken
-      //Listenelement hinzufügen ist noch auskommentiert
-      var neuesLi = document.createElement("li")
-      //neuesLi.appendChild(QuellOption.text, QuellOption.value)
-      //var Farbliste = document.getElementByID("freie_Quellen_Farbe")
-      //Farbliste.appendChild(neuesLI)
 
       if (!ZielVorhanden) { Entfernen = true }
       for (var Nr = 0; Nr < uelle.length; Nr++) {
@@ -29,7 +23,13 @@
             // Falls der Wert nicht vorhanden ist, wird er an das rechte
             // Listenfeld angef�gt
             if (!WertVorhanden) {
-              Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
+               Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
+              
+              var Farbliste=document.getElementById('quellen_farben');
+              var li=document.createElement('li');
+              li.appendChild(document.createTextNode(QuellOption.text + "\<\%= f.picky_color :name, :size => 6 \%\>"));
+              Farbliste.appendChild(li);
+
             }
           }
           if (Entfernen) { uelle.options[Nr] = null }
@@ -117,7 +117,7 @@
           </TD>
            <!-- von Thomas, die Liste kann in enem eigenen Formular stehen -->
           <TD>
-           <UL id="freie_Quellen_Farbe" name="freie_Quellen_Farbe">
+           <UL id="quellen_farben" name="quellen_farben">
             <LI>Eintrag1     <%= f.picky_color :name, :size => 6 %></LI>
             <LI> Eintrag2</LI>
          </UL>
