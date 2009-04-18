@@ -179,6 +179,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/new.xml
   def new
     @diagramm = Diagramm.new
+    init_quellenauswahl
 
     respond_to do |format|
       format.html # new.html.erb
@@ -189,6 +190,11 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1/edit
   def edit
     @diagramm = Diagramm.find(params[:id])
+    init_quellenauswahl
+  end
+
+  def init_quellenauswahl
+    session[:quellenauswahl] = @diagramm.quelle_ids
   end
 
   # POST /diagramme
@@ -215,6 +221,7 @@ class DiagrammeController < ApplicationController
 
     respond_to do |format|
       p [:XXXXXXXXXXXX, 'params[:diagramm]', params[:diagramm]]
+      @diagramm.quelle_ids=(session[:quellenauswahl])
       if @diagramm.update_attributes(params[:diagramm])
         flash[:notice] = 'Diagramm wurde gespeichert.'
         format.html { redirect_to(@diagramm) }
@@ -238,6 +245,23 @@ class DiagrammeController < ApplicationController
     end
   end
 
+  def quelle_rein
+    #@diagramm = Diagramm.find(params[:id])
+    quelle_id = params[:quelle_id].to_i
+    session[:quellenauswahl] << quelle_id
+    session[:quellenauswahl].uniq!
+    render :action => "quellen_auswahl_listen", :layout => false
+  end
+  def quelle_raus
+    quelle_id = params[:quelle_id].to_i
+    session[:quellenauswahl].delete(quelle_id)
+   render :action => "quellen_auswahl_listen", :layout => false
+  end
+
+  def probier_q
+    @diagramm = Diagramm.find(params[:id])
+    init_quellenauswahl
+  end
 
   def quellenfarbe
     @diagramm = Diagramm.find(params[:id])
