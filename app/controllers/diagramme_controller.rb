@@ -1,6 +1,7 @@
 class DiagrammeController < ApplicationController
 
   def akt_zeit
+    #session[:zeit] ||=
     Zeit.die_aktuelle
   end
 
@@ -32,6 +33,18 @@ class DiagrammeController < ApplicationController
 
   def rechts
     akt_zeit.weiter!
+    chart_kurven
+    render :inline => @chart
+  end
+
+  def zoom_out
+    akt_zeit.laenger!
+    chart_kurven
+    render :inline => @chart
+  end
+
+  def zoom_in
+    akt_zeit.kuerzer!
     chart_kurven
     render :inline => @chart
   end

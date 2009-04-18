@@ -65,18 +65,23 @@ public
     save!
   end
 
-  @@zeit_aktuell = begin
-    find(1)
+  STANDARDZEIT = begin
+    find(0)
   rescue
     new
   end
-  @@zeit_aktuell.bis = nil
-  @@zeit_aktuell.dauer = DAUER_STANDARD
-  @@zeit_aktuell.save!
+  STANDARDZEIT.bis = nil
+  STANDARDZEIT.dauer = DAUER_STANDARD
+  STANDARDZEIT.save!
+
+  begin
+    @@zeit_aktuell = find(1)
+  rescue
+    @@zeit_aktuell = new
+    self.die_aktuelle = STANDARDZEIT
+  end
 
   def self.die_aktuelle
-    #stub
-    #self.class.find(1)
     @@zeit_aktuell
   end
   
@@ -94,6 +99,7 @@ public
     else
       raise "Zeitangabe nicht erkannt. Typ:#{andere_zeit.class}, Wert:#{andere_zeit.inspect}"
     end
+    @@zeit_aktuell.save!
   end
   def dauer_lesbar
     super(dauer)
