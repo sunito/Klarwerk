@@ -1,0 +1,26 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<%  fields_for @diagramm do |f| %>
+  <TABLE><TR>
+    <TD Valign="top">
+      <% @freie_quellen.each do |quelle| %>
+        <font color="#<%= quelle.farbe %>">
+          <%= link_to_remote quelle.name,  :url =>{ :action => "quelle_rein","id"=>@diagramm.id, "quelle_id"=>quelle.id}, :update => "_quellen_auswahl_listen" %>
+        </font><BR>
+      <% end %>
+    </TD>
+    <TD Valign="top">
+      <% @ausgewaehlte_diaquen.each do |diaque| %>
+      <% f.fields_for :diaque, diaque do |diaque_f| %>
+        <font color="#<%= diaque_f.object.quelle.farbe %>">
+          <%= link_to_remote diaque_f.object.quelle.name,  :url =>{ :action => "quelle_raus","id"=>@diagramm.id, "quelle_id"=>diaque_f.object.id}, :update => "_quellen_auswahl_listen" %>
+          <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque_f.object.quelle.farbe %><br>
+        </font><BR>
+      <% end %>
+      <% end %>
+    </TD>
+  </TR></TABLE>
+<% end %>

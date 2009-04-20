@@ -195,6 +195,13 @@ class DiagrammeController < ApplicationController
 
   def init_quellenauswahl
     session[:quellenauswahl] = @diagramm.quelle_ids
+    session[:diaquenauswahl] = @diagramm.diaquen
+    init_freiequellen
+  end
+
+  def init_freiequellen
+    @freie_quellen = Quelle.all - Quelle.find(session[:diaquenauswahl].map{|dq| dq.quelle_id})
+    @ausgewaehlte_diaquen = session[:diaquenauswahl]
   end
 
   # POST /diagramme
@@ -221,7 +228,8 @@ class DiagrammeController < ApplicationController
 
     respond_to do |format|
       p [:XXXXXXXXXXXX, 'params[:diagramm]', params[:diagramm]]
-      @diagramm.quelle_ids=(session[:quellenauswahl])
+      # @diagramm.quelle_ids = (session[:quellenauswahl])
+      @diagramm.diaquen = session[:diaquenauswahl]
       if @diagramm.update_attributes(params[:diagramm])
         flash[:notice] = 'Diagramm wurde gespeichert.'
         format.html { redirect_to(@diagramm) }
@@ -244,18 +252,33 @@ class DiagrammeController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  def in_auswahl_vorhandene_diaque(quelle_id)
+    session[:diaquenauswahl].to_a.find {|diaque| diaque.quelle_id = quelle_id and diaque.diagramm == @diagramm }
+  end
 
   def quelle_rein
-    #@diagramm = Diagramm.find(params[:id])
+    @diagramm = Diagramm.find(params[:id])
+    init_freiequellen
     quelle_id = params[:quelle_id].to_i
-    session[:quellenauswahl] << quelle_id
-    session[:quellenauswahl].uniq!
-    render :parcial => "quellen_auswahl_listen", :layout => false
+    #session[:quellenauswahl] << quelle_id
+    #session[:quellenauswahl].uniq!
+   vorhanden = in_auswahl_vorhandene_diaque(quelle_id)
+    if not vorhanden
+      neue_diaque = Diaque.new
+      neue_diaque.diagramm_id = @diagramm.id
+      neue_diaque.quelle_id = quelle_id
+      session[:diaquenauswahl] << neue_diaque
+    end
+    render :partial => "quellen_auswahl_listen", :layout => false
   end
   def quelle_raus
+    @diagramm = Diagramm.find(params[:id])
+    init_freiequellen
     quelle_id = params[:quelle_id].to_i
-    session[:quellenauswahl].delete(quelle_id)
-   render :parcial => "quellen_auswahl_listen", :layout => false
+    vorhanden = in_auswahl_vorhandene_diaque(quelle_id)
+    session[:diaquenauswahl].delete(vorhanden)
+   #session[:quellenauswahl].delete(quelle_id)
+   render :partial => "quellen_auswahl_listen", :layout => false
   end
 
   def probier_q
