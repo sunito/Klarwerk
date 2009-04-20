@@ -14,9 +14,9 @@
     </TD>
     <TD Valign="top">
       <% @ausgewaehlte_diaquen.each do |diaque| %>
-      <% f.fields_for :diaque, diaque do |diaque_f| %>
+      <% f.fields_for :diaquen,  diaque do |diaque_f| %>
         <font color="#<%= diaque_f.object.quelle.farbe %>">
-          <%= link_to_remote diaque_f.object.quelle.name,  :url =>{ :action => "quelle_raus","id"=>@diagramm.id, "quelle_id"=>diaque_f.object.id}, :update => "_quellen_auswahl_listen" %>
+          <%= link_to_remote diaque_f.object.quelle.name,  :url =>{ :action => "quelle_raus","id"=>@diagramm.id, "quelle_id"=>diaque_f.object.quelle_id}, :update => "_quellen_auswahl_listen" %>
           <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque_f.object.quelle.farbe %><br>
         </font><BR>
       <% end %>

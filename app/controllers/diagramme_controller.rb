@@ -179,7 +179,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/new.xml
   def new
     @diagramm = Diagramm.new
-    init_quellenauswahl
+    init_qiaquenauswahl
 
     respond_to do |format|
       format.html # new.html.erb
@@ -190,18 +190,13 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1/edit
   def edit
     @diagramm = Diagramm.find(params[:id])
-    init_quellenauswahl
+    init_qiaquenauswahl
   end
 
-  def init_quellenauswahl
-    session[:quellenauswahl] = @diagramm.quelle_ids
-    session[:diaquenauswahl] = @diagramm.diaquen
-    init_freiequellen
-  end
-
-  def init_freiequellen
-    @freie_quellen = Quelle.all - Quelle.find(session[:diaquenauswahl].map{|dq| dq.quelle_id})
-    @ausgewaehlte_diaquen = session[:diaquenauswahl]
+  def init_qiaquenauswahl
+    session[:diaquenauswahl] = @diagramm.diaquen.to_a
+    session[:diaquenauswahl_original] = session[:diaquenauswahl]
+    init_diaquenauswahl_fuer_view
   end
 
   # POST /diagramme
@@ -226,9 +221,11 @@ class DiagrammeController < ApplicationController
   def update
     @diagramm = Diagramm.find(params[:id])
 
+    session[:diaquenauswahl] = session[:diaquenauswahl_original] if params[:abbruch]
     respond_to do |format|
       p [:XXXXXXXXXXXX, 'params[:diagramm]', params[:diagramm]]
       # @diagramm.quelle_ids = (session[:quellenauswahl])
+      #session[:diaquenauswahl].each {|diaque| diaque.save!}
       @diagramm.diaquen = session[:diaquenauswahl]
       if @diagramm.update_attributes(params[:diagramm])
         flash[:notice] = 'Diagramm wurde gespeichert.'
@@ -252,38 +249,40 @@ class DiagrammeController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  def in_auswahl_vorhandene_diaque(quelle_id)
-    session[:diaquenauswahl].to_a.find {|diaque| diaque.quelle_id = quelle_id and diaque.diagramm == @diagramm }
+
+  def init_diaquenauswahl_fuer_view
+    @freie_quellen = Quelle.all - Quelle.find(session[:diaquenauswahl].map{|dq| dq.quelle_id})
+    @ausgewaehlte_diaquen = session[:diaquenauswahl]
+  end
+
+def in_auswahl_vorhandene_diaque(quelle_id)
+    session[:diaquenauswahl].to_a.find {|diaque| diaque.quelle_id == quelle_id }
   end
 
   def quelle_rein
     @diagramm = Diagramm.find(params[:id])
-    init_freiequellen
     quelle_id = params[:quelle_id].to_i
     #session[:quellenauswahl] << quelle_id
     #session[:quellenauswahl].uniq!
-   vorhanden = in_auswahl_vorhandene_diaque(quelle_id)
+    vorhanden = in_auswahl_vorhandene_diaque(quelle_id)
     if not vorhanden
       neue_diaque = Diaque.new
       neue_diaque.diagramm_id = @diagramm.id
       neue_diaque.quelle_id = quelle_id
+      neue_diaque.save!
       session[:diaquenauswahl] << neue_diaque
     end
+    init_diaquenauswahl_fuer_view
     render :partial => "quellen_auswahl_listen", :layout => false
   end
   def quelle_raus
     @diagramm = Diagramm.find(params[:id])
-    init_freiequellen
     quelle_id = params[:quelle_id].to_i
     vorhanden = in_auswahl_vorhandene_diaque(quelle_id)
-    session[:diaquenauswahl].delete(vorhanden)
-   #session[:quellenauswahl].delete(quelle_id)
-   render :partial => "quellen_auswahl_listen", :layout => false
-  end
-
-  def probier_q
-    @diagramm = Diagramm.find(params[:id])
-    init_quellenauswahl
+    session[:diaquenauswahl].delete(vorhanden) if vorhanden
+    #session[:quellenauswahl].delete(quelle_id)
+    init_diaquenauswahl_fuer_view
+    render :partial => "quellen_auswahl_listen", :layout => false
   end
 
   def quellenfarbe

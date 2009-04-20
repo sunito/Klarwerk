@@ -35,7 +35,7 @@
           if (Entfernen) { uelle.options[Nr] = null }
         }
       }
-      AusgrauenWennErgebnisLeer();
+      //AusgrauenWennErgebnisLeer();
     }
     
     function AusgrauenWennErgebnisLeer() {
@@ -97,7 +97,7 @@
       <TABLE WIDTH="100%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
         <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
         <TR>
-          <TD WIDTH="20%" ALIGN=CENTER>
+          <!--TD WIDTH="20%" ALIGN=CENTER>
             <%= select_tag "freie_quellen",
                 freie_quellen_options,
                 { :size=>8, 
@@ -115,7 +115,7 @@
                 :onclick=>"WertUebertragen(this, this.form.freie_quellen, true)"
               }
             %>
-          </TD>
+          </TD-->
            <!-- von Thomas, die Liste kann in enem eigenen Formular stehen -->
           <TD>
 
@@ -123,15 +123,6 @@
            <%= render :partial => "quellen_auswahl_listen" %>
           </DIV>
          </TD>
-          <!-- von Sven -->
-          <TD WIDTH="200" VAlign="top">
-            <% f.fields_for :diaquen do |diaque_f| %>
-              <font color="#<%= diaque_f.object.quelle.farbe %>">
-              <%= diaque_f.object.quelle.name %> <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque_f.object.quelle.farbe %><br>
-              </font>
-            <% end %>
-          </TD>
-          <!-- Ende von Sven -->
         </TR>
       </TABLE>
     </TD>
@@ -139,7 +130,8 @@
 </TABLE>
 
 <%= f.submit "Erstellen" %>
+<%= f.submit "Abbrechen" %>
 <% end %>
 <script>
-  AusgrauenWennErgebnisLeer();
+  //AusgrauenWennErgebnisLeer();
 </script>
