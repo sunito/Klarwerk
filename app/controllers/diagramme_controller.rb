@@ -107,6 +107,78 @@ class DiagrammeController < ApplicationController
 
   def chart_kurven
     @diagramm = Diagramm.find(params[:id])
+   title = Title.new("Multiple Lines")
+
+    data1 = []
+    data2 = []
+    data3 = []
+
+    10.times do |x|
+    data1 << rand(5) + 1
+    data2 << rand(6) + 7
+    data3 << rand(5) + 14
+    end
+
+    line_dot = LineDot.new
+    line_dot.width = 4
+    line_dot.colour = '#DFC329'
+    line_dot.dot_size = 5
+    line_dot.values = data1
+
+    line_hollow = LineHollow.new
+    line_hollow.width = 1
+    line_hollow.colour = '#6363AC'
+    line_hollow.dot_size = 5
+    line_hollow.values = data2
+
+    line = Line.new
+    line.width = 1
+    line.colour = '#5E4725'
+    line.dot_size = 5
+    line.values = data3
+
+    # Added these lines since the previous tutorial
+    tmp = []
+    x_labels = XAxisLabels.new
+    x_labels.set_vertical()
+
+    %w(one two three four five six seven eight nine ten).each do |text|
+      tmp << XAxisLabel.new(text, '#0000ff', 20) #, 'diagonal')
+      #tmp << XAxisLabel.new(text, '#0000ff', 20, 'horizontal')
+      #tmp << XAxisLabel.new(text, '#0000ff', 20, )
+    end
+
+    x_labels.labels = tmp
+    x_labels.rotate= 'diagonal'
+    x = XAxis.new
+    x.set_labels(x_labels)
+    # new up to here ...
+
+    y = YAxis.new
+    y.set_range(0,20,5)
+
+    x_legend = XLegend.new("MY X Legend")
+    x_legend.set_style('{font-size: 20px; color: #778877}')
+
+    y_legend = YLegend.new("MY Y Legend")
+    y_legend.set_style('{font-size: 20px; color: #770077}')
+
+    chart =OpenFlashChart.new
+    chart.set_title(title)
+    chart.set_x_legend(x_legend)
+    chart.set_y_legend(y_legend)
+    chart.x_axis = x # Added this line since the previous tutorial
+    chart.y_axis = y
+
+    chart.add_element(line_dot)
+    chart.add_element(line_hollow)
+    chart.add_element(line)
+
+    #render :text => chart.to_s
+    @chart = chart
+  end
+  def xx_chart_kurven
+    @diagramm = Diagramm.find(params[:id])
     @chart = OpenFlashChart.new( @diagramm.name ) do |chart|
       #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
       #chart.set_title(@diagramm.name)
@@ -116,21 +188,25 @@ class DiagrammeController < ApplicationController
         kurve = Kurve.new(diaque, akt_zeit)
         if erstes_mal then
           erstes_mal = false
-          x_achse = XAxis.new
           #x_achse.set_range(kurve.von, kurve.bis, 60)
 
           x_labels = XAxisLabels.new
+          #x_labels.style
           x_labels.set_vertical()
 
           diff = kurve.bis - kurve.von
           anz = GLOBAL_X_ANZAHL 
           x_labels.labels = (0..anz).map do |i|
             text = (kurve.von + i*diff / anz).strftime("%H:%M")
-            XAxisLabel.new(text, '#0000ff', 10, 'diagonal')
+            XAxisLabel.new(text, '#0000ff', 20, 'diagonal')
           end
-          x_achse.set_labels(x_labels)
+
+          x_achse = XAxis.new
+          x_achse.set_labels x_labels
 
           chart.x_axis = x_achse
+          #chart.x_label_style(10, '#9933CC',2,2)
+          #chart.set_x_label_style(10, '#9933CC',2,2)
         end
         line = Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
         line.text = diaque.quelle.name
