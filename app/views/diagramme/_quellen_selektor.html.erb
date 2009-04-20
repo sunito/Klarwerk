@@ -3,52 +3,6 @@
 <%= javascript_include_tag 'picky_color' %>
 <%= stylesheet_link_tag 'picky_color' %>
 
-
-<script language="javascript">
-    function WertUebertragen(uelle, Ziel, Entfernen) {
-      var WertVorhanden = false
-      var ZielVorhanden = (typeof Ziel != "undefined") && (Ziel != null)
-
-
-      if (!ZielVorhanden) { Entfernen = true }
-      for (var Nr = 0; Nr < uelle.length; Nr++) {
-        var QuellOption = uelle.options[Nr]
-        if (QuellOption.selected) {
-          if(ZielVorhanden) {
-            // Pr�ft, ob der Wert schon im rechten Textfeld vorhanden ist
-            for (var Pos = 0; Pos < Ziel.length;) {
-              WertVorhanden = (Ziel.options[Pos++].text == QuellOption.text)
-              if (WertVorhanden) { break }
-            }
-            // Falls der Wert nicht vorhanden ist, wird er an das rechte
-            // Listenfeld angef�gt
-            if (!WertVorhanden) {
-               Ziel.options[Ziel.length] = new Option(QuellOption.text, QuellOption.value)
-              
-             // var Farbliste=document.getElementById('quellen_farben');
-             // var li=document.createElement('li');
-             // li.appendChild(document.createTextNode(QuellOption.text));
-             // Farbliste.appendChild(li);
-
-            }
-          }
-          if (Entfernen) { uelle.options[Nr] = null }
-        }
-      }
-      //AusgrauenWennErgebnisLeer();
-    }
-    
-    function AusgrauenWennErgebnisLeer() {
-      document.qual_der_wahl.commit.disabled = (document.qual_der_wahl.diagramm_quelle_ids_.length == 0)
-    }
-    
-
-    // L�scht alle Werte aus dem Textfeld
-    function AlleWerteLoeschen(Ziel) {
-      for (var Nr = Ziel.length; Nr > 0;)
-        Ziel.options[--Nr] = null
-    }
-</script>
 <style type="text/css">
   <% Quelle.all.each do |q| %>
     option.farbe<%= q.id %>  {
@@ -58,66 +12,28 @@
   <% end %>
 </style>
 <% form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
-
-  <script>
-    function MarkiereErgebnisse() {
-      var erg_liste = document.qual_der_wahl.diagramm_quelle_ids_
-      for (var Nr = erg_liste.length; Nr > 0;)
-        erg_liste .options[--Nr].selected = true
-    }
-  </script>
   <%= f.error_messages %>
 
-<TABLE width="100%">
+<TABLE width="66%">
   <TR>
-    <TD VAlign="top">
+    <TD width="33%" VAlign="top">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
-    </TD>
-    <TD VAlign="top">
-     <%= f.label :beschreibung %><br />
-    <%= f.text_area :beschreibung,:cols=>20,:rows=>3 %>
-    </TD>
-    <TD VAlign="top">
+    <%= f.text_field :name %><BR>
     <%= f.label :zeit_id %><br />
     <%= f.text_field :zeit_id %>
-</TD></TR>
+
+    </TD>
+    <TD width="33%" VAlign="top">
+     <%= f.label :beschreibung %><br />
+    <%= f.text_area :beschreibung,:cols=>50,:rows=>3 %>
+    </TD>
+  </TR>
   <TR>
-     
-    <% verwendete_quellen = @diagramm.quellen %>
-    <% verwendete_quellen_options = options_from_collection_for_select(verwendete_quellen, :id, :name, nil) %>
-    <% farbe = Quelle.first.farbe %>
-    <% p "FARBE=#{farbe}" %>
-    <!--% freie_quellen_options =  options_for_select( (Quelle.find(:all).select{|q| true} - verwendete_quellen).map{|q| [q.name, q.id]}.sort) %-->
-    <% freie_quellen_options =  (Quelle.find(:all) - verwendete_quellen).map do |q|
-         %Q(<option class="farbe#{q.id}" value="#{q.id}">#{q.name}</option>)
-       end.join("\n")
-    %>
-    <TD colspan ="3" VAlign="top">
-      <TABLE WIDTH="100%" BORDER=1 CELLPADDING=5 CELLSPACING=0>
+    <TD colspan ="2" VAlign="top">
+      <TABLE BGCOLOR="#F3F3E3" WIDTH="100%" BORDER=0 CELLPADDING=1 CELLSPACING=1>
         <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
         <TR>
-          <!--TD WIDTH="20%" ALIGN=CENTER>
-            <%= select_tag "freie_quellen",
-                freie_quellen_options,
-                { :size=>8, 
-                  :style=>"WIDTH:200px", 
-                  :onclick=>"WertUebertragen(this, this.form.diagramm_quelle_ids_, true)"
-                }
-            %>
-          </TD>
-          <TD WIDTH="20%" ALIGN=CENTER>
-            <%=  select_tag "diagramm[quelle_ids][]",
-              verwendete_quellen_options,
-              { :multiple => true,
-                :size=>8,
-                :style=>"WIDTH:200px",
-                :onclick=>"WertUebertragen(this, this.form.freie_quellen, true)"
-              }
-            %>
-          </TD-->
-           <!-- von Thomas, die Liste kann in enem eigenen Formular stehen -->
-          <TD>
+          <TD WIDTH="100%">
 
           <DIV id="_quellen_auswahl_listen">
            <%= render :partial => "quellen_auswahl_listen" %>
@@ -130,8 +46,5 @@
 </TABLE>
 
 <%= f.submit "Erstellen" %>
-<%= f.submit "Abbrechen" %>
+<%= submit_tag("Abbrechen", { :name => 'reset', :id => 'reset_button', :type => "reset",:onclick=>"window.location.reload()"}) %>
 <% end %>
-<script>
-  //AusgrauenWennErgebnisLeer();
-</script>
