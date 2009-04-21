@@ -7,11 +7,11 @@ class Quelle < ActiveRecord::Base
   end
   
   def aktiv=(neuer_aktivwert)
-    if neuer_aktivwert
-      status = 1
-    else
-      status =0
-    end
+    self.status = neuer_aktivwert ? 1 : 0
+  end
+
+  def self.alle_aktiven
+    all.select(&:aktiv).sort_by(&:adresse)
   end
 
 end

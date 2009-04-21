@@ -1,7 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :messpunkte
   map.resources :einheiten
+  
   map.resources :quellen
+  map.aktiv_umschalten 'quellen/:id/aktiv_umschalten', :controller => 'quellen', :action => 'aktiv_umschalten'
+
   map.resources :zeiten
 
   map.resources :diagramme, :has_many => :diaquen  # Verschachtelt ("nested ressource")

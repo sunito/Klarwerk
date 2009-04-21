@@ -143,7 +143,7 @@ class DiagrammeController < ApplicationController
     x_labels.set_vertical()
 
     %w(one two three four five six seven eight nine ten).each do |text|
-      tmp << XAxisLabel.new(text, '#0000ff', 20) #, 'diagonal')
+      tmp << XAxisLabel.new(text, '#0000ff', 20, 'diagonal')
       #tmp << XAxisLabel.new(text, '#0000ff', 20, 'horizontal')
       #tmp << XAxisLabel.new(text, '#0000ff', 20, )
     end
@@ -326,7 +326,7 @@ class DiagrammeController < ApplicationController
   end
 
   def init_diaquenauswahl_fuer_view
-    @freie_quellen = Quelle.all - @diagramm.quellen 
+    @freie_quellen = Quelle.alle_aktiven - @diagramm.quellen
     @ausgewaehlte_diaquen = @diagramm.diaquen  
   end
 
