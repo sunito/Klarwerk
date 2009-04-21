@@ -6,13 +6,14 @@ module PickyColor
     # set defaults values if related options aren't set by the user
     def picky_color_process_options(options)
       picky_options = {}
-      for key in [:draggable, :close_text, :style_color_well, :default]
+      for key in [:draggable, :close_text, :style_color_well, :default, :type]
         picky_options[key] = options.delete(key) if options.has_key?(key)
       end
       
       picky_options[:draggable] ||= false
       picky_options[:close_text] ||= 'OK'
       picky_options[:default] ||= "000000"
+      picky_options[:type] ||= "text"
       
       return picky_options     
     end
@@ -25,7 +26,7 @@ module PickyColor
       color_well_id = "color_well_#{name}"
 
       out = "<div>"
-      out << input
+      out << input.sub( %Q(="text"), %Q(="#{picky_options[:type]}")
       out << content_tag(:span, :id => color_well_id, :class => "color-picker-box") do end
       
       out << (javascript_tag %{
