@@ -3,29 +3,25 @@
 
 GLOBAL_X_ANZAHL = 30
 
-class Kurve < Struct.new(:diaque, :von, :bis, :x_anzahl)
+class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
 
   def initialize(diaque, diagramm_zeit = nil)
-    #p :new_diamo
-    if not diagramm_zeit then
-      #diaque_zeit = DiagrammZeit.new
-      diagramm_zeit = diaque.diagramm.zeit
-    end
-    if not diagramm_zeit.bis then
-      bis = Time.now
-    else
-      bis = diagramm_zeit.bis
-    end
-    dauer = diagramm_zeit.dauer || diaque.diagramm.zeit.dauer
-    von = bis - dauer
-
-    super diaque, von, bis, GLOBAL_X_ANZAHL
-
+    diagramm_zeit = diaque.diagramm.zeit unless diagramm_zeit
+    super diaque, diagramm_zeit, GLOBAL_X_ANZAHL
+    self.zeit.dauer ||= diaque.diagramm.zeit.dauer
     @linien_daten = nil
   end
 
+  def von
+    zeit.vonzeit
+  end
+
+  def bis
+    zeit.biszeit
+  end
+
   def x_schritt
-    @x_schritt ||= (self.bis - self.von) / self.x_anzahl
+    @x_schritt ||= self.zeit.dauer / self.x_anzahl
   end
 
   def x_zeiten
@@ -34,12 +30,15 @@ class Kurve < Struct.new(:diaque, :von, :bis, :x_anzahl)
     end
   end
 
+
+
   def linien_daten
     @linien_daten ||= begin
-      dyns = Messpunkt.find(:all,
-                      {:conditions => ["(quelle_id = ?) and (zeit >= ?) and (zeit <= ?)",
-                                        diaque.quelle.id,    self.von,       self.bis],
-                        :order => :zeit})
+#      dyns = Messpunkt.find(:all,
+#                      {:conditions => ["(quelle_id = ?) and (zeit >= ?) and (zeit <= ?)",
+#                                        diaque.quelle.id,    self.von,       self.bis],
+#                        :order => :zeit})
+      dyns = Messpunkt.finde_fuer_quelle_und_zeit(diaque.quelle, zeit)
       p [:dyns, dyns.size, dyns.first]
       dyn_paare = dyns.map {|z| if z then [z.zeit, z.wert] end }.compact
 
