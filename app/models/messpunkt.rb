@@ -12,14 +12,14 @@ class Messpunkt < ActiveRecord::Base
     mpunkte_im_intervall = finde_von_bis.call(zeit.vonzeit, zeit.biszeit)
 
     # Wenn nicht gleich am Anfang ein Punkt ist, schauen wir davor
-    if mpunkte_im_intervall.first and mpunkte_im_intervall.first.zeit > zeit.vonzeit + zeit.dauer/100 then
+    if mpunkte_im_intervall.empty? or mpunkte_im_intervall.first.zeit > zeit.vonzeit + zeit.dauer/100 then
 
-      if mpunkte_im_intervall.size > 0 then
+      mpunkte_im_intervall_davor = if mpunkte_im_intervall.size > 0 then
         dauer_fuer_etwa_10_mpunkte = zeit.dauer * 10.0 / mpunkte_im_intervall.size
         geschaetzte_10_mpunkte_zurueck = zeit.vonzeit - dauer_fuer_etwa_10_mpunkte.to_i
-        mpunkte_im_intervall_davor = finde_von_bis.call(geschaetzte_10_mpunkte_zurueck, zeit.vonzeit)
+        finde_von_bis.call(geschaetzte_10_mpunkte_zurueck, zeit.vonzeit)
       else
-        mpunkte_im_intervall_davor = []
+        []
       end
       if mpunkte_im_intervall_davor.empty? then
         mpunkte_im_intervall_davor = finde_von_bis.call(Time.local(2000,4,28), zeit.vonzeit)
