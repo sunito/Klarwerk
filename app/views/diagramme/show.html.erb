@@ -31,12 +31,4 @@
 
 <% if session[:expert_modus] %>
   <%= link_to 'Bearbeiten', edit_diagramm_path(@diagramm) %> |
-  <%= link_to 'Zurueck', diagramme_path %>
-<% else %>
-  <%= link_to_remote 'Expertenmodus aktivieren', :url => expert_modus_url("ein"), :update => "expert_bereich"  %>
 <% end %>
-
-<div id="expert_bereich">
-  em is aus
-   <%= link_to_remote 'Expertenmodus aktivieren', :url => expert_modus_url("ein"), :update => "expert_bereich"  %>
-</div>
