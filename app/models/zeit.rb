@@ -10,6 +10,13 @@ DAUER_STANDARD = 12.hours
 class Zeit < ActiveRecord::Base
   has_many :diagramme
 
+  def biszeit
+    bis || Time.now
+  end
+  def vonzeit
+    biszeit - (dauer || 0)
+  end
+
   def self.finde_oder_neu(bis, dauer)
     p ["finde_oder_neu bis,dauer=", bis, dauer]
     erg = self.find_by_bis_and_dauer(bis, dauer)
