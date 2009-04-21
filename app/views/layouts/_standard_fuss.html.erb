@@ -1,7 +1,11 @@
+<div id="expert_bereich">
+  <%= link_to_remote 'Expertenmodus aktivieren', :url => expert_modus_url("ein"), :update => "expert_bereich"%>
+</div>
 <% if session[:expert_modus] then %>
 <BR><BR>
   <hr noshade=1 size="1">
 <BR>
+
   <table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999">
 				<tr>
 					<td bgcolor="#FFFFF3">
