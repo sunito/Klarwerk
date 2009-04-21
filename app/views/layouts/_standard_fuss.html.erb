@@ -1,0 +1,18 @@
+<% if session[:expert_modus] then %>
+<BR><BR>
+  <hr noshade=1 size="1">
+<BR>
+  <table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999">
+				<tr>
+					<td bgcolor="#FFFFF3">
+						<%= link_to " Diagramme ", {:controller => :diagramme, :action => :index}, :class => "kopflink" %>
+					</td>
+					<td bgcolor="#FFFFF3">
+						<%= link_to " Messgr&ouml;&szlig;en ", {:controller => :quellen, :action => :index}, :class => "kopflink" %>
+					</td>
+					<td bgcolor="#FFFFF3">
+						<%= link_to " Einheiten ", {:controller => :einheiten, :action => :index}, :class => "kopflink" %>
+					</td>
+				</tr>
+			</table>
+<% end %>
