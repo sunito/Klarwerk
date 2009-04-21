@@ -2,17 +2,11 @@
 <%= javascript_include_tag :all %>
 <script type="text/javascript" src="/javascripts/swfobject.js"></script>
 
-<p>
-  <b>Name:</b>
-  <%=h @diagramm.name %>
-</p>
-
 <%= render :partial => "grafik" %>
 
 <%= link_to_remote "Nach Rechts",  :url => { :action => "rechts" }  %>
 
 <p>
-  <b>Beschreibung:</b>
   <%=h @diagramm.beschreibung %>
 </p>
 
@@ -30,5 +24,5 @@
 
 
 <% if session[:expert_modus] %>
-  <%= link_to 'Bearbeiten', edit_diagramm_path(@diagramm) %> |
+  <%= render :partial => "quellen_selektor" %>
 <% end %>

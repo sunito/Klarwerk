@@ -5,7 +5,7 @@
 
 <div id="grafik_bereich">
   <!--%= @graph %-->
-    <%= @chart.js_open_flash_chart_object("my_chart_js_1", "90%", 400) %>
+    <%= @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 500) %>
     <br/><br/>
     <%= @chart.link_to_ofc_load("Normal", "my_chart_js_1") %> ||
     <%= @chart.link_to_remote_ofc_load("Links", "my_chart_js_1",  url_for({ :action => "links", :id => params[:id] })) %>

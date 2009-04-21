@@ -163,7 +163,8 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1.xml
   def show
     chart = chart_kurven
-    # macht folgende Zeile überflüssig
+    init_diaquenauswahl
+   # macht folgende Zeile überflüssig
     #@diagramm = Diagramm.find(params[:id])
     @titelzeile = @diagramm.name + " - KabDiag"
     respond_to do |format|
