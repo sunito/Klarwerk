@@ -2,12 +2,21 @@ class QuellenController < ApplicationController
   # GET /quellen
   # GET /quellen.xml
   def index
-    @quellen = Quelle.find(:all)
+    @alle_quellen = Quelle.all
+    @aktive_quellen = Quelle.alle_aktiven
+    @inaktive_quellen = @alle_quellen - @aktive_quellen
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @quellen }
     end
+  end
+
+  def aktiv_umschalten
+    @quelle = Quelle.find(params[:id])
+    @quelle.aktiv = ! @quelle.aktiv
+    @quelle.save!
+    redirect_to :action => 'index'
   end
 
   # GET /quellen/1
@@ -45,7 +54,7 @@ class QuellenController < ApplicationController
     respond_to do |format|
       if @quelle.save
         flash[:notice] = 'Messgr&ouml;&szlig;e wurde gespeichert.'
-        format.html { redirect_to(@quelle) }
+        format.html { redirect_to(quellen_path) }
         format.xml  { render :xml => @quelle, :status => :created, :location => @quelle }
       else
         format.html { render :action => "new" }
@@ -62,7 +71,7 @@ class QuellenController < ApplicationController
     respond_to do |format|
       if @quelle.update_attributes(params[:quelle])
         flash[:notice] = 'Messgr&ouml;&szlig;e wurde gespeichert'
-        format.html { redirect_to(@quelle) }
+        format.html { redirect_to(quellen_path) } #@quelle) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
