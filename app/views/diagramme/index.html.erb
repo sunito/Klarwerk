@@ -1,24 +1,24 @@
 <h1>Diagramm-Liste</h1>
-<TABLE BGCOLOR="#EEEEEE" width="500">
+<TABLE BGCOLOR="#EEEEEE" width="800">
   <TR>
     <TD BGCOLOR="#F3F3E3" width="100"> Name </TD>
-    <TD BGCOLOR="#F3F3E3" width="250"> Beschreibung </TD>
-    <TD BGCOLOR="#F3F3E3" width="50"> Zeit </TD>
+    <TD BGCOLOR="#F3F3E3" width="350"> Messgr&ouml;&szlig;en </TD>
      <% if session[:expert_modus] then %>
     <TD BGCOLOR="#F3F3E3" width="50"> &nbsp; </TD>
     <TD BGCOLOR="#F3F3E3" width="50"> &nbsp; </TD>
     <% end %>
+    <TD BGCOLOR="#F3F3E3" width="250"> Beschreibung </TD>
   </TR>
 <% for diagramm in @diagramme %>
   <tr>
     <td BGCOLOR="#FFFFF3" widht="100"><%= link_to diagramm.name, diagramm %></td>
-    <td BGCOLOR="#FFFFF3" widht="250"><%=h diagramm.beschreibung %></td>
-    <td BGCOLOR="#FFFFF3" widht="50"><%=h diagramm.zeit_id %></td>
+    <td BGCOLOR="#FFFFF3" widht="350"><%=h diagramm.quellen.map(&:name).join(', ')%></td>
     <% if session[:expert_modus] then %>
       <td BGCOLOR="#FFFFF3" widht="50"><%= link_to 'Bearbeite', edit_diagramm_path(diagramm) %></td>
       <td BGCOLOR="#FFFFF3" widht="50"><%= link_to 'L&ouml;sche', diagramm, :confirm => 'Wollen Sie wirklich L&ouml;schen? Dann klicken Sie auf OK', :method => :delete %></td>
     <% end %>
-  </tr>
+     <td BGCOLOR="#FFFFF3" widht="250"><%=h diagramm.beschreibung %></td>
+ </tr>
 <% end %>
 </TABLE>
 
