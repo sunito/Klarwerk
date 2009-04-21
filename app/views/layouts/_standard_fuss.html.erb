@@ -1,4 +1,4 @@
-<div id="expert_bereich">
+<div id="expert_bereich" onmouseout="window.location.reload()">
   <%= link_to_remote 'Expertenmodus aktivieren', :url => expert_modus_url("ein"), :update => "expert_bereich"%>
 </div>
 <% if session[:expert_modus] then %>
