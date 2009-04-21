@@ -13,9 +13,12 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
 
-  before_filter do |controller|
-    if controller.params[:expert] then
-      controller.session[:expert_modus] = controller.params[:expert]=="ein" 
+  before_filter :expert_modus_aktualisieren
+
+  def expert_modus_aktualisieren
+    if params[:expert] then
+      session[:expert_modus] = params[:expert]=="ein" 
     end
   end
+  
 end
