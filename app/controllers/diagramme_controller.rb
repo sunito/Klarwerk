@@ -70,34 +70,38 @@ class DiagrammeController < ApplicationController
     chart
   end
 
-  def setze_y_einheit(chart, einheit)
+  def setze_skalen(chart)
+    emq = @diagramm.einheiten_mit_quellen
+
+    einheit = @diagramm.haupt_einheit
+
     y_legende = YLegend.new(einheit.name)
-    y_legende.set_style("{font-size: 20px; color: #778877}")
+    y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
+    chart.y_legend = (y_legende)
 
     y_achse = YAxis.new
     abstand = (einheit.max - einheit.min) / 20.0
     grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
     abstand = (abstand / grob).round * grob
-    y_achse.set_range(einheit.min, einheit.max, abstand)
-
-    #chart.set_y_legend(y_legende)
+    y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
     chart.y_axis = y_achse
 
-    y_legende = YLegendRight.new(einheit.name)
-    #y_legende.set_style("{font-size: 20px; color: #778877}")
-    y_legende.style_right = '{font-size: 70px; color: #778877}'
+    if @diagramm.zweite_skala? then
+      einheit = @diagramm.einheiten[1]
+      y_legende = YLegendRight.new(einheit.name)
+      #y_legende.set_style("{font-size: 20px; color: #778877}")
+      y_legende.style = '{font-size: 70px; color: #778877}'
+      y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
+      chart.y_legend_right = y_legende
 
-    chart.y_legend_right = y_legende
-
-    y_achse = YAxisRight.new
-    abstand = (einheit.max - einheit.min) / 20.0
-    grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
-    abstand = (abstand / grob).round * grob
-    y_achse.range_right = [einheit.min, einheit.max, abstand]
-    p abstand
-
-    chart.y_axis_right = y_achse
-
+      y_achse = YAxisRight.new
+      #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
+      # Workaraund
+      g = einheit.groeszenordnung
+      y_achse.set_range(einheit.min / g, einheit.max / g)
+      #p [:abstand, abstand]
+      chart.y_axis_right = y_achse
+    end
   end
 
   def chart_kurven
@@ -120,12 +124,17 @@ class DiagrammeController < ApplicationController
           diff = kurve.bis - kurve.von
           anz = GLOBAL_X_ANZAHL 
           x_labels.labels = (0..anz).map do |i|
-            text = (kurve.von + i*diff / anz).strftime("%H:%M")
-            XAxisLabel.new(text, '#0000ff', 10, 'diagonal')
-          end
+            if i % 10 == 0
+              text = (kurve.von + i*diff / anz).strftime("%b-%d\n%H:%M")
+            else
+              text = ""
+            end
+            XAxisLabel.new(text, '#0000ff', 10, 'diagonal') 
+          end.compact
 
           x_achse = XAxis.new
           x_achse.set_labels x_labels
+          x_achse.set_range(0, anz, 10)
 
           chart.x_axis = x_achse
           #chart.x_label_style(10, '#9933CC',2,2)
@@ -136,20 +145,16 @@ class DiagrammeController < ApplicationController
         line.width = 3
         line.colour = diaque.farbe || diaque.quelle.farbe
         line.dot_size = 5
-        line.values = kurve.linien_daten.map{|z| z and z * (diaque.streckungsfaktor||1) }
+        aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
+          neue_liste << (wert || neue_liste.last)
+        end
+        line.values = aufgefuellte_linien_daten.map{|z| z and z * (diaque.streckungsfaktor||1) }
+        # Funktioniert nicht:
+        # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
         chart.add_element(line)
       end
 
-
-
-      setze_y_einheit(chart, @diagramm.haupt_einheit)
-
-      #x_legend = XLegend.new("MY X Legend")
-      #x_legend.set_style('{font-size: 20px; color: #778877}')
-      #chart.set_x_legend(x_legend)
-
-   
-
+      setze_skalen(chart)
     end
   end
 

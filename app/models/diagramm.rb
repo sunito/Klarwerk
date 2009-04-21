@@ -67,8 +67,19 @@ class Diagramm < ActiveRecord::Base
     @dauer = wert
   end
 
+  def einheiten_mit_quellen
+    returning Hash.new do |erg|
+      quellen.each do |q|
+        erg[q.einheit] ||= []
+        erg[q.einheit] << q
+      end
+    end
+  end
+
   def einheiten
-    quellen.map{|q| q.einheit}.uniq
+    einheiten_mit_quellen.sort_by do |einheit, quellen|
+      [-einheit.max, -quellen.size]
+    end.transpose.first
   end
 
   def haupt_einheit

@@ -1,7 +1,7 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 
-GLOBAL_X_ANZAHL = 30
+GLOBAL_X_ANZAHL = 300
 
 class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
 
