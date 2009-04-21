@@ -5,25 +5,30 @@
     <th>Adresse</th>
     <th>Name</th>
     <th>Typ</th>
-    <th>Beschreibung</th>
     <th>Einheit</th>
     <th>Aktiv</th>
+    <th></th>
     <th>Bearbeiten</th>
+    <th>Beschreibung</th>
   </tr>
-
-<% for quelle in @quellen %>
-  <tr>
-    <%  if quelle %>
-    <td><%=h quelle.adresse %></td>
-    <td><font color="#<%=quelle.farbe%>"><%=h quelle.name %></font></td>
-    <td><%=h quelle.farbe %></td>
-    <td><%=h quelle.variablen_art %></td>
-    <td><%=h quelle.einheit && quelle.einheit.name %></td>
-    <td><%=h quelle.status %></td>
-    <td><%=h quelle.beschreibung %></td>
-    <td><%= link_to 'bearbeiten', edit_quelle_path(quelle) %></td>
-    <% end %>
-  </tr>
+<% [@aktive_quellen, @inaktive_quellen].each do |quellen_array| %>
+  <% for quelle in quellen_array %>
+    <tr>
+      <%  if quelle %>
+      <td><%=h quelle.adresse %></td>
+      <td><font color="#<%=quelle.farbe%>"><%=h quelle.name %></font></td>
+      <td><%=h quelle.variablen_art %></td>
+      <td><%=h quelle.einheit && quelle.einheit.name %></td>
+      <td><%=h quelle.aktiv ? "ja" : "nein" %></td>
+      <td><%= link_to (quelle.aktiv ? "de" : "")+"aktivieren", aktiv_umschalten_path(quelle.id) %></td>
+      <td><%= link_to 'bearbeiten', edit_quelle_path(quelle) %></td>
+      <td><%=h quelle.beschreibung %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  <tr><td colspan="9">
+    <hr>
+  </td></tr>
 <% end %>
 </table>
 
