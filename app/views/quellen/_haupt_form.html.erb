@@ -5,39 +5,40 @@
 
 <% form_for(@quelle) do |f| %>
   <%= f.error_messages %>
-
-  <p>
-    <%= f.label :adresse %><br />
+<table>
+  <tr><td>
+    <%= f.label :adresse %></td><td>
     <%= f.text_field :adresse %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
+  </td></tr>
+  <tr><td>
+    <%= f.label :name %></td><td>
     <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :farbe %><br />
+  </td></tr>
+  <tr><td>
+    <%= f.label :farbe %></td><td>
     <%= f.picky_color :farbe, :size => 6 %>
-  </p>
-  <p>
-    <%= f.label :variablen_art %><br />
+  </td></tr>
+  <tr><td>
+    <%= f.label :variablen_art %></td><td>
     <%= f.text_field :variablen_art %>
-  </p>
-  <p>
-    <%= f.label :Beschreibung %><br />
-    <%= f.text_area :beschreibung %>
-  </p>
-  <p>
+  </td></tr>
+  <tr><td>
+    <%= f.label :Beschreibung %></td><td>
+    <%= f.text_field :beschreibung %>
+  </td></tr>
+  <tr><td>
     <% einheiten_auswahl = Einheit.find(:all).map {|einheit| [einheit.name, einheit.id]}  %>
-    <%= f.label :einheit %><br />
+    <%= f.label :einheit %></td><td>
     <%= f.select("einheit_id", einheiten_auswahl) %>
-  </p>
-  <p>
-    <%= f.label :aktiv %><br />
-    <%= f.text_field :status %>
-  </p>
-  <p>
+  </td></tr>
+  <tr><td>
+    <%= f.label :aktiv %></td><td>
+    <%= f.check_box :aktiv %>
+  </td></tr>
+  <tr><td>
     <%= f.submit knopf_text %>
-  </p>
+  </td></tr>
+</table>
 <% end %>
 
 <%= link_to 'Zeige', @quelle %> |
