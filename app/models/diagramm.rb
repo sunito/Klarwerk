@@ -42,7 +42,7 @@ class Diagramm < ActiveRecord::Base
   end
 
   def quellen_zuweiser
-    Quelle.find(:all).map{|q| q.id}.last
+    Quelle.alle_aktiven.map{|q| q.id}.last
   end  
   
   def quellen_zuweiser=(neue_quell_id)

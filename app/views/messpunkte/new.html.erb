@@ -13,7 +13,7 @@
   </p>
   <p>
     <%= f.label :quelle_id %><br />
-    <%= f.select :quelle_id, Quelle.all.collect {|q| [ q.name, q.id ] } %>
+    <%= f.select :quelle_id, Quelle.alle_aktiven.collect {|q| [ q.name, q.id ] } %>
   </p>
   <p>
     <%= f.submit "Create" %>
