@@ -4,7 +4,7 @@
 %>
 
 <%  fields_for @diagramm do |f| %>
-  <TABLE BGCOLOR="#EEEEEE" WIDTH="100%" Border="0" CELLPADDING=5 CELLSPACING=1><TR>
+  <TABLE BGCOLOR="#EEEEEE" WIDTH="100%" Border="1" CELLPADDING=5 CELLSPACING=1><TR>
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
       <% @freie_quellen.each do |quelle| %>
         <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
@@ -18,10 +18,10 @@
         <table><tr>
           <td>
             <%= link_to_remote "<<", :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
+          </td><td width="62">
+            <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
           </td><td>
             <font color="#<%=  diaque.farbe %>"><%=h diaque.quelle.name %></font>
-          </td><td>
-            <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
           </td>
         </tr></table>
       <BR>

@@ -60,7 +60,7 @@ public
     if self.bis then
       self.dauer ||= 1.hour
       self.bis += self.dauer / 4
-      self.bis = Time.now if self.bis > Time.now
+      self.bis = nil if self.bis > Time.now
       save!
     end
   end

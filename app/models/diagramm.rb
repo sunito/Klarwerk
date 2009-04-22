@@ -67,22 +67,23 @@ class Diagramm < ActiveRecord::Base
     @dauer = wert
   end
 
-  def einheiten_mit_quellen
+  def einheiten_mit_diaquen
     returning Hash.new do |erg|
-      quellen.each do |q|
-        erg[q.einheit] ||= []
-        erg[q.einheit] << q
+      diaquen.each do |dq|
+        einheit = dq.quelle && dq.quelle.einheit
+        erg[einheit] ||= []
+        erg[einheit] << dq
       end
     end
   end
 
   def einheiten
-    einheiten_mit_quellen.sort_by do |einheit, quellen|
-      [-einheit.max, -quellen.size]
-    end.transpose.first
+    einheiten_mit_diaquen.sort_by do |einheit, diaquen|
+      [-einheit.max, -diaquen.size]
+    end.transpose.first || []
   end
 
-  def haupt_einheit
+  def haupt_einheit    
     einheiten[0]
   end
 
@@ -91,3 +92,10 @@ class Diagramm < ActiveRecord::Base
   end
 end
  
+__END__
+sortierte_einheiten =     
+    if sortierte_einheiten.empty? then
+      sortierte_einheiten
+    else
+      []
+    end

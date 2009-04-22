@@ -4,14 +4,14 @@
 
 <%= render :partial => "grafik" %>
  
-<p>
-  <%=h @diagramm.beschreibung %>
-</p>
 
 <!--%= link_to "open", {}, :target => "_blank" %-->
 <!--%= button_to_function 'Save', "window.blur();" %-->
-<%= button_to_function 'Save', "self.close();" %>
+<!--%= button_to_function 'Save', "self.close();" %-->
 
 <% if session[:expert_modus] %>
   <%= render :partial => "quellen_selektor" %>
+<% else %>
+  <%= link_to " Diagramm-Auswahl", {:controller => :diagramme, :action => :index} %>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=h @diagramm.beschreibung %>
 <% end %>

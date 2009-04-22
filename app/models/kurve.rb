@@ -10,6 +10,7 @@ class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
     super diaque, diagramm_zeit, GLOBAL_X_ANZAHL
     self.zeit.dauer ||= diaque.diagramm.zeit.dauer
     @linien_daten = nil
+    p ["Kurve.init von=#{von} bis=#{bis} zeit=#{zeit} xanz=#{x_anzahl}"]
   end
 
   def von
@@ -41,6 +42,7 @@ class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
       dyns = Messpunkt.finde_fuer_quelle_und_zeit(diaque.quelle, zeit)
       p [:dyns, dyns.size, dyns.first]
       dyn_paare = dyns.map {|z| if z then [z.zeit, z.wert] end }.compact
+      p [:dyn_paare, dyn_paare.size, dyn_paare.first]
 
       if x_anzahl and x_anzahl > 0 then
 
@@ -48,9 +50,9 @@ class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
         erg_werte = []
         p x_anzahl
         x_anzahl.times do |n|
-          abschnitts_ende = self.von  +  (n+1) * x_schritt
+          abschnitts_ende = self.von  +  (n+1) * x_schritt          
 
-          werte_in_abschnitt = werte_abspalten_bis(orig_paare_uebrig, abschnitts_ende)
+          werte_in_abschnitt = werte_abspalten_bis(orig_paare_uebrig, abschnitts_ende)         
 
           erg = if werte_in_abschnitt.empty? then
             nil
@@ -66,7 +68,7 @@ class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
 
       end
 
-      p :linie_fertig
+      p [:linie_fertig, erg_werte.compact.size]
       erg_werte
     end
   end
@@ -91,6 +93,7 @@ private
     while not sortierte_paare.empty? do
       paar = sortierte_paare.first
       zeit, wert = paar
+      #p [paar, biszeit]
       if zeit > biszeit then
         break
       else

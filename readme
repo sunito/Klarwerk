@@ -1,1 +1,11 @@
 
+Hi Thomas, hab brutal eine Tabelle umbenannt.
+Hab einfach auch die entsprechende Migration 
+geändert, Du kannst also runter-und-rauf-migrieren,
+Dann bekommst Du eine konsistente DB-Struktur.
+(Und verlierst alle Daten.)
+
+Du kannst aber auch einfach:
+
+mysql> alter table messpunkte rename to punkte;
+

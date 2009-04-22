@@ -86,11 +86,11 @@ module OpenFlashChart
       OUTPUT
     end
     
-  end
+  private
+    def sanitize_for_id(text)
+      text.gsub(/[^a-zA-Z0-9_]/, "_")
+    end
 
-private
-  def sanitize_for_id(text)
-    text.gsub(/[^a-zA-Z0-9_]/, "_")
   end
 
 end

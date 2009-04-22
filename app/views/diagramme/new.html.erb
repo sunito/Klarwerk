@@ -1,13 +1,24 @@
 <h1>Neues Diagramm</h1>
 
-<%= render :partial => "quellen_selektor" %>
+<% form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
+  <%= f.error_messages %>
 
-<%= link_to 'Zur&uuml;ck', diagramme_path %>
-
-<TABLE WIDTH="40%" BORDER=0 CELLPADDING=5 CELLSPACING=0>
+<TABLE width="66%">
   <TR>
-    <TD WIDTH="20%" ALIGN=CENTER>
+    <TD width="33%" VAlign="top">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %><BR>
+    </TD>
+    <TD width="66%" VAlign="top">
+     <%= f.label :beschreibung %><br />
+    <%= f.text_field :beschreibung,:cols=>50,:rows=>3 %>
     </TD>
   </TR>
 </TABLE>
+<br>
+<%= f.submit "Erstellen" %>
 
+<%= link_to 'Zur&uuml;ck', diagramme_path %>
+
+
+<% end %>

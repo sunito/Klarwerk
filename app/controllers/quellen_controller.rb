@@ -34,6 +34,7 @@ class QuellenController < ApplicationController
   # GET /quellen/new.xml
   def new
     @quelle = Quelle.new
+    @quelle.aktiv = true
 
     respond_to do |format|
       format.html # new.html.erb

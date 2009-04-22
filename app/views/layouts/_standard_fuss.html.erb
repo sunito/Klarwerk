@@ -3,9 +3,10 @@
 <table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999" width="100%">
   <tr>
     <td bgcolor="#FFFFF3">
-      <% if session[:expert_modus] then %>
+      
         <table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999">
                       <tr>
+                          <% if session[:expert_modus] then %>
                           <td bgcolor="#FFFFF3">
                               <%= link_to " Diagramme ", {:controller => :diagramme, :action => :index}, :class => "kopflink" %>
                           </td>
@@ -15,9 +16,9 @@
                           <td bgcolor="#FFFFF3">
                               <%= link_to " Einheiten ", {:controller => :einheiten, :action => :index}, :class => "kopflink" %>
                           </td>
+                          <% end %>
                       </tr>
                   </table>
-      <% end %>
     </td>
     <td align="right" bgcolor="#FFFFF3">
       <div id="expert_bereich" xxonmouseout="window.location.reload()">

@@ -70,9 +70,10 @@ class DiagrammeController < ApplicationController
   end
 
   def setze_skalen(chart)
-    emq = @diagramm.einheiten_mit_quellen
+    emq = @diagramm.einheiten_mit_diaquen
 
     einheit = @diagramm.haupt_einheit
+    return if not einheit
 
     y_legende = YLegend.new(einheit.name)
     y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
@@ -85,12 +86,19 @@ class DiagrammeController < ApplicationController
     y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
     chart.y_axis = y_achse
 
+    warn ["EZZZZZZZZZZZZZZZZZZZ444ZZZZZZZZZZZZZZZZZ", @diagramm.zweite_skala?]
     if @diagramm.zweite_skala? then
-      einheit = @diagramm.einheiten[1]
+      zweite_einheit = @diagramm.einheiten[1]
+      @streckungs_funktion = proc do |orig_wert|
+        orig_wert && (einheit.min + (orig_wert - zweite_einheit.min) * einheit.hub / zweite_einheit.hub)
+      end
+      warn ["EZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", einheit.hub, zweite_einheit.hub]
+      warn @streckungs_funktion[100]
+      
       y_legende = YLegendRight.new(einheit.name)
       #y_legende.set_style("{font-size: 20px; color: #778877}")
       #y_legende.style = '{font-size: 70px; color: #778877}'
-      y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
+      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
       chart.set_y_legend_right  y_legende
       #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
 
@@ -98,50 +106,45 @@ class DiagrammeController < ApplicationController
       y_achse = YAxisRight.new
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
       # Workaraund
-      g = einheit.groeszenordnung
-      y_achse.set_range(einheit.min / g, einheit.max / g)
+      g = zweite_einheit.groeszenordnung
+      y_achse.set_range(zweite_einheit.min / g, zweite_einheit.max / g)
       #p [:abstand, abstand]
       chart.y_axis_right = y_achse
 
     end
   end
 
-  def chart_kurven
-    @diagramm = Diagramm.find(params[:id])
-    @chart = OpenFlashChart.new( @diagramm.name ) do |chart|
-      #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
-      #chart.set_title(@diagramm.name)
+  def setze_xlabels #(kurve)
+      #x_achse.set_range(kurve.von, kurve.bis, 60)
 
-      erstes_mal = true
-      @diagramm.diaquen.each do |diaque|
-        kurve = Kurve.new(diaque, akt_zeit)
-        if erstes_mal then
-          erstes_mal = false
-          #x_achse.set_range(kurve.von, kurve.bis, 60)
+      x_labels = XAxisLabels.new
+      #x_labels.style
+      x_labels.set_vertical()
 
-          x_labels = XAxisLabels.new
-          #x_labels.style
-          x_labels.set_vertical()
-
-          diff = kurve.bis - kurve.von
-          anz = GLOBAL_X_ANZAHL 
-          x_labels.labels = (0..anz).map do |i|
-            if i % 10 == 0
-              text = (kurve.von + i*diff / anz).strftime("%b-%d\n%H:%M")
-            else
-              text = ""
-            end
-            XAxisLabel.new(text, '#0000ff', 10, 'diagonal') 
-          end.compact
-
-          x_achse = XAxis.new
-          x_achse.set_labels x_labels
-          x_achse.set_range(0, anz, 10)
-
-          chart.x_axis = x_achse
-          #chart.x_label_style(10, '#9933CC',2,2)
-          #chart.set_x_label_style(10, '#9933CC',2,2)
+      diff = akt_zeit.dauer
+      anz = GLOBAL_X_ANZAHL 
+      x_labels.labels = (0..anz).map do |i|
+        if i % 10 == 0
+          text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
+        else
+          text = ""
         end
+        XAxisLabel.new(text, '#0000ff', 10, 'diagonal') 
+      end.compact
+
+      x_achse = XAxis.new
+      x_achse.set_labels x_labels
+      x_achse.set_range(0, anz, 10)
+
+      @chart.x_axis = x_achse
+      #chart.x_label_style(10, '#9933CC',2,2)
+      #chart.set_x_label_style(10, '#9933CC',2,2)    
+  end
+
+  def linien_hinzu(diaquen, streck_fkt)
+    diaquen.each do |diaque|
+        kurve = Kurve.new(diaque, akt_zeit)
+        
         line = Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
         line.text = diaque.quelle.name
         line.width = 3
@@ -150,14 +153,31 @@ class DiagrammeController < ApplicationController
         aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
           neue_liste << (wert || neue_liste.last)
         end
-        line.values = aufgefuellte_linien_daten.map{|z| z and z * (diaque.streckungsfaktor||1) }
+        line.values = aufgefuellte_linien_daten.map{|z| p [z, (streck_fkt &&  streck_fkt[z])]; (streck_fkt ? streck_fkt[z] : z) }
         # Funktioniert nicht:
         # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
-        chart.add_element(line)
+        @chart.add_element(line)
       end
+  end
 
-      setze_skalen(chart)
+  def chart_kurven
+    @diagramm = Diagramm.find(params[:id])
+    @chart = OpenFlashChart.new( @diagramm.name ) 
+    @streckungs_funktion = nil
+    #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
+    #chart.set_title(@diagramm.name)
+
+    setze_skalen(@chart)
+    
+    streck_fkt = nil
+    emd = @diagramm.einheiten_mit_diaquen
+    
+    @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|
+      linien_hinzu(diaquen, streck_fkt)
+      streck_fkt = @streckungs_funktion
     end
+
+    setze_xlabels #(kurve)
   end
 
 
@@ -213,7 +233,7 @@ class DiagrammeController < ApplicationController
     respond_to do |format|
       if @diagramm.save
         flash[:notice] = 'Diagramm wurde erstellt.'
-        format.html { redirect_to(@diagramm) }
+        format.html { redirect_to(edit_diagramm_path(@diagramm)) }
         format.xml  { render :xml => @diagramm, :status => :created, :location => @diagramm }
       else
         format.html { render :action => "new" }
