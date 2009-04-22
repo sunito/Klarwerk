@@ -30,8 +30,12 @@ module OpenFlashChart
     OUTPUT
   end
 
+  def sanitize_for_id(text)
+    text.gsub(/[^a-zA-Z0-9_]/, "_")
+  end
+
   def link_to_remote_ofc_load(link_text, div_name, url)
-    fx_name = "#{link_text.gsub(" ","_")}_#{div_name.gsub(" ","_")}"
+    fx_name = sanitize_for_id("#{link_text.gsub(" ","_")}_#{div_name.gsub(" ","_")}")
     <<-OUTPUT
     <script type="text/javascript">
     function reload_#{fx_name}() {
