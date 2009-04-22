@@ -264,6 +264,8 @@ class DiagrammeController < ApplicationController
 
     @diagramm.quellen << quelle
     @diagramm.save!
+    diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
+    diaque.farbe ||= quelle.farbe
 
     init_diaquenauswahl_fuer_view
     render :partial => "quellen_auswahl_listen", :layout => false

@@ -7,15 +7,23 @@
   <TABLE BGCOLOR="#EEEEEE" WIDTH="100%" Border="0" CELLPADDING=5 CELLSPACING=1><TR>
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
       <% @freie_quellen.each do |quelle| %>
-      <%= link_to_remote quelle.name,  :url =>{ :action => "quelle_rein","id"=>@diagramm.id, "quelle_id"=>quelle.id}, :update => "_quellen_auswahl_listen",:html => {:style=>"color:#"+quelle.farbe } %>
+        <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
+        <%= link_to_remote ">>",  :url =>quelle_rein_path(@diagramm.id, quelle.id), :update => "quellen_auswahl_listen" %>
       <BR>
       <% end %>
     </TD>
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
       <% @ausgewaehlte_diaquen.each do |diaque| %>
       <% f.fields_for :diaquen,  diaque do |diaque_f| %>
-      <%= link_to_remote diaque_f.object.quelle.name,  :url =>{ :action => "quelle_raus","id"=>@diagramm.id, "quelle_id"=>diaque_f.object.quelle_id}, :update => "_quellen_auswahl_listen",:html => {:style=>"color:#"+diaque_f.object.quelle.farbe }%>
-      <%= diaque_f.picky_color :farbe, :size => 6, :type => "hidden" %><br>
+        <table><tr>
+          <td>
+            <%= link_to_remote "<<", :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
+          </td><td>
+            <font color="#<%=  diaque.farbe %>"><%=h diaque.quelle.name %></font>
+          </td><td>
+            <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
+          </td>
+        </tr></table>
       <BR>
       <% end %>
       <% end %>
