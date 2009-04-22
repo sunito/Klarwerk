@@ -89,9 +89,11 @@ class DiagrammeController < ApplicationController
       einheit = @diagramm.einheiten[1]
       y_legende = YLegendRight.new(einheit.name)
       #y_legende.set_style("{font-size: 20px; color: #778877}")
-      y_legende.style = '{font-size: 70px; color: #778877}'
+      #y_legende.style = '{font-size: 70px; color: #778877}'
       y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
-      chart.y_legend_right = y_legende
+      chart.set_y_legend_right  y_legende
+      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
+
 
       y_achse = YAxisRight.new
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
@@ -100,6 +102,7 @@ class DiagrammeController < ApplicationController
       y_achse.set_range(einheit.min / g, einheit.max / g)
       #p [:abstand, abstand]
       chart.y_axis_right = y_achse
+
     end
   end
 
