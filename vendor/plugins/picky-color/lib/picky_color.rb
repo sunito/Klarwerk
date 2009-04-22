@@ -26,7 +26,7 @@ module PickyColor
       color_well_id = "color_well_#{name}"
 
       out = "<div>"
-      out << input.sub( %Q(="text"), %Q(="#{picky_options[:type]}")
+      out << input.sub( %Q(="text"), %Q(="#{picky_options[:type]}"))
       out << content_tag(:span, :id => color_well_id, :class => "color-picker-box") do end
       
       out << (javascript_tag %{
