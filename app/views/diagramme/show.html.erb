@@ -4,26 +4,12 @@
 
 <%= render :partial => "grafik" %>
  
-<%= link_to_remote "Nach Rechts",  :url => { :action => "rechts" }  %>
-
 <p>
   <%=h @diagramm.beschreibung %>
 </p>
 
-<% if @diagramm.zeit %>
-  <p>
-    <b>Zeit Bis:</b>
-    <%=h @diagramm.zeit.bis %>
-  </p>
-
-  <p>
-    <b>Zeit Dauer:</b>
-    <%=h @diagramm.zeit.dauer %>
-  </p>
-<% end %>
-
-<%= link_to "open", {}, :target => "_blank" %>
-<%= button_to_function 'Save', "window.blur();" %>
+<!--%= link_to "open", {}, :target => "_blank" %-->
+<!--%= button_to_function 'Save', "window.blur();" %-->
 
 <% if session[:expert_modus] %>
   <%= render :partial => "quellen_selektor" %>

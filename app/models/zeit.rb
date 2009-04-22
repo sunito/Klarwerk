@@ -122,7 +122,7 @@ def dauer_lesbar(dauer)
   elsif dauer < 24.hours then
     "#{dauer/1.hours} Std."
   else
-    tage = ep / 1.days
+    tage = dauer / 1.days
     case tage
     when 1 then "1 Tag"
     when 7 then "1 Woche"

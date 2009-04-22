@@ -1,8 +1,7 @@
 class DiagrammeController < ApplicationController
 
   def akt_zeit
-    #session[:zeit] ||=
-    Zeit.die_aktuelle
+    session[:akt_zeit] ||= Zeit.die_aktuelle
   end
 
   # GET /diagramme
@@ -35,18 +34,7 @@ class DiagrammeController < ApplicationController
   def zoom_out
     akt_zeit.laenger!
     chart_kurven
-    respond_to do |format|
-      format.html {
-        if request.xhr? then
-          #render :inline => @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 500)
-        else
-          redirect_to :action => "show"
-        end
-      }
-      format.json {
-        render :inline => @chart
-      }
-    end
+    render :inline => @chart
   end
 
   def zoom_in
@@ -173,6 +161,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1
   # GET /diagramme/1.xml
   def show
+    akt_zeit
     chart = chart_kurven
     init_diaquenauswahl
    # macht folgende Zeile überflüssig
