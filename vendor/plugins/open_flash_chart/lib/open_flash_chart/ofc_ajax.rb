@@ -17,7 +17,7 @@ module OpenFlashChart
     end
 
     def link_to_ofc_load(link_text, div_name)
-      data_name = "#{link_text.gsub(" ","_")}_#{div_name.gsub(" ","_")}"
+      data_name = sanitize_for_id "#{link_text}_#{div_name}"
       <<-OUTPUT
       <script type="text/javascript">
       function load_#{data_name}() {
@@ -30,12 +30,8 @@ module OpenFlashChart
     OUTPUT
   end
 
-  def sanitize_for_id(text)
-    text.gsub(/[^a-zA-Z0-9_]/, "_")
-  end
-
   def link_to_remote_ofc_load(link_text, div_name, url)
-    fx_name = sanitize_for_id("#{link_text.gsub(" ","_")}_#{div_name.gsub(" ","_")}")
+    fx_name = sanitize_for_id "#{link_text}_#{div_name}"
     <<-OUTPUT
     <script type="text/javascript">
     function reload_#{fx_name}() {
@@ -51,7 +47,7 @@ module OpenFlashChart
   end
 
   def periodically_call_to_remote_ofc_load(div_name, url, options={})
-    fx_name = "#{div_name.gsub(" ","_")}"
+    fx_name = sanitize_for_id "#{div_name}"
     # fix a bug in rails with url_for
     url = url.gsub("&amp;","&")
     <<-OUTPUT
@@ -91,4 +87,10 @@ module OpenFlashChart
     end
     
   end
+
+private
+  def sanitize_for_id(text)
+    text.gsub(/[^a-zA-Z0-9_]/, "_")
+  end
+
 end
