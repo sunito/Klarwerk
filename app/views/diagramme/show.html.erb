@@ -3,7 +3,7 @@
 <script type="text/javascript" src="/javascripts/swfobject.js"></script>
 
 <%= render :partial => "grafik" %>
-
+ 
 <%= link_to_remote "Nach Rechts",  :url => { :action => "rechts" }  %>
 
 <p>
@@ -22,6 +22,8 @@
   </p>
 <% end %>
 
+<%= link_to "open", {}, :target => "_blank" %>
+<%= button_to_function 'Save', "window.blur();" %>
 
 <% if session[:expert_modus] %>
   <%= render :partial => "quellen_selektor" %>

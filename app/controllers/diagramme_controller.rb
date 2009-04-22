@@ -35,7 +35,18 @@ class DiagrammeController < ApplicationController
   def zoom_out
     akt_zeit.laenger!
     chart_kurven
-    render :inline => @chart
+    respond_to do |format|
+      format.html {
+        if request.xhr? then
+          #render :inline => @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 500)
+        else
+          redirect_to :action => "show"
+        end
+      }
+      format.json {
+        render :inline => @chart
+      }
+    end
   end
 
   def zoom_in

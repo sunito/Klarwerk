@@ -6,11 +6,25 @@
 <div id="grafik_bereich">
   <!--%= @graph %-->
     <%= @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 500) %>
-    <br/><br/>
+</div>
+<br/><br/>
     <%= @chart.link_to_ofc_load("Normal", "my_chart_js_1") %> ||
     <%= @chart.link_to_remote_ofc_load("Links", "my_chart_js_1",  url_for({ :action => "links", :id => params[:id] })) %>
     <%= @chart.link_to_remote_ofc_load("Rechts", "my_chart_js_1",  url_for({ :action => "rechts", :id => params[:id] })) %>
-    <%= @chart.link_to_remote_ofc_load("Zoom hinaus", "my_chart_js_1",  url_for({ :action => "zoom_out", :id => params[:id] })) %>
+    <%= link_to_remote("Zoom hinaus",  :url => url_for({ :action => "zoom_out", :id => params[:id] }),  :update => "grafik_bereich") %>
     <%= @chart.link_to_remote_ofc_load("Zoom hinein", "my_chart_js_1",  url_for({ :action => "zoom_in", :id => params[:id] })) %>
+   	<TABLE>
+	  <TR>
+    	<TD valign="top" align="right">
+          <%= link_to  image_tag("arrow_left.gif"), url_for({ :action => "links", :id => params[:id] }),:class => "gruenlink" %> <!--edit_kurve_path(@kurve) % | -->
+          <%= link_to  image_tag("arrow_right.gif"), url_for({ :action => "rechts", :id => params[:id] }),:class => "gruenlink" %> <!--edit_kurve_path(@kurve) % | -->
+        </TD>
+        <TD>
+          <%= @chart.link_to_remote_ofc_load image_tag("lupeminusgif.gif", :alt => 'Auschnitt verkleinern'), "my_chart_js_1", url_for({ :action => "zoom_out", :id => params[:id] }) %>
+          <%= @chart.link_to_remote_ofc_load image_tag("lupeplusgif.gif",  :alt => 'Auschnitt vergrößern'),  "my_chart_js_1", url_for({ :action => "zoom_in", :id => params[:id] }) %>
+          <p>%= dauer_lesbar(session[:zeit].zeitraum) %</p>
+        </TD>
+      </TR>
+    </TABLE>
 
-</div>
+
