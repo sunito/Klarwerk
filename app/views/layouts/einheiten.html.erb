@@ -1,9 +1,11 @@
 <%= render :partial => "layouts/standard_kopf" %>
+<%= render :partial => "layouts/standard_fuss" %><BR>
+  <hr noshade=1 size="1">
 
 <p style="color: green"><%= flash[:notice] %></p>
 
 <%= yield  %>
-<%= render :partial => "layouts/standard_fuss" %>
+
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 class CreateMesspunkte < ActiveRecord::Migration
   def self.up
-    create_table :messpunkte do |t|
+    create_table :punkte do |t|
       t.datetime :zeit
       t.string   :wert
       t.integer  :quelle_id
@@ -8,6 +8,6 @@ class CreateMesspunkte < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :messpunkte
+    drop_table :punkte
   end
 end

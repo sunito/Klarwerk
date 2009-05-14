@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20081126091212) do
     t.datetime "updated_at"
   end
 
-  create_table "messpunkte", :force => true do |t|
+  create_table "punkte", :force => true do |t|
     t.datetime "zeit"
     t.string   "wert"
     t.integer  "quelle_id"
