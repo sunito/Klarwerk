@@ -1,26 +1,27 @@
 <h1>Einheiten</h1>
 
-<table>
+<table BGCOLOR="#999999" width="800">
   <tr>
-    <th>Bezeichnung</th>
-    <th>Beschreibung</th>
-    <th>Min</th>
-    <th>Max</th>
+    <TD BGCOLOR="#F3F3E3" width="250">Bezeichnung</th></TD>
+    <TD BGCOLOR="#F3F3E3">Min</TD>
+    <TD BGCOLOR="#F3F3E3">Max</TD>
+    <TD BGCOLOR="#F3F3E3"></TD>
+    <TD BGCOLOR="#F3F3E3"></TD>
+    <TD BGCOLOR="#F3F3E3" width="250">Beschreibung</TD>
   </tr>
 
 <% for einheit in @einheiten %>
   <tr>
-    <td><%=h einheit.name %></td>
-    <td><%=h einheit.beschreibung %></td>
-    <td><%=h einheit.min %></td>
-    <td><%=h einheit.max %></td>
-    <td><%= link_to 'Zeige', einheit %></td>
-    <td><%= link_to 'Bearbeiten', edit_einheit_path(einheit) %></td>
-    <td><%= link_to 'L&ouml;schen', einheit, :confirm => 'Siind Sie sicher?', :method => :delete %></td>
+    <td BGCOLOR="#FFFFF3"><%=h einheit.name %></td>
+    <td BGCOLOR="#FFFFF3"><%=h einheit.min %></td>
+    <td BGCOLOR="#FFFFF3"><%=h einheit.max %></td>
+    <td BGCOLOR="#FFFFF3"><%= link_to 'bearbeiten', edit_einheit_path(einheit) %></td>
+    <td BGCOLOR="#FFFFF3"><%= link_to 'l&ouml;schen', einheit, :confirm => 'Siind Sie sicher?', :method => :delete %></td>
+    <td BGCOLOR="#FFFFF3"><%=h einheit.beschreibung %></td>
   </tr>
 <% end %>
 </table>
 
-<br />
+<br/>
 
 <%= link_to 'Neue Einheit', new_einheit_path %>

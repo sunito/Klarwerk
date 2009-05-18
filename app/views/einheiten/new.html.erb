@@ -2,26 +2,24 @@
 
 <% form_for(@einheit) do |f| %>
   <%= f.error_messages %>
-
+<TABLE BGCOLOR="#999999">
+  <TR>
+    <TD BGCOLOR="#F3F3E3">Bezeichnung</TD>
+    <TD BGCOLOR="#FFFFF3"> <%= f.text_field :name %></TD>
+    </TR><TR>
+    <TD BGCOLOR="#F3F3E3">Min</TD>
+    <TD BGCOLOR="#FFFFF3"><%= f.text_field :min %></TD>
+    </TR><TR>
+    <TD BGCOLOR="#F3F3E3">Max</TD>
+    <TD BGCOLOR="#FFFFF3"><%= f.text_field :max %></TD>
+    </TR><TR>
+    <TD BGCOLOR="#F3F3E3">Beschreibung</TD>
+    <TD BGCOLOR="#FFFFF3"><%= f.text_field :beschreibung %></TD>
+  </TR>
+</TABLE>
   <p>
-    <%= f.label :Name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :Beschreibung %><br />
-    <%= f.text_area :beschreibung %>
-  </p>
-  <p>
-    <%= f.label :min %><br />
-    <%= f.text_field :min %>
-  </p>
-  <p>
-    <%= f.label :max %><br />
-    <%= f.text_field :max %>
-  </p>
-  <p>
-    <%= f.submit "Erstellen" %>
+    <%= f.submit "Speichern" %>
   </p>
 <% end %>
 
-<%= link_to 'Liste', einheiten_path %>
+<%= link_to 'Zur&uuml;ck zur Einheitenliste', einheiten_path %>
