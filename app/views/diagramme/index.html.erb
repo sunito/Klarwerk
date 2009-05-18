@@ -13,7 +13,8 @@
 <% for diagramm in @diagramme %>
   <tr>
     <td BGCOLOR="#FFFFF3" widht="200"><%= link_to diagramm.name, diagramm %></td>
-    <td BGCOLOR="#FFFFF3" widht="250"><%=h diagramm.quellen.map(&:name).join(', ')%></td>
+    <!--td BGCOLOR="#FFFFF3" widht="250"><%=h diagramm.quellen.map(&:name).join(', ')%></td-->
+    <td BGCOLOR="#FFFFF3" widht="250"><%=h diagramm.quellen.map{|q| "<font color=\"##{q.color}\">#{q.name}</font>"}.join(', ')%></td>
     <% if session[:expert_modus] then %>
       <td BGCOLOR="#FFFFF3" widht="100"><%= link_to 'bearbeiten', edit_diagramm_path(diagramm) %></td>
       <td BGCOLOR="#FFFFF3" widht="100"><%= link_to 'l&ouml;schen', diagramm, :confirm => 'Wollen Sie wirklich L&ouml;schen? Dann klicken Sie auf OK', :method => :delete %></td>

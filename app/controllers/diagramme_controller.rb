@@ -122,6 +122,7 @@ class DiagrammeController < ApplicationController
       x_labels.set_vertical()
 
       diff = akt_zeit.dauer
+      require 'kurve'
       anz = GLOBAL_X_ANZAHL 
       x_labels.labels = (0..anz).map do |i|
         if i % 10 == 0
