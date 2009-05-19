@@ -3,7 +3,8 @@
 
 GLOBAL_X_ANZAHL = 300
 
-class Kurve < Struct.new(:diaque, :zeit, :x_anzahl)
+Kurve =  Struct.new(:diaque, :zeit, :x_anzahl)
+class Kurve 
 
   def initialize(diaque, diagramm_zeit = nil)
     diagramm_zeit = diaque.diagramm.zeit unless diagramm_zeit
