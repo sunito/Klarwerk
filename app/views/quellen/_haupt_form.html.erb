@@ -5,34 +5,34 @@
 
 <% form_for(@quelle) do |f| %>
   <%= f.error_messages %>
-<table BGCOLOR="#999999">
-  <tr><td BGCOLOR="#F3F3E3">
-    <%= f.label :adresse %></td><td BGCOLOR="#F3F3E3">
+<table  class="listenkopf">
+  <tr><td>
+    <%= f.label :adresse %></td><td>
     <%= f.text_field :adresse %>
   </td></tr>
-  <tr><td BGCOLOR="#F3F3E3">
-    <%= f.label :name %></td><td BGCOLOR="#F3F3E3">
+  <tr><td>
+    <%= f.label :name %></td><td>
     <%= f.text_field :name %>
   </td></tr>
-  <tr><td BGCOLOR="#F3F3E3">
-    <%= f.label :farbe %></td><td BGCOLOR="#F3F3E3">
+  <tr><td>
+    <%= f.label :farbe %></td><td>
     <%= f.picky_color :farbe, :size => 6 %>
   </td></tr>
-  <tr><td BGCOLOR="#F3F3E3">
-    <%= f.label :variablen_art %></td><td BGCOLOR="#F3F3E3">
+  <tr><td>
+    <%= f.label :variablen_art %></td><td>
     <%= f.text_field :variablen_art %>
   </td></tr>
-  <tr><td BGCOLOR="#F3F3E3">
-    <%= f.label :Beschreibung %></td><td BGCOLOR="#F3F3E3">
+  <tr><td>
+    <%= f.label :Beschreibung %></td><td>
     <%= f.text_field :beschreibung %>
   </td></tr>
-  <tr><td BGCOLOR="#F3F3E3">
+  <tr><td>
     <% einheiten_auswahl = Einheit.find(:all).map {|einheit| [einheit.name, einheit.id]}  %>
-    <%= f.label :einheit %></td><td BGCOLOR="#F3F3E3">
+    <%= f.label :einheit %></td><td>
     <%= f.select("einheit_id", einheiten_auswahl) %>
   </td></tr>
-  <tr><td BGCOLOR="#F3F3E3">
-    <%= f.label :aktiv %></td><td BGCOLOR="#F3F3E3">
+  <tr><td>
+    <%= f.label :aktiv %></td><td>
     <%= f.check_box :aktiv %>
   </td></tr>
 </table>
