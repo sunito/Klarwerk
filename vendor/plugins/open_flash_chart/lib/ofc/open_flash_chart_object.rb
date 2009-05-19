@@ -1,6 +1,6 @@
 require 'digest/sha1'
 
-module OpenFlashChart
+module OFC
   module Controller
     def open_flash_chart_object(width, height, url, use_swfobject=true, base="/", swf_file_name="open-flash-chart.swf")
       get_object_values(url)
