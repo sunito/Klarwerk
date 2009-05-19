@@ -1,5 +1,6 @@
-module OpenFlashChart
-  module View
+module OFC
+  #module View
+  class Base
     def periodically_call_function(function, options = {})
       frequency = options[:frequency] || 10 # every ten seconds by default
       code = "new PeriodicalExecuter(function() {#{function}}, #{frequency})"
