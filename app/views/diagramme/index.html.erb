@@ -1,25 +1,26 @@
 <h1>Diagramm-Liste</h1>
 
-<TABLE BGCOLOR="#999999" width="1000">
-  <TR>
-    <TD BGCOLOR="#F3F3E3" width="200"> Name </TD>
-    <TD BGCOLOR="#F3F3E3" width="250"> Messgr&ouml;&szlig;en </TD>
+<TABLE cellspacing="0" cellpadding="8">
+  <!--BGCOLOR="#999999" -->
+  <TR class="listenkopf">
+    <TD  > Name </TD>
+    <TD  > Messgr&ouml;&szlig;en </TD>
      <% if session[:expert_modus] then %>
-    <TD BGCOLOR="#F3F3E3" width="100"> &nbsp; </TD>
-    <TD BGCOLOR="#F3F3E3" width="100"> &nbsp; </TD>
+    <TD  > &nbsp; </TD>
+    <TD  > &nbsp; </TD>
     <% end %>
-    <TD BGCOLOR="#F3F3E3"> Beschreibung </TD>
+    <TD > Beschreibung </TD>
   </TR>
 <% for diagramm in @diagramme %>
-  <tr>
-    <td BGCOLOR="#FFFFF3" widht="200"><%= link_to diagramm.name, diagramm %></td>
-    <!--td BGCOLOR="#FFFFF3" widht="250"><%=h diagramm.quellen.map(&:name).join(', ')%></td-->
-    <td BGCOLOR="#FFFFF3" widht="250"><%= diagramm.quellen.map{|q| "<font color=\"##{q.farbe}\">#{q.name}</font>"}.join(', ')%></td>
+  <tr  class="<%= cycle('', 'un') + 'gerade'%>">
+    <td  ><%= link_to diagramm.name, diagramm %></td>
+    <!--td  ><%=h diagramm.quellen.map(&:name).join(', ')%></td-->
+    <td  ><%= diagramm.quellen.map{|q| "<font color=\"##{q.farbe}\">#{q.name}</font>"}.join(', ')%></td>
     <% if session[:expert_modus] then %>
-      <td BGCOLOR="#FFFFF3" widht="100"><%= link_to 'bearbeiten', edit_diagramm_path(diagramm) %></td>
-      <td BGCOLOR="#FFFFF3" widht="100"><%= link_to 'l&ouml;schen', diagramm, :confirm => 'Wollen Sie wirklich L&ouml;schen? Dann klicken Sie auf OK', :method => :delete %></td>
+      <td  ><%= link_to 'bearbeiten', edit_diagramm_path(diagramm) %></td>
+      <td  ><%= link_to 'l&ouml;schen', diagramm, :confirm => 'Wollen Sie wirklich L&ouml;schen? Dann klicken Sie auf OK', :method => :delete %></td>
     <% end %>
-     <td BGCOLOR="#FFFFF3"><%=h diagramm.beschreibung %></td>
+     <td ><%=h diagramm.beschreibung %></td>
  </tr>
 <% end %>
 </TABLE>

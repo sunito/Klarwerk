@@ -52,3 +52,13 @@ a:hover { color: #fff; background-color:#000; }
   list-style: square;
 }
 
+.listenkopf {
+  background-color: #EDA;
+}
+
+.gerade {
+  background-color: #FFFFF3;
+}
+.ungerade {
+  background-color: #F8F8CC;
+}

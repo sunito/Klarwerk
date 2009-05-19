@@ -5,14 +5,16 @@
 </div>
   <TABLE width="100%">
     <TR>
-      <TD valign="top" width="50%" align="right">
+      <TD valign="top" width="40%" align="right">
+      </TD>
+      <TD  valign="top" align="center">
         <%= @chart.link_to_remote_ofc_load image_tag("arrow_left3.png",  :class => "gruenlink"), "my_chart_js_1", url_for({ :action => "links", :id => params[:id] }) %> <!--edit_kurve_path(@kurve) % | -->
         <%= @chart.link_to_remote_ofc_load image_tag("arrow_right3.png", :class => "gruenlink"), "my_chart_js_1", url_for({ :action => "rechts", :id => params[:id] }) %> <!--edit_kurve_path(@kurve) % | -->
       </TD>
-      <TD>Zeit
+      <TD width="25%" align="center">Zeit
         <!--%= session[:akt_zeit].dauer_lesbar %-->
       </TD>
-      <TD valign="top" align="right">
+      <TD  valign="top" align="center">
         <%= @chart.link_to_remote_ofc_load image_tag("lupeminusgif3.png", :alt => 'Auschnitt verkleinern'), "my_chart_js_1", url_for({ :action => "zoom_out", :id => params[:id] }) %>
         <%= @chart.link_to_remote_ofc_load image_tag("lupeplusgif3.png",  :alt => 'Auschnitt vergrößern'),  "my_chart_js_1", url_for({ :action => "zoom_in", :id => params[:id] }) %>
 
