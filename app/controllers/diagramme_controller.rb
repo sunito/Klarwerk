@@ -82,11 +82,12 @@ class DiagrammeController < ApplicationController
     einheit = @diagramm.haupt_einheit
     return if not einheit
 
-    y_legende = YLegend.new(einheit.name)
-    y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
-    chart.y_legend = (y_legende)
+    #self.extend OFC
+#    y_legende = YLegend.new(einheit.name)
+#    y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
+#    chart.y_legend = (y_legende)
 
-    y_achse = YAxis.new
+    y_achse = OFC::YAxis.new
     abstand = (einheit.max - einheit.min) / 20.0
     grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
     abstand = (abstand / grob).round * grob
@@ -124,9 +125,11 @@ class DiagrammeController < ApplicationController
   def setze_xlabels #(kurve)
       #x_achse.set_range(kurve.von, kurve.bis, 60)
 
-      x_labels = XAxisLabels.new
+      x_labels = OFC::XAxisLabels.new
       #x_labels.style
       x_labels.set_vertical()
+      x_labels.steps = 4
+      x_labels.rotate = 270
 
       diff = akt_zeit.dauer
       require 'kurve'
@@ -137,10 +140,10 @@ class DiagrammeController < ApplicationController
         else
           text = ""
         end
-        XAxisLabel.new(text, '#0000ff', 10, 'diagonal') 
+        OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
       end.compact
 
-      x_achse = XAxis.new
+      x_achse = OFC::XAxis.new
       x_achse.set_labels x_labels
       x_achse.set_range(0, anz, 10)
 
@@ -153,7 +156,7 @@ class DiagrammeController < ApplicationController
     diaquen.each do |diaque|
         kurve = Kurve.new(diaque, akt_zeit)
         
-        line = Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
+        line = OFC::Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
         line.text = diaque.quelle.name
         line.width = 3
         line.colour = diaque.farbe || diaque.quelle.farbe
@@ -164,13 +167,15 @@ class DiagrammeController < ApplicationController
         line.values = aufgefuellte_linien_daten.map{|z| p [z, (streck_fkt &&  streck_fkt[z])]; (streck_fkt ? streck_fkt[z] : z) }
         # Funktioniert nicht:
         # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
-        @chart.add_element(line)
+        @chart.elements << line
       end
   end
 
   def chart_kurven
+    #self.extend OFC
     @diagramm = Diagramm.find(params[:id])
-    @chart = OpenFlashChart.new( @diagramm.name ) 
+    @chart = OFC::OpenFlashChart.new( @diagramm.name )
+    @chart.elements = []
     @streckungs_funktion = nil
     #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
     #chart.set_title(@diagramm.name)
