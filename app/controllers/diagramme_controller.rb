@@ -22,7 +22,14 @@ class DiagrammeController < ApplicationController
   def links
     akt_zeit.zurueck!
     chart_kurven
-    render :inline => @chart
+    respond_to do |format|
+      format.html {
+        render :inline => open_flash_chart_object("100%",700, url_for(:format => "json"))
+      }
+      format.json {
+        render :inline => @chart
+      }
+    end
   end
 
   def rechts
