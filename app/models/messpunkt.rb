@@ -1,6 +1,11 @@
+
+
+
 class Messpunkt < ActiveRecord::Base
   set_table_name :punkte
   belongs_to :quelle 
+
+  ZEITVERSCHIEBUNG = 2.hours
   
   def wert
     super.to_s.gsub(",", ".").to_f
@@ -8,7 +13,7 @@ class Messpunkt < ActiveRecord::Base
   
   def zeit
     z = super
-    #z and z - 2.hours
+    z and z + ZEITVERSCHIEBUNG
   end
 
   def quell_adresse=(adresse)
@@ -36,6 +41,9 @@ class Messpunkt < ActiveRecord::Base
   def self.finde_fuer_quelle_und_zeit(quelle, zeit)
     quelle_id = quelle.id
     finde_von_bis = proc do |von, bis|
+      von += ZEITVERSCHIEBUNG
+      bis += ZEITVERSCHIEBUNG
+      p [:sql_vonbis, von, bis]
       find(:all, {
         :conditions => ["(quelle_id = ?) and (zeit >= ?) and (zeit <= ?)", quelle_id, von, bis],
         :order => :zeit
