@@ -48,6 +48,7 @@ class DiagrammeController < ApplicationController
     akt_zeit.kuerzer!
     chart_kurven
     render :inline => @chart
+    render :template => "update_zeit"
   end
 
   def skala_chart
@@ -103,15 +104,16 @@ class DiagrammeController < ApplicationController
       warn ["EZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", einheit.hub, zweite_einheit.hub]
       warn @streckungs_funktion[100]
       
-      y_legende = YLegendRight.new(einheit.name)
-      #y_legende.set_style("{font-size: 20px; color: #778877}")
-      #y_legende.style = '{font-size: 70px; color: #778877}'
-      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
-      chart.set_y_legend_right  y_legende
-      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
+#      y_legende = YLegendRight.new(einheit.name)
+#      #y_legende.set_style("{font-size: 20px; color: #778877}")
+#      #y_legende.style = '{font-size: 70px; color: #778877}'
+#      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
+#      chart.set_y_legend_right  y_legende
+#      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
 
 
-      y_achse = YAxisRight.new
+#      y_achse = YAxisRight.new
+      y_achse = YAxis.new
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
       # Workaraund
       g = zweite_einheit.groeszenordnung
@@ -125,27 +127,51 @@ class DiagrammeController < ApplicationController
   def setze_xlabels #(kurve)
       #x_achse.set_range(kurve.von, kurve.bis, 60)
 
-      x_labels = OFC::XAxisLabels.new
-      #x_labels.style
-      x_labels.set_vertical()
-      x_labels.steps = 4
-      x_labels.rotate = 270
+      label_steps = 10
+#      x_labels = OFC::XAxisLabels.new
+#      #x_labels.style
+#      x_labels.set_vertical()
+#      x_labels.steps = label_steps
+#      x_labels.rotate = 270
 
       diff = akt_zeit.dauer
       require 'kurve'
-      anz = GLOBAL_X_ANZAHL 
-      x_labels.labels = (0..anz).map do |i|
+      anz = GLOBAL_X_ANZAHL
+
+    
+      x_labelslabels = (0..anz).map do |i|
         if i % 10 == 0
           text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
         else
           text = ""
         end
-        OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
+        #OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
+        text
       end.compact
 
+      format = case diff
+      when (0 .. 18.hours)
+        "%H:%M"
+      when (18.hours .. 4.weeks)
+        "%b-%d %H:%M"
+      else
+        "%b-%d\n  %H:%M"
+      end
+      x_label_texte = (0..anz).map do |i|
+        (akt_zeit.vonzeit + i*diff / anz).strftime(format)
+      end
+
+      x_labels = OFC::XAxisLabels.new
+      #x_labels.set_vertical()
+      x_labels.steps = label_steps
+      x_labels.rotate = 315
+      x_labels.labels = x_label_texte
+      #x_labels.labels = x_labelslabels #x_label_texte
+
       x_achse = OFC::XAxis.new
-      x_achse.set_labels x_labels
-      x_achse.set_range(0, anz, 10)
+      x_achse.labels = x_labels
+      x_achse.steps = label_steps
+      #x_achse.set_range(0, anz, 10)
 
       @chart.x_axis = x_achse
       #chart.x_label_style(10, '#9933CC',2,2)
