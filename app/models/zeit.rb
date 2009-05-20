@@ -112,6 +112,10 @@ public
     super(dauer)
   end
 
+  def lesbar
+    "#{dauer_lesbar} #{bis and bis.strftime(' (bis %b-%d,  %H:%M)')}"
+  end
+
 end
 
 # Macht aus dauer (in Sekunden) einen lesbaren Strring

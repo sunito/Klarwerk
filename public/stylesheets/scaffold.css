@@ -51,7 +51,11 @@ a:hover { color: #fff; background-color:#000; }
   font-size: 12px;
   list-style: square;
 }
+.navi_button { color: #EEE; }
+.navi_button:visited { color: #EEE; }
+.navi_button:hover { color: #EAA; background-color:#000; }
 
+ 
 .listenkopf {
   background-color: #EDA;
 }

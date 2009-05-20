@@ -19,36 +19,47 @@ class DiagrammeController < ApplicationController
 
   end
 
+  private
+  def render_zeit_update
+    chart_kurven
+    render :action => "update_zeit.rjs", :layout => false
+  end
+
+  public
   def links
     akt_zeit.zurueck!
-    chart_kurven
-    respond_to do |format|
-      format.html {
-        render :inline => open_flash_chart_object("100%",700, url_for(:format => "json"))
-      }
-      format.json {
-        render :inline => @chart
-      }
-    end
+    render_zeit_update
+
+#    chart_kurven
+#    respond_to do |format|
+#      format.html {
+#        render :inline => open_flash_chart_object("100%",700, url_for(:format => "json"))
+#      }
+#      format.json {
+#        render :inline => @chart
+#      }
+#    end
   end
 
   def rechts
     akt_zeit.weiter!
-    chart_kurven
-    render :inline => @chart
+    #chart_kurven
+    #render :inline => @chart
+    render_zeit_update
   end
+
 
   def zoom_out
     akt_zeit.laenger!
-    chart_kurven
-    render :inline => @chart
+    #render :inline => @chart
+    p :zoomout
+    #render :template => "update_zeit"
+    render_zeit_update
   end
 
   def zoom_in
     akt_zeit.kuerzer!
-    chart_kurven
-    render :inline => @chart
-    render :template => "update_zeit"
+    render_zeit_update
   end
 
   def skala_chart
@@ -153,9 +164,9 @@ class DiagrammeController < ApplicationController
       when (0 .. 18.hours)
         "%H:%M"
       when (18.hours .. 4.weeks)
-        "%b-%d %H:%M"
+        "%b-%d\n %H:%M"
       else
-        "%b-%d\n  %H:%M"
+        "%b-%d, %H°°"
       end
       x_label_texte = (0..anz).map do |i|
         (akt_zeit.vonzeit + i*diff / anz).strftime(format)
@@ -224,7 +235,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1.xml
   def show
     akt_zeit
-    chart = chart_kurven
+    chart_kurven
     init_diaquenauswahl
    # macht folgende Zeile überflüssig
     #@diagramm = Diagramm.find(params[:id])
@@ -236,7 +247,8 @@ class DiagrammeController < ApplicationController
         render :text => skala_chart, :layout => false
       }
       format.json {
-        render :text => chart, :layout => false
+        p @chart
+        render :inline => @chart.render  #, :layout => false
       }
     end
   end
