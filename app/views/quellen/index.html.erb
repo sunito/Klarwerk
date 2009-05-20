@@ -1,31 +1,32 @@
 <h1>Messgr&ouml;&szlig;en</h1>
 
-<table BGCOLOR="#999999" width="1000">
-  <tr>
-    <TD BGCOLOR="#F3F3E3" width="100">Adresse </TD>
-    <TD BGCOLOR="#F3F3E3" width="250">Name</TD>
-    <TD BGCOLOR="#F3F3E3">Typ</TD>
-    <TD BGCOLOR="#F3F3E3">Einheit</TD>
-    <TD BGCOLOR="#F3F3E3">Aktiv</TD>
-    <TD BGCOLOR="#F3F3E3"></TD>
-    <TD BGCOLOR="#F3F3E3"></TD>
-    <TD BGCOLOR="#F3F3E3" width="250">Beschreibung</TD>
+<table cellspacing="0" cellpadding="8">
+  <tr class="listenkopf">
+    <TD>Adresse </TD>
+    <TD>Name</TD>
+    <TD>Typ</TD>
+    <TD>Einheit</TD>
+    <TD>Aktiv</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD>Beschreibung</TD>
   </tr>
 <% [@aktive_quellen, @inaktive_quellen].each do |quellen_array| %>
   <% for quelle in quellen_array %>
-    <tr>
+    <tr  class="<%= cycle('', 'un') + 'gerade'%>">
       <%  if quelle %>
-      <td BGCOLOR="#FFFFF3"><%=h quelle.adresse %></td>
-      <td BGCOLOR="#FFFFF3"><font color="#<%=quelle.farbe%>"><%=h quelle.name %></font></td>
-      <td BGCOLOR="#FFFFF3"><%=h quelle.variablen_art %></td>
-      <td BGCOLOR="#FFFFF3"><%=h quelle.einheit && quelle.einheit.name %></td>
-      <td BGCOLOR="#FFFFF3"><%=h quelle.aktiv ? "ja" : "nein" %></td>
-      <td BGCOLOR="#FFFFF3"><%= link_to (quelle.aktiv ? "de" : "")+"aktivieren", aktiv_umschalten_path(quelle.id) %></td>
-      <td BGCOLOR="#FFFFF3"><%= link_to 'bearbeiten', edit_quelle_path(quelle) %></td>
-      <td BGCOLOR="#FFFFF3"><%=h quelle.beschreibung %></td>
+      <td><%=h quelle.adresse %></td>
+      <td><font color="#<%=quelle.farbe%>"><%=h quelle.name %></font></td>
+      <td><%=h quelle.variablen_art %></td>
+      <td><%=h quelle.einheit && quelle.einheit.name %></td>
+      <td><%=h quelle.aktiv ? "ja" : "nein" %></td>
+      <td><%= link_to (quelle.aktiv ? "de" : "")+"aktivieren", aktiv_umschalten_path(quelle.id) %></td>
+      <td><%= link_to 'bearbeiten', edit_quelle_path(quelle) %></td>
+      <td><%=h quelle.beschreibung %></td>
       <% end %>
     </tr>
   <% end %>
+  <tr><td></td></tr>
 <% end %>
 </table>
 

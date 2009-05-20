@@ -1,0 +1,26 @@
+<% form_for(@einheit) do |f| %>
+  <%= f.error_messages %>
+<TABLE  class="listenkopf">
+  <TR>
+    <TD>Bezeichnung</TD>
+    <TD> <%= f.text_field :name %></TD>
+    </TR>
+    <TR>
+    <TD>Min</TD>
+    <TD><%= f.text_field :min %></TD>
+    </TR>
+    <TR>
+    <TD>Max</TD>
+    <TD><%= f.text_field :max %></TD>
+    </TR><TR>
+    <TD>Beschreibung</TD>
+    <TD><%= f.text_field :beschreibung %></TD>
+  </TR>
+</TABLE>
+  <p>
+    <%= f.submit "Speichern" %>
+  </p>
+<% end %>
+
+
+<%= link_to 'Zur&uuml;ck zur Einheitenliste', einheiten_path %>
