@@ -95,15 +95,19 @@ class DiagrammeController < ApplicationController
     return if not einheit
 
     #self.extend OFC
-#    y_legende = YLegend.new(einheit.name)
-#    y_legende.set_style("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
-#    chart.y_legend = (y_legende)
+    y_legende = OFC::YLegend.new
+    y_legende.text = einheit.name
+    #y_legende.style = ("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
 
     y_achse = OFC::YAxis.new
+    #chart.y_legend = (y_legende)
+
     abstand = (einheit.max - einheit.min) / 20.0
     grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
     abstand = (abstand / grob).round * grob
-    y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
+    y_achse.min = einheit.min
+    y_achse.max = einheit.max
+    y_achse.steps = einheit.schritt_fuer_anzahl(20)
     chart.y_axis = y_achse
 
     warn ["EZZZZZZZZZZZZZZZZZZZ444ZZZZZZZZZZZZZZZZZ", @diagramm.zweite_skala?]
@@ -128,7 +132,12 @@ class DiagrammeController < ApplicationController
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
       # Workaraund
       g = zweite_einheit.groeszenordnung
-      y_achse.set_range(zweite_einheit.min / g, zweite_einheit.max / g)
+      y_achse.min = zweite_einheit.min #/ g
+      y_achse.max = zweite_einheit.max #/ g
+
+      schritt_weite = zweite_einheit.schritt_fuer_anzahl(20)
+      #y_achse.steps = 20 #zweite_einheit.schritt_fuer_anzahl(20)
+      y_achse.labels = (y_achse.min.to_i..y_achse.max.to_i).to_a.map {|i| i % schritt_weite == 0 ? i : nil}.compact
       #p [:abstand, abstand]
       chart.y_axis_right = y_achse
 
@@ -166,7 +175,7 @@ class DiagrammeController < ApplicationController
       when (18.hours .. 4.weeks)
         "%b-%d\n %H:%M"
       else
-        "%b-%d, %HÂ°Â°"
+        "%b-%d, %H°°"
       end
       x_label_texte = (0..anz).map do |i|
         (akt_zeit.vonzeit + i*diff / anz).strftime(format)
@@ -195,6 +204,7 @@ class DiagrammeController < ApplicationController
         
         line = OFC::Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
         line.text = diaque.quelle.name
+        line.font_size = 20
         line.width = 3
         line.colour = diaque.farbe || diaque.quelle.farbe
         line.dot_size = 5
@@ -202,8 +212,11 @@ class DiagrammeController < ApplicationController
           neue_liste << (wert || neue_liste.last)
         end
         line.values = aufgefuellte_linien_daten.map{|z| p [z, (streck_fkt &&  streck_fkt[z])]; (streck_fkt ? streck_fkt[z] : z) }
+        #@chart.attach_to_y_right_axis(line.id)
+        #line.attach
         # Funktioniert nicht:
         # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
+        #@chart.set_tooltip("NULL", 2) #"["abs"]*30"NULL""
         @chart.elements << line
       end
   end
@@ -211,7 +224,8 @@ class DiagrammeController < ApplicationController
   def chart_kurven
     #self.extend OFC
     @diagramm = Diagramm.find(params[:id])
-    @chart = OFC::OpenFlashChart.new( @diagramm.name )
+    @chart = OFC::OpenFlashChart.new
+    @chart.title = {:text => @diagramm.name , :style => "{font-size: 30px;}"}
     @chart.elements = []
     @streckungs_funktion = nil
     #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
@@ -224,6 +238,10 @@ class DiagrammeController < ApplicationController
     
     @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|
       linien_hinzu(diaquen, streck_fkt)
+      line = OFC::Line.new
+      line.text = "      "
+      line.colour = "ffffff"
+      @chart.elements << line
       streck_fkt = @streckungs_funktion
     end
 
@@ -237,7 +255,7 @@ class DiagrammeController < ApplicationController
     akt_zeit
     chart_kurven
     init_diaquenauswahl
-   # macht folgende Zeile Ã¼berflÃ¼ssig
+   # macht folgende Zeile überflüssig
     #@diagramm = Diagramm.find(params[:id])
     @titelzeile = @diagramm.name + " - KabDiag"
     respond_to do |format|

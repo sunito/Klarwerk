@@ -1,13 +1,14 @@
 class Messpunkt < ActiveRecord::Base
   set_table_name :punkte
-  belongs_to :quelle #, :foreign_key => :pumuckl_id
+  belongs_to :quelle 
   
   def wert
     super.to_s.gsub(",", ".").to_f
   end
   
   def zeit
-    super - 2.hours
+    z = super
+    #z and z - 2.hours
   end
 
   def quell_adresse=(adresse)
@@ -15,7 +16,7 @@ class Messpunkt < ActiveRecord::Base
     if not q then
       q = Quelle.new
       q.adr = adresse
-      q.name = "Messgröße für #{adresse}"
+      q.name = "Messgrï¿½ï¿½e fï¿½r #{adresse}"
       q.beschr = q.name + ", generiert am #{Time.now}."
       q.typ = "unbekannt"
       q.einheit = Einheit.auto_einheit
