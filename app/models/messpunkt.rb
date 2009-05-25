@@ -8,7 +8,10 @@ class Messpunkt < ActiveRecord::Base
   
   def zeit
     z = Time.at(sekzeit)
-    #z and z - 2.hours
+  end
+
+  def zeit= neue_zeit
+    self.sekzeit = neue_zeit.to_i
   end
 
   def quell_adresse=(adresse)
