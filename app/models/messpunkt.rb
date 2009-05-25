@@ -1,19 +1,14 @@
-
-
-
 class Messpunkt < ActiveRecord::Base
   set_table_name :punkte
   belongs_to :quelle 
-
-  ZEITVERSCHIEBUNG = 2.hours
   
   def wert
-    super.to_s.gsub(",", ".").to_f
+    zahl
   end
   
   def zeit
-    z = super
-    z and z + ZEITVERSCHIEBUNG
+    z = Time.at(sekzeit)
+    #z and z - 2.hours
   end
 
   def quell_adresse=(adresse)
@@ -21,7 +16,7 @@ class Messpunkt < ActiveRecord::Base
     if not q then
       q = Quelle.new
       q.adr = adresse
-      q.name = "Messgrï¿½ï¿½e fï¿½r #{adresse}"
+      q.name = "Messgröße für #{adresse}"
       q.beschr = q.name + ", generiert am #{Time.now}."
       q.typ = "unbekannt"
       q.einheit = Einheit.auto_einheit
@@ -41,12 +36,9 @@ class Messpunkt < ActiveRecord::Base
   def self.finde_fuer_quelle_und_zeit(quelle, zeit)
     quelle_id = quelle.id
     finde_von_bis = proc do |von, bis|
-      von += ZEITVERSCHIEBUNG
-      bis += ZEITVERSCHIEBUNG
-      p [:sql_vonbis, von, bis]
       find(:all, {
-        :conditions => ["(quelle_id = ?) and (zeit >= ?) and (zeit <= ?)", quelle_id, von, bis],
-        :order => :zeit
+        :conditions => ["(quelle_id = ?) and (sekzeit >= ?) and (sekzeit <= ?)", quelle_id, von.to_i, bis.to_i],
+        :order => :sekzeit
       })
     end
     mpunkte_im_intervall = finde_von_bis.call(zeit.vonzeit, zeit.biszeit)

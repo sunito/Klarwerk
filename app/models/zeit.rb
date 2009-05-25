@@ -10,15 +10,6 @@ DAUER_STANDARD = 12.hours
 class Zeit < ActiveRecord::Base
   has_many :diagramme
 
-#  def save!
-#    true
-#  end
-
-  def bis
-    z = super
-    #z and z - Messpunkt::ZEITVERSCHIEBUNG
-  end
-
   def biszeit
     bis || Time.now
   end

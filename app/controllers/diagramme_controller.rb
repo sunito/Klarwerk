@@ -211,7 +211,7 @@ class DiagrammeController < ApplicationController
         aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
           neue_liste << (wert || neue_liste.last)
         end
-        line.values = aufgefuellte_linien_daten.map{|z| (streck_fkt ? streck_fkt[z] : z) }
+        line.values = aufgefuellte_linien_daten.map{|z| p [z, (streck_fkt &&  streck_fkt[z])]; (streck_fkt ? streck_fkt[z] : z) }
         #@chart.attach_to_y_right_axis(line.id)
         #line.attach
         # Funktioniert nicht:
@@ -265,7 +265,8 @@ class DiagrammeController < ApplicationController
         render :text => skala_chart, :layout => false
       }
       format.json {
-        render :inline => @chart.render  
+        p @chart
+        render :inline => @chart.render  #, :layout => false
       }
     end
   end
