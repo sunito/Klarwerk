@@ -1,13 +1,18 @@
 class Messpunkt < ActiveRecord::Base
   set_table_name :punkte
-  belongs_to :quelle 
+  belongs_to :quelle
+  composed_of :zeit, :class_name => "Time"
   
   def wert
     zahl
   end
-  
+
+  def wert= neuer_wert
+    self.zahl = neuer_wert.to_f
+  end
+
   def zeit
-    z = Time.at(sekzeit)
+    sekzeit and  Time.at(sekzeit)
   end
 
   def zeit= neue_zeit
