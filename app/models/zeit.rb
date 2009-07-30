@@ -51,9 +51,28 @@ public
     save!
   end
 
+  def jetzt
+    erg = self.class.finde_oder_neu(bis, dauer)
+    erg.bis = nil
+    erg.save!
+    erg
+  end
+
+  def kuerzer
+    erg = self.class.finde_oder_neu(bis, dauer)
+    erg.kuerzer!
+    erg
+  end
+
   def laenger!
     self.dauer = next_einrastpunkt(self.dauer, DAUER_EINRASTPUNKTE_AUFWAERTS)
     save!
+  end
+
+  def laenger
+    erg = self.class.finde_oder_neu(bis, dauer)
+    erg.laenger!
+    erg
   end
 
   def weiter!

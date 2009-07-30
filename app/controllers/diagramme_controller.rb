@@ -49,6 +49,14 @@ class DiagrammeController < ApplicationController
   end
 
 
+  def dauer
+    akt_zeit.dauer = params[:dauer]
+    #render :inline => @chart
+    p [:dauer, params[:dauer]]
+    #render :template => "update_zeit"
+    render_zeit_update
+  end
+
   def zoom_out
     akt_zeit.laenger!
     #render :inline => @chart

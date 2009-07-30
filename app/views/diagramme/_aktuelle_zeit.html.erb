@@ -5,5 +5,11 @@
 %>
 
 <div id="aktuelle_zeit">
-  <%= session[:akt_zeit].lesbar %>
+  <% laenger = session[:akt_zeit].laenger %>
+  <%= link_to_remote laenger.jetzt.lesbar, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => laenger.dauer, :format => "js" }) %>
+
+  <font size="+2"> &nbsp; <%= session[:akt_zeit].lesbar %> &nbsp; </font>
+
+  <% kuerzer = session[:akt_zeit].kuerzer %>
+  <%= link_to_remote kuerzer.jetzt.lesbar, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => kuerzer.dauer, :format => "js" }) %>
 </div>

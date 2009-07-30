@@ -77,3 +77,4 @@ class Messpunkt < ActiveRecord::Base
     mpunkte_im_intervall
   end
 end
+
