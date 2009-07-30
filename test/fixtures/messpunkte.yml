@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  zeit: 2008-10-14 10:15:25
-  wert: MyString
-
-two:
-  zeit: 2008-10-14 10:15:25
-  wert: MyString
