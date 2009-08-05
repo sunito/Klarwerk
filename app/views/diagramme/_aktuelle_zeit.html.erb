@@ -5,11 +5,40 @@
 %>
 
 <div id="aktuelle_zeit">
-  <% laenger = session[:akt_zeit].laenger %>
-  <%= link_to_remote laenger.jetzt.lesbar, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => laenger.dauer, :format => "js" }) %>
+  <TABLE width="100%">
+    <TR>
+      <TD align="center">
 
-  <font size="+2"> &nbsp; <%= session[:akt_zeit].lesbar %> &nbsp; </font>
+      <!--TD width="25%"  valign="top" align="center"-->
+        <!--%= link_to_remote image_tag("lupeminusgif3.png", :alt => 'Auschnitt verkleinern',  :class => "navi_button"), :url => url_for({ :action => "zoom_out", :id => params[:id], :format => "js" }) %-->
+        <!--%= link_to_remote image_tag("lupeplusgif3.png", :alt => 'Auschnitt vergrößern',  :class => "navi_button"), :url => url_for({ :action => "zoom_in", :id => params[:id], :format => "js" }) %-->
+        <!--%= @chart.link_to_remote_ofc_load image_tag("lupeplusgif3.png",  :alt => 'Auschnitt vergrößern'),  "my_chart_js_1", url_for({ :action => "zoom_in", :id => params[:id], :format => "json" }) %-->
+        <% laenger = session[:akt_zeit].laenger %>
+        <% kuerzer = session[:akt_zeit].kuerzer %>
+        <% dauern = [laenger, session[:akt_zeit], kuerzer].map(&:dauer) %>
+        <% dauern += [1.weeks, 12.hours] %>
+        <% dauern = dauern.uniq.sort.reverse %>
+        <% dauern += [nil] if dauern.size < 5 %>
+        <% dauern.each do |dauer| %>
 
-  <% kuerzer = session[:akt_zeit].kuerzer %>
-  <%= link_to_remote kuerzer.jetzt.lesbar, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => kuerzer.dauer, :format => "js" }) %>
+          <% if session[:akt_zeit].dauer == dauer then %>
+            <font size="+2"> &nbsp; <%= session[:akt_zeit].lesbar %> &nbsp; </font>
+          <% elsif dauer.nil? then %>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <% else %>
+            &nbsp; <%= link_to_remote dauer_lesbar(dauer), :url => url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" }) %> &nbsp;
+          <% end %>
+        <% end %>
+      </TD>
+      <TD valign="top" width="10%" align="right">
+      </TD>
+      <TD  valign="top" width="30%"  align="center">
+        <%= link_to_remote image_tag("arrow_left3.png",  :class => "navi_button"), :url => url_for({ :action => "links", :id => params[:id], :format => "js" }) %> <!--edit_kurve_path(@kurve) % | -->
+        <!--%= @chart.link_to_remote_ofc_load image_tag("arrow_left3.png",  :class => "gruenlink"), "my_chart_js_1", url_for({ :action => "links", :id => params[:id], :format => "json" }) %--> <!--edit_kurve_path(@kurve) % | -->
+        <%= link_to_remote image_tag("arrow_right3.png", :alt => 'nach rechts',  :class => "navi_button"), :url => url_for({ :action => "rechts", :id => params[:id], :format => "js" }) %>
+      </TD>
+      <TD WIDTH="5%">
+      </TD>
+    </TR>
+  </TABLE>
 </div>

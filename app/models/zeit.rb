@@ -17,6 +17,7 @@ class Zeit < ActiveRecord::Base
     biszeit - (dauer || 0)
   end
 
+
   def self.finde_oder_neu(bis, dauer)
     p ["finde_oder_neu bis,dauer=", bis, dauer]
     erg = self.find_by_bis_and_dauer(bis, dauer)
@@ -41,6 +42,14 @@ private
   end
 
 public
+
+  def jetzt
+    erg = self.clone
+    erg.bis = nil
+    erg.save!
+    erg
+  end
+
 #Es gibt jetzt die 4 Methoden: kuerzer!, laenger!, zurueck! und weiter!
 #Alle modifizieren direkt das Zeit-Objekt (deshalb die Ausrufungszeichen)
 #und zwar die ersten beiden ändern die Dauer (mit Einrastung)
@@ -51,15 +60,8 @@ public
     save!
   end
 
-  def jetzt
-    erg = self.class.finde_oder_neu(bis, dauer)
-    erg.bis = nil
-    erg.save!
-    erg
-  end
-
   def kuerzer
-    erg = self.class.finde_oder_neu(bis, dauer)
+    erg = self.clone
     erg.kuerzer!
     erg
   end
@@ -70,7 +72,7 @@ public
   end
 
   def laenger
-    erg = self.class.finde_oder_neu(bis, dauer)
+    erg = self.clone #ass.finde_oder_neu(bis, dauer)
     erg.laenger!
     erg
   end
@@ -103,8 +105,7 @@ public
   begin
     @@zeit_aktuell = find(1)
   rescue
-    @@zeit_aktuell = new
-    self.die_aktuelle = STANDARDZEIT
+    @@zeit_aktuell = new    
   end
 
   def self.die_aktuelle
@@ -127,6 +128,8 @@ public
     end
     @@zeit_aktuell.save!
   end
+  self.die_aktuelle = STANDARDZEIT
+  
   def dauer_lesbar
     super(dauer)
   end
@@ -149,6 +152,7 @@ def dauer_lesbar(dauer)
     case tage
     when 1 then "1 Tag"
     when 7 then "1 Woche"
+    when 21 then "3 Wochen"
     when 30..31 then "1 Monat"
     when 60..61 then "2 Monate"
     when 90..92 then "3 Monate"
