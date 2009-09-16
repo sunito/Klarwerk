@@ -212,8 +212,7 @@ private
   def setze_xlabels
     label_steps = 10
     diff = akt_zeit.dauer
-    require 'kurve'
-    anz = GLOBAL_X_ANZAHL
+    anz = Kurve::GLOBAL_X_ANZAHL
 
     format = case diff
     when (0 .. 18.hours)

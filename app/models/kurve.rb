@@ -1,11 +1,11 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 
-GLOBAL_X_ANZAHL = 300
+
 
 Kurve =  Struct.new(:diaque, :zeit, :x_anzahl)
 class Kurve 
-
+  GLOBAL_X_ANZAHL = 300
   def initialize(diaque, diagramm_zeit = nil)
     diagramm_zeit = diaque.diagramm.zeit unless diagramm_zeit
     super diaque, diagramm_zeit, GLOBAL_X_ANZAHL
