@@ -1,18 +1,17 @@
 
 <div id="grafik_bereich">
-  <!--%= @graph %-->
-    <%= @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 800) %>
+  <%= @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 800) %>
 
-    <script type="text/javascript">
-      function reload_chart() {
-      tmp_= findSWF("my_chart_js_1");
-      new Ajax.Request('<%= url_for(:action => "show", :id => params[:id], :format => "json") %>', {
-        method    : 'get',
-        onSuccess : function(obj) {tmp_.load(obj.responseText);},
-        onFailure : function(obj) {alert("Nachladen funktionierte nicht");}});
-      }
-    </script>
+  <script type="text/javascript">
+    function reload_chart() {
+    tmp_= findSWF("my_chart_js_1");
+    new Ajax.Request('<%= url_for(:action => "show", :id => params[:id], :format => "json") %>', {
+      method    : 'get',
+      onSuccess : function(obj) {tmp_.load(obj.responseText);},
+      onFailure : function(obj) {alert("Nachladen funktionierte nicht");}});
+    }
+</script>
 </div>
-  <%= render :partial => "zeit_navigation" %>
+<%= render :partial => "zeit_navigation" %>
 
 
