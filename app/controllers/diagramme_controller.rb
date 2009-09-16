@@ -10,13 +10,12 @@ class DiagrammeController < ApplicationController
     @diagramme = Diagramm.find(:all)
   end
 
-  private
   def render_zeit_update
     chart_kurven
     render :action => "update_zeit.rjs", :layout => false
   end
-
-  public
+  private :render_zeit_update
+  
   def links
     akt_zeit.zurueck!
     render_zeit_update
@@ -26,7 +25,6 @@ class DiagrammeController < ApplicationController
     akt_zeit.weiter!
     render_zeit_update
   end
-
 
   def dauer
     akt_zeit.dauer = params[:dauer]
@@ -59,7 +57,6 @@ class DiagrammeController < ApplicationController
       @diamo = Kurve.new(@diagramm)
 
       skala = @diamo.skalen[1]
-      p :skala => skala
       setze_y_achse(g, skala)
     end
     chart
@@ -71,13 +68,10 @@ class DiagrammeController < ApplicationController
     einheit = @diagramm.haupt_einheit
     return if not einheit
 
-    #self.extend OFC
     y_legende = OFC::YLegend.new
     y_legende.text = einheit.name
-    #y_legende.style = ("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
 
     y_achse = OFC::YAxis.new
-    #chart.y_legend = (y_legende)
 
     abstand = (einheit.max - einheit.min) / 20.0
     grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
@@ -87,92 +81,57 @@ class DiagrammeController < ApplicationController
     y_achse.steps = einheit.schritt_fuer_anzahl(20)
     chart.y_axis = y_achse
 
-    warn ["EZZZZZZZZZZZZZZZZZZZ444ZZZZZZZZZZZZZZZZZ", @diagramm.zweite_skala?]
     if @diagramm.zweite_skala? then
       zweite_einheit = @diagramm.einheiten[1]
       @streckungs_funktion = proc do |orig_wert|
         orig_wert && (einheit.min + (orig_wert - zweite_einheit.min) * einheit.hub / zweite_einheit.hub)
       end
-      warn ["EZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", einheit.hub, zweite_einheit.hub]
-      warn @streckungs_funktion[100]
       
-#      y_legende = YLegendRight.new(einheit.name)
-#      #y_legende.set_style("{font-size: 20px; color: #778877}")
-#      #y_legende.style = '{font-size: 70px; color: #778877}'
-#      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
-#      chart.set_y_legend_right  y_legende
-#      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
 
 
-#      y_achse = YAxisRight.new
+  #      y_achse = YAxisRight.new
       y_achse = YAxis.new
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
-      # Workaraund
+      # Workaraund wegen OFC-Problem
       g = zweite_einheit.groeszenordnung
       y_achse.min = zweite_einheit.min #/ g
       y_achse.max = zweite_einheit.max #/ g
 
       schritt_weite = zweite_einheit.schritt_fuer_anzahl(20)
-      #y_achse.steps = 20 #zweite_einheit.schritt_fuer_anzahl(20)
       y_achse.labels = (y_achse.min.to_i..y_achse.max.to_i).to_a.map {|i| i % schritt_weite == 0 ? i : nil}.compact
-      #p [:abstand, abstand]
       chart.y_axis_right = y_achse
-
     end
   end
 
   def setze_xlabels #(kurve)
-      #x_achse.set_range(kurve.von, kurve.bis, 60)
+    label_steps = 10
+    diff = akt_zeit.dauer
+    require 'kurve'
+    anz = GLOBAL_X_ANZAHL
 
-      label_steps = 10
-#      x_labels = OFC::XAxisLabels.new
-#      #x_labels.style
-#      x_labels.set_vertical()
-#      x_labels.steps = label_steps
-#      x_labels.rotate = 270
+    format = case diff
+    when (0 .. 18.hours)
+      "%H:%M"
+    when (18.hours .. 4.weeks)
+      "%b-%d\n %H:%M"
+    else
+      "%b-%d, %H°°"
+    end
+    x_label_texte = (0..anz).map do |i|
+      (akt_zeit.vonzeit + i*diff / anz).strftime(format)
+    end
 
-      diff = akt_zeit.dauer
-      require 'kurve'
-      anz = GLOBAL_X_ANZAHL
+    x_labels = OFC::XAxisLabels.new
+    x_labels.steps = label_steps
+    x_labels.rotate = 315
+    x_labels.labels = x_label_texte
 
-    
-      x_labelslabels = (0..anz).map do |i|
-        if i % 10 == 0
-          text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
-        else
-          text = ""
-        end
-        #OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
-        text
-      end.compact
+    x_achse = OFC::XAxis.new
+    x_achse.labels = x_labels
+    x_achse.steps = label_steps
+    #x_achse.set_range(0, anz, 10)
 
-      format = case diff
-      when (0 .. 18.hours)
-        "%H:%M"
-      when (18.hours .. 4.weeks)
-        "%b-%d\n %H:%M"
-      else
-        "%b-%d, %H°°"
-      end
-      x_label_texte = (0..anz).map do |i|
-        (akt_zeit.vonzeit + i*diff / anz).strftime(format)
-      end
-
-      x_labels = OFC::XAxisLabels.new
-      #x_labels.set_vertical()
-      x_labels.steps = label_steps
-      x_labels.rotate = 315
-      x_labels.labels = x_label_texte
-      #x_labels.labels = x_labelslabels #x_label_texte
-
-      x_achse = OFC::XAxis.new
-      x_achse.labels = x_labels
-      x_achse.steps = label_steps
-      #x_achse.set_range(0, anz, 10)
-
-      @chart.x_axis = x_achse
-      #chart.x_label_style(10, '#9933CC',2,2)
-      #chart.set_x_label_style(10, '#9933CC',2,2)    
+    @chart.x_axis = x_achse
   end
 
   def linien_hinzu(diaquen, streck_fkt)
@@ -189,8 +148,6 @@ class DiagrammeController < ApplicationController
           neue_liste << (wert || neue_liste.last)
         end
         line.values = aufgefuellte_linien_daten.map{|z| p [z, (streck_fkt &&  streck_fkt[z])]; (streck_fkt ? streck_fkt[z] : z) }
-        #@chart.attach_to_y_right_axis(line.id)
-        #line.attach
         # Funktioniert nicht:
         # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
         #@chart.set_tooltip("NULL", 2) #"["abs"]*30"NULL""
@@ -231,9 +188,9 @@ class DiagrammeController < ApplicationController
   def show
     akt_zeit
     chart_kurven
-    init_diaquenauswahl
    # macht folgende Zeile überflüssig
     #@diagramm = Diagramm.find(params[:id])
+    init_diaquenauswahl
     @titelzeile = @diagramm.name + " - KabDiag"
     respond_to do |format|
       format.html {
@@ -242,7 +199,6 @@ class DiagrammeController < ApplicationController
         render :text => skala_chart, :layout => false
       }
       format.json {
-        p @chart
         render :inline => @chart.render  #, :layout => false
       }
     end
@@ -267,12 +223,10 @@ class DiagrammeController < ApplicationController
   end
 
   def init_diaquenauswahl
-    #session[:diaquenauswahl_original] = session[:diaquenauswahl]
     init_diaquenauswahl_fuer_view
   end
 
   # POST /diagramme
-  # POST /diagramme.xml
   def create
     @diagramm = Diagramm.new(params[:diagramm])
 
@@ -280,45 +234,32 @@ class DiagrammeController < ApplicationController
       if @diagramm.save
         flash[:notice] = 'Diagramm wurde erstellt.'
         format.html { redirect_to(edit_diagramm_path(@diagramm)) }
-        format.xml  { render :xml => @diagramm, :status => :created, :location => @diagramm }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @diagramm.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # PUT /diagramme/1
-  # PUT /diagramme/1.xml
   def update
     @diagramm = Diagramm.find(params[:id])
-
-    session[:diaquenauswahl] = session[:diaquenauswahl_original] if params[:abbruch]
     respond_to do |format|
-      p [:XXXXXXXXXXXX, 'params[:diagramm]', params[:diagramm]]
-      # @diagramm.quelle_ids = (session[:quellenauswahl])
-      #session[:diaquenauswahl].each {|diaque| diaque.save!}
-      #@diagramm.diaquen = session[:diaquenauswahl]
       if @diagramm.update_attributes(params[:diagramm])
         flash[:notice] = 'Diagramm wurde gespeichert.'
         format.html { redirect_to(@diagramm) }
-        format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @diagramm.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /diagramme/1
-  # DELETE /diagramme/1.xml
   def destroy
     @diagramm = Diagramm.find(params[:id])
     @diagramm.destroy
 
     respond_to do |format|
       format.html { redirect_to(diagramme_url) }
-      format.xml  { head :ok }
     end
   end
 
@@ -333,6 +274,7 @@ class DiagrammeController < ApplicationController
 
     @diagramm.quellen << quelle
     @diagramm.save!
+
     diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
     diaque.farbe ||= quelle.farbe
 
@@ -349,20 +291,6 @@ class DiagrammeController < ApplicationController
 
     init_diaquenauswahl_fuer_view
     render :partial => "quellen_auswahl_listen", :layout => false
-  end
-
-  def xxxxx_quellenfarbe
-    @diagramm = Diagramm.find(params[:id])
-    quelle_id = params[:quelle_id]
-    farbe = params[:farbe]
-    if farbe then
-      session[:quellenfarben] += { quelle_id => farbe }
-    else
-      session[:quellenfarben].delete(quelle_id)
-    end
-    render :layout => false
-    # oder:
-    # render :action => "farben_bereich", :layout => false
   end
 
 end
