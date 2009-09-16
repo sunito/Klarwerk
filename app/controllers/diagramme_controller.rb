@@ -10,15 +10,6 @@ class DiagrammeController < ApplicationController
     @diagramme = Diagramm.find(:all)
   end
 
-  def xx_erstelle_graph
-    hoehe = 600
-    @graph = open_flash_chart_object( "80%", hoehe, url_for( :action => 'show', :format => :json ) )
-    if @diagramm.zweite_skala? then
-      @zusatz_skala = open_flash_chart_object( 55, hoehe, url_for( :action => 'show', :format => :skala ) )
-    end
-
-  end
-
   private
   def render_zeit_update
     chart_kurven
@@ -29,39 +20,21 @@ class DiagrammeController < ApplicationController
   def links
     akt_zeit.zurueck!
     render_zeit_update
-
-#    chart_kurven
-#    respond_to do |format|
-#      format.html {
-#        render :inline => open_flash_chart_object("100%",700, url_for(:format => "json"))
-#      }
-#      format.json {
-#        render :inline => @chart
-#      }
-#    end
   end
 
   def rechts
     akt_zeit.weiter!
-    #chart_kurven
-    #render :inline => @chart
     render_zeit_update
   end
 
 
   def dauer
     akt_zeit.dauer = params[:dauer]
-    #render :inline => @chart
-    p [:dauer, params[:dauer]]
-    #render :template => "update_zeit"
     render_zeit_update
   end
 
   def zoom_out
     akt_zeit.laenger!
-    #render :inline => @chart
-    p :zoomout
-    #render :template => "update_zeit"
     render_zeit_update
   end
 
@@ -71,10 +44,7 @@ class DiagrammeController < ApplicationController
   end
 
   def skala_chart
-    p :skala
-    #g = Graph.new
     chart = OpenFlashChart.new( "" ) do |g|
-      #g.title(" ", '{font-size: 26px;}')
       linie = Line.new(2, '#FFFFFF')
       linie.key(" ", 10)
       [1,2].each do |w|
@@ -84,7 +54,6 @@ class DiagrammeController < ApplicationController
 
       g.set_x_labels(["00:00:00"])
       g.set_x_label_style(10,'#FFFFFF',2,5)
-  #        g.set_inner_background '#FFFFFF'
       g.set_bg_color '#FFFFFF'
 
       @diamo = Kurve.new(@diagramm)
