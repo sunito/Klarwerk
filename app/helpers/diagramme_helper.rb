@@ -6,4 +6,6 @@ module DiagrammeHelper
    dauern += [nil] if dauern.size < 5
    dauern
   end
+
+
 end
