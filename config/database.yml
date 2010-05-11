@@ -18,7 +18,7 @@ development:
   adapter: mysql
   encoding: utf8
   database: kabdiag_aktuell
-  username: root
+  username: kab
   password: kab
   host: localhost
   

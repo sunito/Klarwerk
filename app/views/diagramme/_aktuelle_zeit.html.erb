@@ -13,12 +13,7 @@
         <!--%= link_to_remote image_tag("lupeminusgif3.png", :alt => 'Auschnitt verkleinern',  :class => "navi_button"), :url => url_for({ :action => "zoom_out", :id => params[:id], :format => "js" }) %-->
         <!--%= link_to_remote image_tag("lupeplusgif3.png", :alt => 'Auschnitt vergrößern',  :class => "navi_button"), :url => url_for({ :action => "zoom_in", :id => params[:id], :format => "js" }) %-->
         <!--%= @chart.link_to_remote_ofc_load image_tag("lupeplusgif3.png",  :alt => 'Auschnitt vergrößern'),  "my_chart_js_1", url_for({ :action => "zoom_in", :id => params[:id], :format => "json" }) %-->
-        <% laenger = session[:akt_zeit].laenger %>
-        <% kuerzer = session[:akt_zeit].kuerzer %>
-        <% dauern = [laenger, session[:akt_zeit], kuerzer].map(&:dauer) %>
-        <% dauern += [1.weeks, 12.hours] %>
-        <% dauern = dauern.uniq.sort.reverse %>
-        <% dauern += [nil] if dauern.size < 5 %>
+        <% dauern = navigations_dauern(session[:akt_zeit]) %>
         <% dauern.each do |dauer| %>
 
           <% if session[:akt_zeit].dauer == dauer then %>
