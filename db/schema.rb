@@ -43,8 +43,7 @@ ActiveRecord::Schema.define(:version => 20090520131533) do
     t.float   "zahl"
   end
 
-  add_index "punkte", ["quelle_id"], :name => "index_punkte_on_quelle_id"
-  add_index "punkte", ["sekzeit"], :name => "index_punkte_on_sekzeit"
+  add_index "punkte", ["quelle_id", "sekzeit"], :name => "index_punkte_on_quelle_id_and_sekzeit"
 
   create_table "quellen", :force => true do |t|
     t.string   "adresse"

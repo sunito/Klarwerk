@@ -4,6 +4,11 @@
 
 <%= render :partial => "grafik" %>
  
+
+<!--%= link_to "open", {}, :target => "_blank" %-->
+<!--%= button_to_function 'Save', "window.blur();" %-->
+<!--%= button_to_function 'Save', "self.close();" %-->
+
 <% if session[:expert_modus] %>
   <%= render :partial => "quellen_selektor" %>
 <% else %>

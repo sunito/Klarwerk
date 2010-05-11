@@ -1,3 +1,7 @@
+require 'logger'
+
+p 1
+
 require 'active_record'
 
 wurzel = "E:/KabDiag/klarwerk"
@@ -13,8 +17,8 @@ $prot_datei = File.open(log_dateiname, "w")
 puts "Werte-Aufnehmer gestartet
 Logdatei: #{log_dateiname}"
 
-$stdout = $prot_datei
-$stderr = $prot_datei
+#$stdout = $prot_datei
+#$stderr = $prot_datei
 
 IST_WINDOWS = PLATFORM =~ /win/ 
 
@@ -34,11 +38,19 @@ class WerteNotierer
     @dyn_klasse = dyn_klasse
     @dyn_klassenname = dyn_klasse.name
     
-    conn = {:adapter => :mysql,
+    conn = 
+              {:adapter => :mysql,
                 :encoding => :utf8,
-                :database => "kabdiag_aktuell",
+                :database => "kabdiag_development",
                 :username => "root",
                 :password => "kab"
+                }
+
+    conn = 
+              {:adapter => 'sqlite3',
+                :database => "E:/KabDiag/klarwerk/db/kabdiag_sq.sqlite3",
+                :pool => 5,
+                :timeout => 5000
                 }
 
     @dyn_klasse.establish_connection(conn)
@@ -59,7 +71,7 @@ class WerteNotierer
     @fiavis_event = WIN32OLE_EVENT.new(@fiavis, '_IFIAVisIFEvents')
 
     @fiavis_event.on_event('NewValue') do |*args|
-      @bei_werteingang.call(*args)
+      #@bei_werteingang.call(*args)
     end
     @bei_werteingang = proc do |*args|
       begin

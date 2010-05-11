@@ -36,14 +36,14 @@ class WerteNotierer
     
     conn = {:adapter => :mysql,
                 :encoding => :utf8,
-                :database => "kabdiag_aktuell",
+                :database => "kabdiag_development",
                 :username => "root",
                 :password => "kab"
                 }
 
     @dyn_klasse.establish_connection(conn)
                 
-    p "Verbindung zur Datenbank hergestellt."
+    p "VERBINDUNG!!!"
     p @dyn_klasse.connection
 
     Quelle.establish_connection(conn)
@@ -151,10 +151,7 @@ class WerteNotierer
   $prot_datei.puts :ende_start
   end
 
-  def aufraeumen
-    daten_behalten_ab = Time.now.to_i - 4.months
-    @dyn_klasse.connection.execute("DELETE FROM punkte WHERE punkte.sekzeit > #{daten_behalten_ab}")
-  end
+
 
 end
 
