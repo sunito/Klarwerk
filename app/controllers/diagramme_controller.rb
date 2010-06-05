@@ -30,15 +30,15 @@ class DiagrammeController < ApplicationController
     akt_zeit.zurueck!
     render_zeit_update
 
-#    chart_kurven
-#    respond_to do |format|
-#      format.html {
-#        render :inline => open_flash_chart_object("100%",700, url_for(:format => "json"))
-#      }
-#      format.json {
-#        render :inline => @chart
-#      }
-#    end
+    #    chart_kurven
+    #    respond_to do |format|
+    #      format.html {
+    #        render :inline => open_flash_chart_object("100%",700, url_for(:format => "json"))
+    #      }
+    #      format.json {
+    #        render :inline => @chart
+    #      }
+    #    end
   end
 
   def rechts
@@ -84,7 +84,7 @@ class DiagrammeController < ApplicationController
 
       g.set_x_labels(["00:00:00"])
       g.set_x_label_style(10,'#FFFFFF',2,5)
-  #        g.set_inner_background '#FFFFFF'
+      #        g.set_inner_background '#FFFFFF'
       g.set_bg_color '#FFFFFF'
 
       @diamo = Kurve.new(@diagramm)
@@ -127,15 +127,15 @@ class DiagrammeController < ApplicationController
       warn ["EZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", einheit.hub, zweite_einheit.hub]
       warn @streckungs_funktion[100]
       
-#      y_legende = YLegendRight.new(einheit.name)
-#      #y_legende.set_style("{font-size: 20px; color: #778877}")
-#      #y_legende.style = '{font-size: 70px; color: #778877}'
-#      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
-#      chart.set_y_legend_right  y_legende
-#      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
+      #      y_legende = YLegendRight.new(einheit.name)
+      #      #y_legende.set_style("{font-size: 20px; color: #778877}")
+      #      #y_legende.style = '{font-size: 70px; color: #778877}'
+      #      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
+      #      chart.set_y_legend_right  y_legende
+      #      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
 
 
-#      y_achse = YAxisRight.new
+      #      y_achse = YAxisRight.new
       y_achse = YAxis.new
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
       # Workaraund
@@ -153,80 +153,88 @@ class DiagrammeController < ApplicationController
   end
 
   def setze_xlabels #(kurve)
-      #x_achse.set_range(kurve.von, kurve.bis, 60)
+    #x_achse.set_range(kurve.von, kurve.bis, 60)
 
-      label_steps = 10
-#      x_labels = OFC::XAxisLabels.new
-#      #x_labels.style
-#      x_labels.set_vertical()
-#      x_labels.steps = label_steps
-#      x_labels.rotate = 270
+    label_steps = 10
+    #      x_labels = OFC::XAxisLabels.new
+    #      #x_labels.style
+    #      x_labels.set_vertical()
+    #      x_labels.steps = label_steps
+    #      x_labels.rotate = 270
 
-      diff = akt_zeit.dauer
-      require 'kurve'
-      anz = GLOBAL_X_ANZAHL
+    diff = akt_zeit.dauer
+    require 'kurve'
+    anz = GLOBAL_X_ANZAHL
 
     
-      x_labelslabels = (0..anz).map do |i|
-        if i % 10 == 0
-          text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
-        else
-          text = ""
-        end
-        #OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
-        text
-      end.compact
-
-      format = case diff
-      when (0 .. 18.hours)
-        "%H:%M"
-      when (18.hours .. 4.weeks)
-        "%b-%d\n %H:%M"
+    x_labelslabels = (0..anz).map do |i|
+      if i % 10 == 0
+        text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
       else
-        "%b-%d, %H°°"
+        text = ""
       end
-      x_label_texte = (0..anz).map do |i|
-        (akt_zeit.vonzeit + i*diff / anz).strftime(format)
-      end
+      #OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
+      text
+    end.compact
 
-      x_labels = OFC::XAxisLabels.new
-      #x_labels.set_vertical()
-      x_labels.steps = label_steps
-      x_labels.rotate = 315
-      x_labels.labels = x_label_texte
-      #x_labels.labels = x_labelslabels #x_label_texte
+    format = case diff
+    when (0 .. 18.hours)
+      "%H:%M"
+    when (18.hours .. 4.weeks)
+      "%b-%d\n %H:%M"
+    else
+      "%b-%d, %Hï¿½ï¿½"
+    end
+    x_label_texte = (0..anz).map do |i|
+      (akt_zeit.vonzeit + i*diff / anz).strftime(format)
+    end
 
-      x_achse = OFC::XAxis.new
-      x_achse.labels = x_labels
-      x_achse.steps = label_steps
-      #x_achse.set_range(0, anz, 10)
+    x_labels = OFC::XAxisLabels.new
+    #x_labels.set_vertical()
+    x_labels.steps = label_steps
+    x_labels.rotate = 315
+    x_labels.labels = x_label_texte
+    #x_labels.labels = x_labelslabels #x_label_texte
 
-      @chart.x_axis = x_achse
-      #chart.x_label_style(10, '#9933CC',2,2)
-      #chart.set_x_label_style(10, '#9933CC',2,2)    
+    x_achse = OFC::XAxis.new
+    x_achse.labels = x_labels
+    x_achse.steps = label_steps
+    #x_achse.set_range(0, anz, 10)
+
+    @chart.x_axis = x_achse
+    #chart.x_label_style(10, '#9933CC',2,2)
+    #chart.set_x_label_style(10, '#9933CC',2,2)
   end
 
   def linien_hinzu(diaquen, streck_fkt)
-    diaquen.each do |diaque|
-        kurve = Kurve.new(diaque, akt_zeit)
-        
-        line = OFC::Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
-        line.text = diaque.quelle.name
-        line.font_size = 20
-        line.width = 3
-        line.colour = diaque.farbe || diaque.quelle.farbe
-        line.dot_size = 5
-        aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
-          neue_liste << (wert || neue_liste.last)
-        end
-        line.values = aufgefuellte_linien_daten.map{|z| p [z, (streck_fkt &&  streck_fkt[z])]; (streck_fkt ? streck_fkt[z] : z) }
-        #@chart.attach_to_y_right_axis(line.id)
-        #line.attach
-        # Funktioniert nicht:
-        # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
-        #@chart.set_tooltip("NULL", 2) #"["abs"]*30"NULL""
-        @chart.elements << line
+    diaquen.each_with_index do |diaque, idx|
+
+      kurve = Kurve.new(diaque, akt_zeit)
+
+      line = OFC::Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
+      line.text = diaque.quelle.name
+      line.font_size = 20
+      line.width = 3
+      line.colour = diaque.farbe || diaque.quelle.farbe
+      line.dot_size = 5
+      aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
+        neue_liste << (wert || neue_liste.last)
       end
+
+      if streck_fkt == :binaer
+        streck_fkt = proc {|x| ( x > 0.5 ? 1 : 0 ) * 20 + 40 * idx + 300 }
+      end
+      line.values = aufgefuellte_linien_daten.map do |z|
+        p [z, (streck_fkt &&  streck_fkt[z])];
+        (streck_fkt ? streck_fkt[z] : z)
+      end
+      #@chart.attach_to_y_right_axis(line.id)
+      #line.attach
+      # Funktioniert nicht:
+      # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
+      #@chart.set_tooltip("NULL", 2) #"["abs"]*30"NULL""
+      @chart.elements << line
+    end
   end
 
   def chart_kurven
@@ -245,6 +253,7 @@ class DiagrammeController < ApplicationController
     emd = @diagramm.einheiten_mit_diaquen
     
     @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|
+      streck_fkt = :binaer if diaquen.first.einheit.name == "bin"
       linien_hinzu(diaquen, streck_fkt)
       line = OFC::Line.new
       line.text = "      "
@@ -263,7 +272,7 @@ class DiagrammeController < ApplicationController
     akt_zeit
     chart_kurven
     init_diaquenauswahl
-   # macht folgende Zeile überflüssig
+    # macht folgende Zeile ï¿½berflï¿½ssig
     #@diagramm = Diagramm.find(params[:id])
     @titelzeile = @diagramm.name + " - KabDiag"
     respond_to do |format|
@@ -355,7 +364,7 @@ class DiagrammeController < ApplicationController
 
   def init_diaquenauswahl_fuer_view
     @freie_quellen = Quelle.alle_aktiven - @diagramm.quellen
-    @ausgewaehlte_diaquen = @diagramm.diaquen  
+    @ausgewaehlte_diaquen = @diagramm.diaquen
   end
 
   def quelle_rein

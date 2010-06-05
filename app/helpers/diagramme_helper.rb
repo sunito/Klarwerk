@@ -1,7 +1,7 @@
 module DiagrammeHelper
 
   def navigations_dauern(akt_zeit)
-    anzahl_weiter = 2
+    anzahl_weiter = 3
     laenger = (1..anzahl_weiter).inject([akt_zeit]) {|zeiten, idx| [zeiten.first.laenger] + zeiten}
     kuerzer = (1..anzahl_weiter).inject([akt_zeit]) {|zeiten, idx| zeiten + [zeiten.last.kuerzer]}
     dauern = (laenger + [akt_zeit] + kuerzer).map(&:dauer)
