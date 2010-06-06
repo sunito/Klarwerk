@@ -7,7 +7,7 @@ require wurzel + '/app/models/einheit'
 require wurzel + '/app/models/quelle'
 require wurzel + '/config/initializers/inflections'
 
-log_dateiname=wurzel + "/log/wert-sp_#{Time.now.strftime('-%y%m%d-%H%M')}.log"
+log_dateiname=wurzel + "/log/wert-sp_#{Time.now.strftime('%Y%m%d-%H%M')}.log"
 $prot_datei = File.open(log_dateiname, "w")
 
 puts "Werte-Aufnehmer gestartet

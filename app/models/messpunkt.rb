@@ -55,14 +55,15 @@ class Messpunkt < ActiveRecord::Base
     if mpunkte_im_intervall.empty? or mpunkte_im_intervall.first.zeit > zeit.vonzeit + zeit.dauer/100 then
 
       mpunkte_im_intervall_davor = if mpunkte_im_intervall.size > 0 then
-        dauer_fuer_etwa_10_mpunkte = zeit.dauer * 10.0 / mpunkte_im_intervall.size
+        dauer_fuer_etwa_10_mpunkte = zeit.dauer * 100.0 / mpunkte_im_intervall.size
         geschaetzte_10_mpunkte_zurueck = zeit.vonzeit - dauer_fuer_etwa_10_mpunkte.to_i
         finde_von_bis.call(geschaetzte_10_mpunkte_zurueck, zeit.vonzeit)
       else
         []
       end
       if mpunkte_im_intervall_davor.empty? then
-        mpunkte_im_intervall_davor = finde_von_bis.call(Time.local(2000,4,28), zeit.vonzeit)
+        p ["empty"]
+        mpunkte_im_intervall_davor = finde_von_bis.call(zeit.vonzeit - 1.days, zeit.vonzeit)
       end
       mpunkt_davor = mpunkte_im_intervall_davor.last
       if mpunkt_davor then

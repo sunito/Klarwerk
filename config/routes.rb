@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :diagramme, :has_many => :diaquen  # Verschachtelt ("nested ressource")
   map.resources :diaquen  # Damit sind die diaquen auch nichtverschachtelt zugreifbar.
 
+  map.showfix 'diagramme/:id/showfix', :controller => 'diagramme', :action => 'showfix'
+
   map.expert_modus 'expert_modus/:zustand', :controller => 'expert', :action => 'schalten'
   map.quelle_rein 'diagramme/:id/dauer/:dauer', :controller => 'diagramme', :action => 'dauer'
   map.quelle_rein 'diagramme/:id/quelle_rein/:quelle_id', :controller => 'diagramme', :action => 'quelle_rein'

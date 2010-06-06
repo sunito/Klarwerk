@@ -7,6 +7,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme
   # GET /diagramme.xml
   def index
+    session[:akt_zeit] = Zeit::STANDARDZEIT
     @diagramme = Diagramm.find(:all)
   end
 
@@ -206,7 +207,7 @@ class DiagrammeController < ApplicationController
     #chart.set_x_label_style(10, '#9933CC',2,2)
   end
 
-  def linien_hinzu(diaquen, streck_fkt)
+  def linien_hinzu(diaquen, streck_fkt_param)
     diaquen.each_with_index do |diaque, idx|
 
       kurve = Kurve.new(diaque, akt_zeit)
@@ -221,11 +222,23 @@ class DiagrammeController < ApplicationController
         neue_liste << (wert || neue_liste.last)
       end
 
-      if streck_fkt == :binaer
-        streck_fkt = proc {|x| ( x > 0.5 ? 1 : 0 ) * 20 + 40 * idx + 300 }
+      streck_fkt = if diaque.quelle.einheit.name =~ /aus.*ein/i
+        einheit = diaque.quelle.einheit
+        max = einheit.max
+        min = einheit.min
+        binaer_hoehe = 0.05
+        proc {|z| z && min + (max-min) * ( 1 - (2*idx+1)  * binaer_hoehe + binaer_hoehe * (z>0.5 ? 1 : 0 ) ) }
+      end
+      if streck_fkt_param
+        streck_fkt = if streck_fkt 
+          sf = streck_fkt
+          proc {|z| streck_fkt_param[sf[z]]}
+        else
+          streck_fkt_param
+        end          
       end
       line.values = aufgefuellte_linien_daten.map do |z|
-        p [z, (streck_fkt &&  streck_fkt[z])];
+        #p ["z, z-streck", z, (streck_fkt &&  streck_fkt[z])];
         (streck_fkt ? streck_fkt[z] : z)
       end
       #@chart.attach_to_y_right_axis(line.id)
@@ -252,8 +265,7 @@ class DiagrammeController < ApplicationController
     streck_fkt = nil
     emd = @diagramm.einheiten_mit_diaquen
     
-    @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|
-      streck_fkt = :binaer if diaquen.first.einheit.name == "bin"
+    @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|      
       linien_hinzu(diaquen, streck_fkt)
       line = OFC::Line.new
       line.text = "      "
@@ -265,6 +277,11 @@ class DiagrammeController < ApplicationController
     setze_xlabels #(kurve)
   end
 
+  def showfix
+    session[:akt_zeit] = Zeit::STANDARDZEIT
+    redirect_to :action => "show"
+  end
+  
 
   # GET /diagramme/1
   # GET /diagramme/1.xml
