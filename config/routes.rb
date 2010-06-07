@@ -4,6 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :quellen
   map.aktiv_umschalten 'quellen/:id/aktiv_umschalten', :controller => 'quellen', :action => 'aktiv_umschalten'
+  map.werte_generieren 'quellen/:id/generiere/:tage/:tage_zurueck', :controller => 'quellen', :action => 'generiere'
 
   map.resources :zeiten
 

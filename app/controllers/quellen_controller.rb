@@ -92,4 +92,18 @@ class QuellenController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+
+  def generiere
+    @quelle = Quelle.find(params[:id])
+    zeitraum = Zeit.new
+    zeitraum.dauer = params[:tage].to_i.days
+    if zeitraum.dauer == 0
+      return redirect_to :action => "index"
+    end
+    zeitraum.bis = Time.now - params[:tage_zurueck].to_i.days if params[:tage_zurueck]
+    @quelle.generiere_zufaellig(zeitraum)
+    redirect_to :controller => "messpunkte", :action => "index"
+  end
+
 end

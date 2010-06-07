@@ -1,5 +1,6 @@
 class DiagrammeController < ApplicationController
-
+  OFC = self
+  
   def akt_zeit
     session[:akt_zeit] ||= Zeit.die_aktuelle
   end
@@ -136,8 +137,8 @@ class DiagrammeController < ApplicationController
       #      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
 
 
-      #      y_achse = YAxisRight.new
-      y_achse = YAxis.new
+      y_achse = YAxisRight.new
+      #y_achse = YAxis.new
       #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
       # Workaraund
       g = zweite_einheit.groeszenordnung
@@ -146,7 +147,7 @@ class DiagrammeController < ApplicationController
 
       schritt_weite = zweite_einheit.schritt_fuer_anzahl(20)
       #y_achse.steps = 20 #zweite_einheit.schritt_fuer_anzahl(20)
-      y_achse.labels = (y_achse.min.to_i..y_achse.max.to_i).to_a.map {|i| i % schritt_weite == 0 ? i : nil}.compact
+      y_achse.labels = (zweite_einheit.min.to_i..zweite_einheit.max.to_i).to_a.map {|i| i % schritt_weite == 0 ? i : nil}.compact
       #p [:abstand, abstand]
       chart.y_axis_right = y_achse
 
@@ -230,10 +231,12 @@ class DiagrammeController < ApplicationController
         proc {|z| z && min + (max-min) * ( 1 - (2*idx+1)  * binaer_hoehe + binaer_hoehe * (z>0.5 ? 1 : 0 ) ) }
       end
       if streck_fkt_param
-        streck_fkt = if streck_fkt 
+        #streck_fkt =
+        if streck_fkt
           sf = streck_fkt
           proc {|z| streck_fkt_param[sf[z]]}
         else
+          line.attach_to_right_y_axis
           streck_fkt_param
         end          
       end
@@ -246,14 +249,15 @@ class DiagrammeController < ApplicationController
       # Funktioniert nicht:
       # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
       #@chart.set_tooltip("NULL", 2) #"["abs"]*30"NULL""
-      @chart.elements << line
+      @chart.add_element line
     end
   end
 
   def chart_kurven
     #self.extend OFC
     @diagramm = Diagramm.find(params[:id])
-    @chart = OFC::OpenFlashChart.new
+    #@chart = OFC::OpenFlashChart.new
+    @chart = OpenFlashChart.new
     @chart.title = {:text => @diagramm.name , :style => "{font-size: 30px;}"}
     @chart.elements = []
     @streckungs_funktion = nil
@@ -270,7 +274,7 @@ class DiagrammeController < ApplicationController
       line = OFC::Line.new
       line.text = "      "
       line.colour = "ffffff"
-      @chart.elements << line
+      @chart.add_element line
       streck_fkt = @streckungs_funktion
     end
 

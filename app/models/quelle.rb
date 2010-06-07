@@ -27,6 +27,21 @@ class Quelle < ActiveRecord::Base
       q.save!
     end
     q
-  end    
+  end
+
+  def generiere_zufaellig(zeit)
+    anzahl = 200
+    bereich_dauer = zeit.dauer/(anzahl/4)
+    (anzahl/4).times do |bereich_nr|
+      bereich_anfang = zeit.vonzeit + bereich_nr * bereich_dauer
+      4.times do 
+        punkt = Messpunkt.new
+        punkt.sekzeit = (bereich_anfang + rand * bereich_dauer).to_i
+        punkt.quelle = self
+        punkt.zahl = einheit.min + (einheit.hub * rand)
+        punkt.save
+      end
+    end
+  end
 
 end
