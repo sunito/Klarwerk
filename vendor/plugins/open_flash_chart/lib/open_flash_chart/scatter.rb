@@ -1,7 +1,7 @@
 module OpenFlashChart
 
   class ScatterValue < Base
-    def initialize(x,y,dot_size=nil, args={})
+    def initialize(x,y,dot_size=-1, args={})
       super args
       @x = x
       @y = y
@@ -10,10 +10,11 @@ module OpenFlashChart
   end
 
   class Scatter < Base
-    def initialize(colour, dot_size, args={})
+    def initialize(colour, dot_style=nil, args={})
       @type = "scatter"
       @colour = colour
-      @dot_size = dot_size
+      @dot_style = dot_style
+      @values = []
       super args
     end
   end
