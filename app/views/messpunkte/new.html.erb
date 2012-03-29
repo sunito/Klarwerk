@@ -9,11 +9,14 @@
   </p>
   <p>
     <%= f.label :wert %><br />
-    <%= f.text_field :wert %>
+    <%= f.text_field :wert, :value => rand(100) %>
   </p>
   <p>
     <%= f.label :quelle_id %><br />
-    <%= f.select :quelle_id, Quelle.alle_aktiven.collect {|q| [ q.name, q.id ] } %>
+    <% alle_quellen = Quelle.alle_aktiven.collect {|q| [ q.name, q.id ] } %>
+    <% akt_quelle_id = session[:akt_quelle_id] %>
+    <% if akt_quelle_id.nil? then akt_quelle_id = alle_quellen.first.last end %>
+    <%= f.select :quelle_id, alle_quellen, :selected => akt_quelle_id %>
   </p>
   <p>
     <%= f.submit "Create" %>

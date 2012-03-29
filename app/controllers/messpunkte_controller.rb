@@ -41,7 +41,8 @@ class MesspunkteController < ApplicationController
   # POST /messpunkte.xml
   def create
     @messpunkt = Messpunkt.new(params[:messpunkt])
-
+    session[:akt_quelle_id] = @messpunkt.quelle_id
+    
     respond_to do |format|
       if @messpunkt.save
         flash[:notice] = 'Messpunkt was successfully created.'
