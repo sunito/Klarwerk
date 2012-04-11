@@ -53,10 +53,10 @@ module PickyColor
       options[:id] ||= name
     
       
-      input = tag :input, {"type" => "text", 
-                   "id" => options[:id], 
-                   "name" => name,
-                   "value" => value}.update(options.stringify_keys)
+      input = tag :input, {"type"  => "text", 
+                           "id"    => options[:id], 
+                           "name"  => name,
+                           "value" => value}.update(options.stringify_keys)
 
       return picky_color_output(input, name, nil, options[:id], picky_options)
     end

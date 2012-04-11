@@ -1,5 +1,7 @@
 require 'test_helper'
 
+#!# Diese Zeitmodellierung mag funktionieren, schön aber ist sie nicht!
+
 class ZeitTest < ActiveSupport::TestCase
   def setup
 

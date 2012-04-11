@@ -63,7 +63,6 @@ class WerteNotierer
     end
     @bei_werteingang = proc do |*args|
       begin
-        #p "@stopsignal_erhalten=#{stopsignal_erhalten}"
         verbindung, typ, adr, wert = *args
         
         if typ != "GV" then
@@ -87,7 +86,6 @@ class WerteNotierer
             $prot_datei.puts "nicht gesp:" + args.inspect
           end
           #dyn_neu = Messpunkt.find(dyn.id-5)
-          #p ["Eingang:", wert]
 
           #$prot_datei.puts "#{Time.now.strftime('%H:%M:%S')} #{args.inspect}"
         end
@@ -112,7 +110,6 @@ class WerteNotierer
     #@fiavis = nil
 
     @stopsignal_erhalten = true
-    #p "@stopsignal_erh=#{@stopsignal_erhalten}"
   $prot_datei.puts :ende_stop
   end
 
