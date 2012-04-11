@@ -25,7 +25,10 @@ class MesspunkteController < ApplicationController
   # GET /messpunkte/new.xml
   def new
     @messpunkt = Messpunkt.new
-
+    @akt_quelle_id = session[:akt_quelle_id]
+    @alle_quellen = Quelle.alle_aktiven.collect {|q| [ q.name, q.id ] }
+    if @akt_quelle_id.nil? then @akt_quelle_id = @alle_quellen.first.last end
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @messpunkt }
