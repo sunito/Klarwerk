@@ -76,6 +76,7 @@ class MesspunkteController < ApplicationController
   end
 
   # DELETE /messpunkte/1
+  # Test
   # DELETE /messpunkte/1.xml
   def destroy
     @messpunkt = Messpunkt.find(params[:id])
