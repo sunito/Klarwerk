@@ -4,4 +4,6 @@
 nbproject*
 Thumbs.db
 .directory
-
+*.tar.*
+*.zip
+*.tgz
