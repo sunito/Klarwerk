@@ -14,22 +14,27 @@ GRANT ALL PRIVILEGES ON kabdiag_aktuell.* TO 'kab'@'localhost';
 Setting MySQL to UTF-8
 ----------------------
 
-Add the following 2 lines to your my.cnf option file (usually located under /etc/mysql/my.cnf)
+# Add the following 2 lines to your my.cnf option file (usually located under /etc/mysql/my.cnf)
 
-at the end of [client] section, add:
+# at the end of [client] section, add:
 
     default-character-set = utf8
 
-at the end of [mysqld] section, add:
+# at the end of [mysqld] section, add:
 
     character-set-server = utf8
 
-and restart your mysql server.
+# and restart your mysql server.
 
-> mysql -u root -p
-mysql> show variables like '%char%';
+# start the client.
 
-you should see the following:
+mysql -u root -p
+
+# show the textcodes
+
+    show variables like '%char%';
+
+# you should see the following:
 
 Code:
 
