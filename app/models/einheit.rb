@@ -16,10 +16,11 @@ class Einheit < ActiveRecord::Base
     ( erg_exakt / grob).round * grob
   end
   
-  def Einheit.auto_einheit(wert)
-    return find(:first)
+  def Einheit.auto_einheit(wert) # wert kann ein Float, Integer oder String sein
     return find(:first) if not wert
-    if wert == "0" or wert == "1" then
+    wert = wert.to_f
+    return find(:first)
+    if wert == 0 or wert == 1 then
       einheit_01 = find_by_min_and_max(0, 1)
       if false and not einheit_01 then
         einheit_01 = new
@@ -35,7 +36,7 @@ class Einheit < ActiveRecord::Base
       end
       einheit_01
     else
-      zahl = wert.to_f
+      zahl = wert
       einheit = find(:all).to_a.find {|e| (e.min||0) < zahl and (!e.max or zahl < e.max) }
       if false and not einheit then
         einheit = new

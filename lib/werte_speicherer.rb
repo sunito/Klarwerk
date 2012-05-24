@@ -66,28 +66,16 @@ class WerteNotierer
         verbindung, typ, adr, wert = *args
         
         if typ != "GV" then
-        #$prot_datei.puts args
-
-          #dp = @dyn_klasse.new <-- funktioniert nicht!!
           mpunkt = Object.const_get(@dyn_klassenname).new
-          # im Prinzip also: dp = Dyn.new
-
           zeit = Time.now
-          mpunkt.sekzeit = zeit.to_i
-
           
+          mpunkt.sekzeit = zeit.to_i          
           mpunkt.quelle = Quelle.auto_quelle(adr, wert)
-          #dp.verbindung = verbindung
-          #dp.adr = adr
-          #dp.typ = typ
           mpunkt.zahl = wert.gsub(",", ".").to_f
           if not mpunkt.save then
             $prot_datei.puts "!" * 40
             $prot_datei.puts "nicht gesp:" + args.inspect
           end
-          #dyn_neu = Messpunkt.find(dyn.id-5)
-
-          #$prot_datei.puts "#{Time.now.strftime('%H:%M:%S')} #{args.inspect}"
         end
         
         $stdout.flush
