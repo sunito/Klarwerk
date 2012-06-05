@@ -7,3 +7,4 @@ Thumbs.db
 *.tar.*
 *.zip
 *.tgz
+db/*
