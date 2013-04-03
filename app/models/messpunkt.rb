@@ -1,5 +1,6 @@
 class Messpunkt < ActiveRecord::Base
-  set_table_name :punkte
+  establish_connection Rails.configuration.database_configuration["messpunkte_sqlite"]
+  #set_table_name :punkte
   belongs_to :quelle
   composed_of :zeit, :class_name => "Time"
   

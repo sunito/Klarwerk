@@ -42,7 +42,12 @@ class WerteNotierer
     @dyn_klassenname = dyn_klasse.name
 
 
+    @dyn_klasse.establish_connection(Rails.configuration.database_configuration["messpunkte_sqlite"])
 
+    p "Verbindung zur Datenbank hergestellt."
+    p @dyn_klasse.connection
+
+=begin
     conn =
       {
                 :adapter => "sqlite3",
@@ -50,14 +55,10 @@ class WerteNotierer
                 :pool =>  5,
                 :timeout =>  5000,
       }
+=end
 
-    @dyn_klasse.establish_connection(conn)
-
-    p "Verbindung zur Datenbank hergestellt."
-    p @dyn_klasse.connection
-
-    Quelle.establish_connection(conn)
-    Einheit.establish_connection(conn)
+#    Quelle.establish_connection(conn)
+ #   Einheit.establish_connection(conn)
   end
 
   attr_reader :stopsignal_erhalten
@@ -71,7 +72,7 @@ class WerteNotierer
         zeit = Time.now
 
         mpunkt.sekzeit = zeit.to_i
-        mpunkt.quelle = Quelle.auto_quelle(adr, wert)
+        #!!db!! mpunkt.quelle = Quelle.auto_quelle(adr, wert)
         mpunkt.zahl = wert
         if not mpunkt.save then
           $prot_datei.puts "!" * 40
