@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Messpunkt < ActiveRecord::Base
   establish_connection Rails.configuration.database_configuration["messpunkte_sqlite"]
   #set_table_name :punkte
@@ -25,7 +27,7 @@ class Messpunkt < ActiveRecord::Base
     if not q then
       q = Quelle.new
       q.adr = adresse
-      q.name = "Messgröße für #{adresse}"
+      q.name = "Messgroesze fuer #{adresse}"
       q.beschr = q.name + ", generiert am #{Time.now}."
       q.typ = "unbekannt"
       q.einheit = Einheit.auto_einheit
