@@ -21,9 +21,10 @@ if :log
   $stderr = $prot_datei
 end
 
-unless `ps -ef`  =~ /eibd/
+unless `ps -ef`  =~ /eibd /
   $eibd = IO.popen("eibd  -t1023 -i ipt:192.168.1.5")
   puts "eibd gestartet"
+  sleep 0.3
 end  
 $socket_listener = IO.popen("groupsocketlisten ip:localhost")
 puts "listener gestartet"
@@ -42,7 +43,7 @@ class WerteNotierer
     @dyn_klassenname = dyn_klasse.name
 
 
-    @dyn_klasse.establish_connection(Rails.configuration.database_configuration["messpunkte_sqlite"])
+#    @dyn_klasse.establish_connection(Rails.configuration.database_configuration["messpunkte_sqlite"])
 
     p "Verbindung zur Datenbank hergestellt."
     p @dyn_klasse.connection
@@ -72,7 +73,8 @@ class WerteNotierer
         zeit = Time.now
 
         mpunkt.sekzeit = zeit.to_i
-        #!!db!! mpunkt.quelle = Quelle.auto_quelle(adr, wert)
+        #!!db!! 
+        mpunkt.quelle = Quelle.auto_quelle(adr, wert)
         mpunkt.zahl = wert
         if not mpunkt.save then
           $prot_datei.puts "!" * 40
@@ -89,17 +91,20 @@ class WerteNotierer
     end
 
     eigener_haupt_ordner = File.dirname(File.dirname(__FILE__))
-    File.open(File.expand_path("test/fixtures/werte.txt", eigener_haupt_ordner)) 
-    loop do 
-      15.times do |i|
+    # File.open(File.expand_path("test/fixtures/werte.txt", eigener_haupt_ordner)) 
+#    loop do 
+      15000.times do |i|
         puts
         print "Zeile #{i}: "
         w = $socket_listener.gets
-        next if i < 10
+        puts w.inspect
+        #next if i < 10
         break if w.nil?
 
         adresse = w.split[4]
-        werte = w.split[5,6]
+        werte = begin w.split[5,6] || [-17] rescue [42] end
+        #print "Werte >>#{werte.inspect}<<"
+        #puts
         print adresse
         print werte.join("").to_i(16).to_s   +   " "
         
@@ -107,7 +112,7 @@ class WerteNotierer
         @bei_werteingang.call(adresse, float_wert)
         print float_wert
       end
-    end
+#    end
 
   end
 
