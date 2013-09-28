@@ -8,6 +8,6 @@ class CreateMesspunkte < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :punkte
+    drop_table :messpunkte
   end
 end
