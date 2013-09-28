@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090520131533) do
+ActiveRecord::Schema.define(:version => 20130928004755) do
 
   create_table "diagramme", :force => true do |t|
     t.string   "name"
@@ -35,15 +35,8 @@ ActiveRecord::Schema.define(:version => 20090520131533) do
     t.float    "max"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "gequantelt"
   end
-
-  create_table "punkte", :force => true do |t|
-    t.integer "quelle_id"
-    t.integer "sekzeit"
-    t.float   "zahl"
-  end
-
-  add_index "punkte", ["quelle_id", "sekzeit"], :name => "index_punkte_on_quelle_id_and_sekzeit"
 
   create_table "quellen", :force => true do |t|
     t.string   "adresse"

@@ -5,6 +5,7 @@
     <TD>Bezeichnung</th></TD>
     <TD>Min</TD>
     <TD>Max</TD>
+    <TD>Gequantelt?</TD>
     <TD></TD>
     <TD></TD>
     <TD>Beschreibung</TD>
@@ -15,6 +16,7 @@
     <td><%=h einheit.name %></td>
     <td><%=h einheit.min %></td>
     <td><%=h einheit.max %></td>
+    <td><%=h(einheit.gequantelt? ? "gequantelt" : "")%></td>
     <td><%= link_to 'bearbeiten', edit_einheit_path(einheit) %></td>
     <td><%= link_to 'l&ouml;schen', einheit, :confirm => 'Siind Sie sicher?', :method => :delete %></td>
     <td><%=h einheit.beschreibung %></td>

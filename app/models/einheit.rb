@@ -9,6 +9,12 @@ class Einheit < ActiveRecord::Base
     10   **   ((hub / 3.0).to_i.to_s.size - 1)
   end
 
+  def gequantelt?
+    if gequantelt then
+      gequantelt.to_f > 0
+    end
+  end
+
   def schritt_fuer_anzahl(anzahl)
     return 1 unless anzahl > 0
     erg_exakt = hub / anzahl
