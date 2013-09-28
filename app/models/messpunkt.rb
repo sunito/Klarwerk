@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class Messpunkt < ActiveRecord::Base
-  establish_connection Rails.configuration.database_configuration["messpunkte_sqlite"]
+  establish_connection Rails.configuration.database_configuration["messpunkte"]
   #set_table_name :punkte
   belongs_to :quelle
   composed_of :zeit, :class_name => "Time"
