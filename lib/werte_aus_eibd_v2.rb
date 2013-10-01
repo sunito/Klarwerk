@@ -105,9 +105,12 @@ class WerteNotierer
         werte = begin w.split[5,6] || [-17] rescue [42] end
         #print "Werte >>#{werte.inspect}<<"
         #puts
-        adr_teile = adresse.split("/")
-        adr_teile[2] = ("00" + adr_teile[2])[-3..-1]
-        adresse = adr_teile.join("/")
+        
+        adresse = adresse.split("/").zip([2,1,3]).map do |teil_adr, stellen|
+          "%0#{stellen}d" % teil_adr.to_i
+        end.join("/")
+        #adr_teile[2] = ("00" + adr_teile[2])[-3..-1]
+        #adresse = adr_teile.join("/")
         print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
         
