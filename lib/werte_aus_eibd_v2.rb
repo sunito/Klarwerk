@@ -105,7 +105,10 @@ class WerteNotierer
         werte = begin w.split[5,6] || [-17] rescue [42] end
         #print "Werte >>#{werte.inspect}<<"
         #puts
-        print adresse
+        adr_teile = adresse.split("/")
+        adr_teile[2] = ("00" + adr_teile[2])[-3..-1]
+        adresse = adr_teile.join("/")
+        print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
         
         float_wert = werte.join("").to_i(16).to_f/1000
