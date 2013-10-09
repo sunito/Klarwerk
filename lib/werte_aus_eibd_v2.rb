@@ -93,7 +93,8 @@ class WerteNotierer
     eigener_haupt_ordner = File.dirname(File.dirname(__FILE__))
     # File.open(File.expand_path("test/fixtures/werte.txt", eigener_haupt_ordner)) 
 #    loop do 
-      15000.times do |i|
+    begin
+      1_000_000_000_000.times do |i|
         puts
         print "Zeile #{i}: "
         w = $socket_listener.gets
@@ -114,11 +115,15 @@ class WerteNotierer
         print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
         
-        float_wert = werte.join("").to_i(16).to_f/1000
+        float_wert = werte.join("").to_i(16).to_f/100
         @bei_werteingang.call(adresse, float_wert)
         print float_wert
       end
-#    end
+    rescue
+      puts "Abbruch #{$!}"
+      $prot_datei.puts $!
+      $prot_datei.puts $!.backtrace.first(16)
+    end
 
   end
 
