@@ -103,7 +103,7 @@ class WerteNotierer
         break if w.nil?
 
         adresse = w.split[4].chomp(":")
-        werte = begin w.split[5,6] || [-17] rescue [42] end
+        werte = begin w.split[5,6] || [-17] rescue [-42] end
         #print "Werte >>#{werte.inspect}<<"
         #puts
         
