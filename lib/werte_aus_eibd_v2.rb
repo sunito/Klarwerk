@@ -103,7 +103,7 @@ class WerteNotierer
         break if w.nil?
 
         adresse = w.split[4].chomp(":")
-        werte = begin w.split[5,6] || [-17] rescue [42] end
+        werte = begin w.split[5,6] || [-17] rescue [-42] end
         #print "Werte >>#{werte.inspect}<<"
         #puts
         
@@ -114,8 +114,17 @@ class WerteNotierer
         #adresse = adr_teile.join("/")
         print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
-        
-        float_wert = werte.join("").to_i(16).to_f/100
+        float_wert = case werte.size 
+        when 1 then werte[0].to_i(16)
+        when 2 then 
+          int_roh = werte.join("").to_i(16)
+          negativ  = (int_roh & 0x8000) > 0
+          exponent = (int_roh & 0x7800) >> 11
+          mantisse = (int_roh & 0x07FF)
+          mantisse -= (1 << 11) if negativ 
+          (mantisse << exponent)
+        end.to_f/100
+
         @bei_werteingang.call(adresse, float_wert)
         print float_wert
       end
