@@ -115,15 +115,18 @@ class WerteNotierer
         print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
         float_wert = case werte.size 
-        when 1 then werte[0].to_i(16)
+        when 1 then 
+          werte[0].to_i(16)
         when 2 then 
           int_roh = werte.join("").to_i(16)
           negativ  = (int_roh & 0x8000) > 0
           exponent = (int_roh & 0x7800) >> 11
           mantisse = (int_roh & 0x07FF)
           mantisse -= (1 << 11) if negativ 
-          (mantisse << exponent)
-        end.to_f/100
+          (mantisse << exponent) / 100
+        else
+          raise "Zu viele (#{werte.size} Stück) Hexwerte (#{werte}) in Eibd-Zeile: #{w}"
+        end.to_f
 
         @bei_werteingang.call(adresse, float_wert)
         print float_wert
