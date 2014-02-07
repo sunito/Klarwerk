@@ -223,22 +223,23 @@ class DiagrammeController < ApplicationController
         neue_liste << (wert || neue_liste.last)
       end
 
-      streck_fkt = if diaque.quelle.einheit.name =~ /aus.*ein/i
-        einheit = diaque.quelle.einheit
+      dual_streck_fkt = if diaque.quelle.einheit.name =~ /aus.*ein/i
+        einheit = @diagramm.haupt_einheit
         max = einheit.max
         min = einheit.min
-        binaer_hoehe = 0.05
-        proc {|z| z && min + (max-min) * ( 1 - (2*idx+1)  * binaer_hoehe + binaer_hoehe * (z>0.5 ? 1 : 0 ) ) }
+        binaer_anzahl = 10
+        #binaer_hoehe = 1.0 / binaer_anzahl/ 2
+        proc {|z| z && min + (max-min) * (binaer_anzahl - idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
       end
-      if streck_fkt_param
-        #streck_fkt =
-        if streck_fkt
-          sf = streck_fkt
-          proc {|z| streck_fkt_param[sf[z]]}
+      streck_fkt = dual_streck_fkt || if streck_fkt_param
+        if dual_streck_fkt
+          sf = dual_streck_fkt
+          #proc {|z| streck_fkt_param[sf[z]]}
         else
           line.attach_to_right_y_axis
           streck_fkt_param
-        end          
+          nil
+        end       
       end
       line.values = aufgefuellte_linien_daten.map do |z|
         #p ["z, z-streck", z, (streck_fkt &&  streck_fkt[z])];
