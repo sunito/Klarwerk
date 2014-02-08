@@ -125,7 +125,7 @@ class WerteNotierer
           exponent = (int_roh & 0x7800) >> 11
           mantisse = (int_roh & 0x07FF)
           mantisse -= (1 << 11) if negativ 
-          (mantisse << exponent) / 100
+          (mantisse << exponent) / 100.0
         else
           raise "Zu viele (#{werte.size} Stück) Hexwerte (#{werte}) in Eibd-Zeile: #{w}"
         end.to_f
