@@ -115,6 +115,8 @@ class WerteNotierer
         print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
         float_wert = case werte.size 
+        when 0 then
+          -42.0
         when 1 then 
           werte[0].to_i(16)
         when 2 then 
