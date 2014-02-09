@@ -3,7 +3,7 @@
 
 require 'active_record'
 
-wurzel = $RAILS_ROOT || File.dirname(File.dirname(File.dirname(__FILE__)))
+wurzel = $RAILS_ROOT || File.dirname(File.dirname(__FILE__))
 
 require wurzel + '/app/models/messpunkt'
 require wurzel + '/app/models/einheit'
