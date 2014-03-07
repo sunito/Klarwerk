@@ -96,7 +96,7 @@ class WerteNotierer
     begin
       1_000_000_000_000.times do |i|
         puts
-        print "Zeile #{i}: "
+        print "##{i}: "
         w = $socket_listener.gets
         puts w.inspect
         #next if i < 10
@@ -112,6 +112,7 @@ class WerteNotierer
         end.join("/")
         #adr_teile[2] = ("00" + adr_teile[2])[-3..-1]
         #adresse = adr_teile.join("/")
+        print Time.now.strftime("%F %T         ")
         print adresse + ": "
         print werte.join("").to_i(16).to_s   +   " "
         float_wert = case werte.size 
