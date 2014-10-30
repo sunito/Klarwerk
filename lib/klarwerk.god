@@ -22,6 +22,7 @@ God.watch do |w|
   w.dir = haupt_ordner
   w.log = haupt_ordner + '/log/god-rails.log'
   w.start = "script/server -e production -p3033"
+  w.stop_signal = "INT"
   w.keepalive
 end
 
@@ -31,5 +32,6 @@ God.watch do |w|
   w.gid = 'users'
   w.log = haupt_ordner + '/log/god-eibd.log'
   w.start = "eibd -t0 -i ipt:192.168.1.5"
+  w.stop_signal = "QUIT"
   w.keepalive
 end
