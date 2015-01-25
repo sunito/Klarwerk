@@ -11,40 +11,41 @@ require 'rake/testtask'
 
 require 'tasks/rails'
 
-DB2 = "messpunkte"
 
-namespace :db2 do
-  desc "Migriere die zweite Datenbank (extra für Messpunkte)"
+[1, 2].each do |db_num|
+db_id = "db#{db_num}".to_sym
+db_conf = [nil, "db1", "messpunkte"][db_num]
+namespace db_id do
+  desc "Migriere die #{db_num}. Messpunkte-Datenbank (#{db_id})"
   task :migrate => :environment do
-  	ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[DB2])
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[db_conf])
     ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
-    ActiveRecord::Migrator.migrate("db2/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
-    Rake::Task["db2:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
+    ActiveRecord::Migrator.migrate("#{db_id}/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+    Rake::Task["#{db_id}:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
   end
 
   namespace :schema do
-    desc "Create a db2/schema.rb file that can be portably used against any DB supported by AR"
+    desc "Create a #{db_id}/schema.rb file that can be portably used against any DB supported by AR"
     task :dump => :environment do
       require 'active_record/schema_dumper'
-   	  ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[DB2])
-#      File.open(ENV['SCHEMA'] || "#{RAILS_ROOT}/db2/schema.rb", "w") do |file|
-      File.open("#{RAILS_ROOT}/db2/schema.rb", "w") do |file|
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[db_conf]) 
+      File.open("#{RAILS_ROOT}/#{db_id}/schema.rb", "w") do |file|
         ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
       end
-      Rake::Task["db2:schema:dump"].reenable
+      Rake::Task["#{db_id}:schema:dump"].reenable
     end
 
     desc "Load a schema.rb file into the database"
     task :load => :environment do
-  	  ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[DB2])
+       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[db_conf])
 #      file = ENV['SCHEMA'] || "#{RAILS_ROOT}/db2/schema.rb"
-      file = "#{RAILS_ROOT}/db2/schema.rb"
+      file = "#{RAILS_ROOT}/#{db_id}/schema.rb"
       if File.exists?(file)
         load(file)
       else
-        abort %{#{file} doesn't exist yet. Run "rake db2:migrate" to create it then try again. If you do not intend to use a database, you should instead alter #{RAILS_ROOT}/config/environment.rb to prevent active_record from loading: config.frameworks -= [ :active_record ]}
+        abort %{#{file} doesn't exist yet. Run "rake #{db_id}:migrate" to create it then try again. If you do not intend to use a database, you should instead alter #{RAILS_ROOT}/config/environment.rb to prevent active_record from loading: config.frameworks -= [ :active_record ]}
       end
     end
   end
-
+end
 end

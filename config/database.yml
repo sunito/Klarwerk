@@ -23,6 +23,12 @@ development:
   pool: 5
   timeout: 5000
 
+db1:
+  adapter: sqlite3
+  database: db1/klarwerk_messpunkte.sqlite3
+  pool: 5
+  timeout: 5000
+
 messpunkte:
   adapter: sqlite3
   database: db2/klarwerk_messpunkte.sqlite3

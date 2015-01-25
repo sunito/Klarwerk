@@ -38,15 +38,18 @@ class Float
 end
 
 class WerteNotierer
-  def initialize(dyn_klasse)
-    @dyn_klasse = dyn_klasse
-    @dyn_klassenname = dyn_klasse.name
+  def initialize(*dyn_klassen)
+    @dyn_klassen = dyn_klassen
+    @dyn_klasse = dyn_klassen.first
+    @dyn_klassennamen = dyn_klassen.map{|dk| dk.name}
 
 
 #    @dyn_klasse.establish_connection(Rails.configuration.database_configuration["messpunkte_sqlite"])
 
-    p "Verbindung zur Datenbank hergestellt."
-    p @dyn_klasse.connection
+    p "Verbindung zu Datenbank(en) (#{@dyn_klassennamen}) hergestellt."
+    @dyn_klassen.each do |dy_klass|
+      p dy_klass.connection
+    end
 
 =begin
     conn =
@@ -69,16 +72,18 @@ class WerteNotierer
       begin
         adr, wert = *args
 
-        mpunkt = Object.const_get(@dyn_klassenname).new
         zeit = Time.now
+        quelle = Quelle.auto_quelle(adr, wert)
+        @dyn_klassennamen.each do |kl_name|
+          mpunkt = Object.const_get(kl_name).new
 
-        mpunkt.sekzeit = zeit.to_i
-        #!!db!! 
-        mpunkt.quelle = Quelle.auto_quelle(adr, wert)
+          mpunkt.sekzeit = zeit.to_i
+          mpunkt.quelle  = quelle
         mpunkt.zahl = wert
         if not mpunkt.save then
           $prot_datei.puts "!" * 40
-          $prot_datei.puts "nicht gesp:" + args.inspect
+          $prot_datei.puts "#{kl_name} nicht gesp:" + args.inspect
+        end
         end
 
         $stdout.flush
@@ -88,6 +93,7 @@ class WerteNotierer
       $prot_datei.puts $!.backtrace.first(6)
       $stdout.flush
       end
+
     end
 
     eigener_haupt_ordner = File.dirname(File.dirname(__FILE__))
@@ -197,6 +203,9 @@ class WerteNotierer
 
 end
 
+class MesspunktDb1 < Messpunkt
+  establish_connection Rails.configuration.database_configuration["db1"]
+end
 
-wn = WerteNotierer.new(Messpunkt)
+wn = WerteNotierer.new(Messpunkt, MesspunktDb1)
 wn.start
