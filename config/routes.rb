@@ -1,4 +1,29 @@
-ActionController::Routing::Routes.draw do |map|
+#ActionController::Routing::Routes.draw do |map|
+Klarwerk::Application.routes.draw do
+  resources :messpunkte
+  resources :einheiten
+ 
+  resources :quellen
+  match 'quellen/:id/aktiv_umschalten' => 'quellen#aktiv_umschalten', :as => :aktiv_umschalten
+  match 'quellen/:id/generiere/:tage/:tage_zurueck' => 'quellen#generiere', :as => :werte_generieren
+  
+  resources :zeiten
+  
+  resources :diagramme
+  resources :diaquen
+  
+  match 'diagramme/:id/showfix' => 'diagramme#showfix', :as => :showfix
+  
+  match 'expert_modus/:zustand' => 'expert#schalten', :as => :expert_modus
+  match 'diagramme/:id/dauer/:dauer' => 'diagramme#dauer', :as => :quelle_rein
+  match 'diagramme/:id/quelle_rein/:quelle_id' => 'diagramme#quelle_rein', :as => :quelle_rein
+  match 'diagramme/:id/quelle_raus/:quelle_id' => 'diagramme#quelle_raus', :as => :quelle_raus
+  
+  match '/' => 'diagramme#index'
+  
+  match '/:controller(/:action(/:id))'
+end
+__END__
   map.resources :messpunkte
   map.resources :einheiten
   

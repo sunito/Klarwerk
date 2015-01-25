@@ -11,15 +11,15 @@
             <% elsif dauer.nil? then %>
               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             <% else %>
-              &nbsp; <%= link_to_remote dauer_lesbar(dauer), :url => url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" }) %> &nbsp;
+              &nbsp; <%= link_to dauer_lesbar(dauer), :remote=>true, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" }) %> &nbsp;
           <% end %>
         <% end %>
       </TD>
       <TD valign="top" width="10%" align="right">
       </TD>
       <TD  valign="top" width="30%"  align="center">
-        <%= link_to_remote image_tag("arrow_left3.png",  :class => "navi_button"), :url => url_for({ :action => "links", :id => params[:id], :format => "js" }) %> <!--edit_kurve_path(@kurve) % | -->
-        <%= link_to_remote image_tag("arrow_right3.png", :alt => 'nach rechts',  :class => "navi_button"), :url => url_for({ :action => "rechts", :id => params[:id], :format => "js" }) %>
+        <%= link_to image_tag("arrow_left3.png",  :class => "navi_button"), :remote=>true, :url => url_for({ :action => "links", :id => params[:id], :format => "js" }) %> <!--edit_kurve_path(@kurve) % | -->
+        <%= link_to image_tag("arrow_right3.png", :alt => 'nach rechts',  :class => "navi_button"), :remote=>true, :url => url_for({ :action => "rechts", :id => params[:id], :format => "js" }) %>
       </TD>
       <TD WIDTH="5%">
       </TD>

@@ -1,5 +1,12 @@
 # Be sure to restart your server when you modify this file
 
+# Load the rails application
+require File.expand_path('../application', __FILE__)
+
+# Initialize the rails application
+Klarwerk::Application.initialize!
+
+__END__
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'

@@ -1,5 +1,5 @@
 <% form_for(@einheit) do |f| %>
-  <%= f.error_messages %>
+  <%= @einheit.errors.full_messages %>
 <TABLE  class="listenkopf">
   <TR>
     <TD>Bezeichnung</TD>

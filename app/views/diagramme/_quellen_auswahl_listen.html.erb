@@ -8,7 +8,7 @@
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
       <% @freie_quellen.each do |quelle| %>
         <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
-        <%= link_to_remote ">>",  :url =>quelle_rein_path(@diagramm.id, quelle.id), :update => "quellen_auswahl_listen" %>
+        <%= link_to ">>", :remote=>true,  :url =>quelle_rein_path(@diagramm.id, quelle.id), :update => "quellen_auswahl_listen" %>
       <BR>
       <% end %>
     </TD>
@@ -17,7 +17,7 @@
       <% f.fields_for :diaquen,  diaque do |diaque_f| %>
         <table><tr>
           <td>
-            <%= link_to_remote "<<", :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
+            <%= link_to "<<", :remote=>true, :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
           </td><td width="62">
             <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
           </td><td>

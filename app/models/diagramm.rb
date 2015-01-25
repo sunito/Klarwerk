@@ -68,7 +68,7 @@ class Diagramm < ActiveRecord::Base
   end
 
   def einheiten_mit_diaquen
-    returning Hash.new do |erg|
+    Hash.new.tap do |erg|
       diaquen.each do |dq|
         einheit = dq.quelle && dq.quelle.einheit
         erg[einheit] ||= []

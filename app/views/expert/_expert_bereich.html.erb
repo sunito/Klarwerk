@@ -1,5 +1,5 @@
 <!--
-<%= link_to_remote "Expertenmodus #{session[:expert_modus] ? 'de' : ''}aktivieren", :url => expert_modus_url(session[:expert_modus] ? "aus" : "ein"), :update => "expert_bereich" %>
+<%= link_to "Expertenmodus #{session[:expert_modus] ? 'de' : ''}aktivieren", :remote=>true, :url => expert_modus_url(session[:expert_modus] ? "aus" : "ein"), :update => "expert_bereich" %>
 <%= link_to "Expertenmodus #{session[:expert_modus] ? 'de' : ''}aktivieren", expert_modus_url(session[:expert_modus] ? "aus" : "ein") %>
 -->
 <%= link_to "Expertenmodus #{session[:expert_modus] ? 'de' : ''}aktivieren", :expert => (session[:expert_modus] ? "aus" : "ein") %>

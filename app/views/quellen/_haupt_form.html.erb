@@ -4,7 +4,7 @@
 <%= stylesheet_link_tag 'picky_color' %>
 
 <% form_for(@quelle) do |f| %>
-  <%= f.error_messages %>
+  <%= @quelle.errors.full_messages %>
 <table  class="listenkopf">
   <tr><td>
     <%= f.label :adresse %></td><td>

@@ -185,7 +185,7 @@ class DiagrammeController < ApplicationController
     when (18.hours .. 4.weeks)
       "%b-%d\n %H:%M"
     else
-      "%b-%d, %H��"
+      "%b-%d, %H--"
     end
     x_label_texte = (0..anz).map do |i|
       (akt_zeit.vonzeit + i*diff / anz).strftime(format)

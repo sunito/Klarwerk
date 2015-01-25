@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'test_help'
+require File.expand_path('../../config/environment', __FILE__)
+require 'rails/test_help'
+#require 'test_help'
 
 class ActiveSupport::TestCase
 # Dank an: http://www.themomorohoax.com/2008/12/17/rails-2-3-tests
