@@ -15,7 +15,7 @@
   <tr  class="<%= cycle('', 'un') + 'gerade'%>">
     <td  ><%= link_to diagramm.name, showfix_path(diagramm) %></td>
     <!--td  ><%=h diagramm.quellen.map(&:name).join(', ')%></td-->
-    <td  ><%= diagramm.quellen.map{|q| "<font color=\"##{q.farbe}\">#{q.name}</font>"}.join(', ')%></td>
+    <td  ><%=raw diagramm.quellen.map{|q| ("<font color=\"##{q.farbe}\">#{q.name}</font>")}.join(', ')%></td>
     <% if session[:expert_modus] then %>
       <td  ><%= link_to 'bearbeiten', edit_diagramm_path(diagramm) %></td>
       <td  ><%= link_to 'l&ouml;schen', diagramm, :confirm => 'Wollen Sie wirklich L&ouml;schen? Dann klicken Sie auf OK', :method => :delete %></td>
