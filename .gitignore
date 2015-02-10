@@ -1,14 +1,14 @@
-
 *.log
 *~
 nbproject*
+*.sublime-*
 Thumbs.db
 .directory
-*.tar.*
+*.tar*
 *.zip
 *.tgz
-db/*
+*.lock
+*.sqlite3
 # new from Rails 3:
-/db/*.sqlite3
 /tmp
 /.bundle
