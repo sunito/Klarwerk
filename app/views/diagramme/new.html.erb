@@ -1,7 +1,7 @@
 <h1>Neues Diagramm</h1>
 
 <% form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
-  <%= f.errors.full_messages %>
+  <%= f.error_messages %>
 
 <TABLE width="66%">
   <TR>
