@@ -1,6 +1,7 @@
 class Quelle < ActiveRecord::Base
   has_many :messpunkte
   belongs_to :einheit
+  attr_accessible :adresse, :name, :farbe, :variablen_art, :beschreibung, :einheit, :aktiv, :einheit_id
   
   def aktiv
     status && status > 0

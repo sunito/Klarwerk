@@ -1,6 +1,6 @@
 class Einheit < ActiveRecord::Base
   has_many :quellen
-
+  attr_accessible :name, :min, :max, :beschreibung
   def hub
     max - min
   end

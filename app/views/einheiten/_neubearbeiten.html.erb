@@ -1,5 +1,7 @@
-<% form_for(@einheit) do |f| %>
+<%= form_for(@einheit) do |f| %>
+  <% if @einheit.errors.full_messages != []%>
   <%= @einheit.errors.full_messages %>
+  <% end %>
 <TABLE  class="listenkopf">
   <TR>
     <TD>Bezeichnung</TD>
@@ -21,6 +23,4 @@
     <%= f.submit "Speichern" %>
   </p>
 <% end %>
-
-
 <%= link_to raw('Zur&uuml;ck zur Einheitenliste'), einheiten_path %>
