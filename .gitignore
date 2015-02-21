@@ -12,3 +12,4 @@ Thumbs.db
 # new from Rails 3:
 /tmp
 /.bundle
+.DS_Store
