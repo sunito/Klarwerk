@@ -18,6 +18,7 @@ gem 'execjs'
 gem 'therubyracer', :platforms => :ruby
 
 gem 'jquery-rails'
+gem 'lazy_high_charts'
 
 group :development do
   # bundler requires these gems in development

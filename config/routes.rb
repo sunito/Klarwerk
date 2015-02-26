@@ -1,7 +1,16 @@
 #ActionController::Routing::Routes.draw do |map|
 Klarwerk::Application.routes.draw do
+
+
+  get "probier/probier"
+
+  get "probier_controller/probier_view"
+
+  get "diagramm/index"
+
   resources :messpunkte
   resources :einheiten
+
  
   resources :quellen
   match 'quellen/:id/aktiv_umschalten' => 'quellen#aktiv_umschalten', :as => :aktiv_umschalten

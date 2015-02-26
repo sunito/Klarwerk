@@ -5,6 +5,7 @@ class Messpunkt < ActiveRecord::Base
   #set_table_name :punkte
   belongs_to :quelle
   composed_of :zeit, :class_name => "Time"
+  attr_accessible :sekzeit, :quelle_id, :zahl
   
   def wert
     zahl
