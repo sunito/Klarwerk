@@ -28,9 +28,12 @@
       <TD valign="top" width="10%" align="right">
       </TD>
       <TD  valign="top" width="15%"  align="center">
-        <%= link_to image_tag("arrow_left3.png", :class => "navi_button"), :remote=>true, :url => url_for({ :action => "links", :id => params[:id], :format => "js" }) %> <!--edit_kurve_path(@kurve) % | -->
+        <%= link_to image_tag("arrow_left3.png", :class => "navi_button"), 
+                    url_for(action: "links", id: params[:id], format: "js"), :remote=>true %> 
+        <!--edit_kurve_path(@kurve) % | -->
         <!--%= @chart.link_to_remote_ofc_load image_tag("arrow_left3.png",  :class => "gruenlink"), "my_chart_js_1", url_for({ :action => "links", :id => params[:id], :format => "json" }) %--> <!--edit_kurve_path(@kurve) % | -->
-        <%= link_to image_tag("arrow_right3.png", :alt => 'nach rechts',  :class => "navi_button"), :remote=>true, :url => url_for({ :action => "rechts", :id => params[:id], :format => "js" }) %>
+        <%= link_to image_tag("arrow_right3.png", :alt => 'nach rechts',  :class => "navi_button"), 
+                    url_for(:action => "rechts", :id => params[:id], :format => "js"), :remote=>true %>
       </TD>
       <TD WIDTH="2%"></TD>
     </TR>
