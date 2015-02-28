@@ -154,10 +154,10 @@ class DiagrammeController < ApplicationController
     end
   end
 
-  def setze_xlabels #(kurve)
+  def setze_xlabels(label_steps = 10) 
     #x_achse.set_range(kurve.von, kurve.bis, 60)
 
-    label_steps = 10
+    
     #      x_labels = OFC::XAxisLabels.new
     #      #x_labels.style
     #      x_labels.set_vertical()
@@ -170,7 +170,7 @@ class DiagrammeController < ApplicationController
 
     
     x_labelslabels = (0..anz).map do |i|
-      if i % 10 == 0
+      if i % label_steps == 0
         text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
       else
         text = ""
@@ -188,7 +188,11 @@ class DiagrammeController < ApplicationController
       "%b-%d, %H--"
     end
     x_label_texte = (0..anz).map do |i|
-      (akt_zeit.vonzeit + i*diff / anz).strftime(format)
+      if i % label_steps == 0
+        (akt_zeit.vonzeit + i*diff / anz).strftime(format)
+      else
+        ""
+      end
     end
 
     x_labels = OFC::XAxisLabels.new
@@ -206,6 +210,7 @@ class DiagrammeController < ApplicationController
     @chart.x_axis = x_achse
     #chart.x_label_style(10, '#9933CC',2,2)
     #chart.set_x_label_style(10, '#9933CC',2,2)
+    x_label_texte
   end
 
   def linien_hinzu(diaquen, streck_fkt_param)
@@ -282,6 +287,58 @@ class DiagrammeController < ApplicationController
     setze_xlabels #(kurve)
   end
 
+  def highchart_kurven
+    #self.extend OFC
+    @diagramm = Diagramm.find(params[:id])
+    emd = @diagramm.einheiten_mit_diaquen
+    #@chart = OFC::OpenFlashChart.new
+
+    @highchart = LazyHighCharts::HighChart.new('graph') do |hc|
+      hc.title :text => @diagramm.name #, :style => "{font-size: 30px;}"}
+
+      y_achsen_zaehler = 1
+      y_achsen = []
+      @diagramm.einheiten.each do |einheit|
+        y_achsen << {labels: {format: "{value} #{einheit.name}"}, title: {text: einheit.beschreibung}, opposite: (y_achsen_zaehler > 1)}
+        emd[einheit].each_with_index do |diaquen, dia_idx|
+          diaquen = [diaquen] unless diaquen.respond_to? :each
+          diaquen.each_with_index do |diaque, idx|
+            kurve = Kurve.new(diaque, akt_zeit)
+            aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
+              neue_liste << (wert || neue_liste.last)
+            end
+            hc.series type: 'line', name: diaque.quelle.name, point_start: kurve.von.to_i*1000, data: aufgefuellte_linien_daten
+            hc.y_axis y_achsen_zaehler
+            y_achsen_zaehler += 1
+          end
+        end
+      end
+      hc.x_axis type: 'datetime'
+      #hc.x_axis :categories => setze_xlabels(17) + ["e"] #, :labels => {:rotation => 315}
+      hc.y_axis y_achsen
+#      f.title({:text => "Werte vom #{tag}"}) #Problem: Wenn mehr als ein Tag angezeigt wird, wird als Titel nur Datum eines Tages angezeigt 
+    end      
+    @streckungs_funktion = nil
+    #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
+    #chart.set_title(@diagramm.name)
+
+#    setze_skalen(@chart)
+=begin    
+    streck_fkt = nil
+    emd = @diagramm.einheiten_mit_diaquen
+    
+    @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|      
+      linien_hinzu(diaquen, streck_fkt)
+      line = OFC::Line.new
+      line.text = "      "
+      line.colour = "ffffff"
+      @chart.add_element line
+      streck_fkt = @streckungs_funktion
+    end
+=end
+     #(kurve)
+  end
+
   def showfix
     session[:akt_zeit] = Zeit::STANDARDZEIT
     redirect_to :action => "show"
@@ -293,6 +350,7 @@ class DiagrammeController < ApplicationController
   def show
     akt_zeit
     chart_kurven
+    highchart_kurven
     init_diaquenauswahl
     # macht folgende Zeile �berfl�ssig
     #@diagramm = Diagramm.find(params[:id])
