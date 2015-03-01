@@ -19,6 +19,7 @@ gem 'therubyracer', :platforms => :ruby
 
 gem 'jquery-rails'
 gem 'lazy_high_charts'
+#gem 'chartkick'
 
 group :development do
   # bundler requires these gems in development

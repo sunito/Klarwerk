@@ -1,16 +1,19 @@
 
 <div id="grafik_bereich">
+    <% #line_chart ajja_path %>
+    <hr>
     <%= high_chart("div_diagramm", @highchart)%>
     <hr>
-    <%= high_chart("div_diagramm", @highchart).inspect%>
+    <% high_chart("div_diagramm", @highchart).inspect%>
     <hr>
   <!--%= @graph %-->
  
 
-    <%= @chart.js_open_flash_chart_object("my_chart_js_1", "100%", 800) %>
+    <% #@chart.js_open_flash_chart_object("my_chart_js_1", "100%", 800) %>
 
     <script type="text/javascript">
       function reload_chart() {
+
       tmp_= findSWF("my_chart_js_1");
       new Ajax.Request('<%= url_for(:action => "show", :id => params[:id], :format => "json") %>', {
         method    : 'get',

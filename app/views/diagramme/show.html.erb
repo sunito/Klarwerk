@@ -2,8 +2,17 @@
 <%= javascript_include_tag :all %>
 <!--script type="text/javascript" src="/javascripts/swfobject.js"></script-->
 
-<%= render :partial => "grafik" %>
- 
+<!--%= javascript_include_tag "javascripts/highcharts/highcharts.js", "chartkick" %-->
+<!--%= javascript_include_tag "highcharts", "chartkick" %-->
+<!--%= column_chart  name: 'test', data: [1,43,77,55,66,23,77,65] %-->
+<!--%= column_chart  name: 17, data: 22 %-->
+
+<div id="fehlerausgabe_div">
+ ok
+</div>
+<div id="grafik_container">
+  <%= render :partial => "grafik" %>
+</div>
 
 <!--%= link_to "open", {}, :target => "_blank" %-->
 <!--%= button_to_function 'Save', "window.blur();" %-->

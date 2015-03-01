@@ -24,7 +24,9 @@ class DiagrammeController < ApplicationController
   private
   def render_zeit_update
     chart_kurven
-    render :action => "update_zeit.rjs", :layout => false
+    highchart_kurven
+    #render :action => "update_zeit.rjs", :layout => false
+    render :action => "grafik_aktualisierer.js.erb", :layout => false
   end
 
   public
@@ -296,10 +298,16 @@ class DiagrammeController < ApplicationController
     @highchart = LazyHighCharts::HighChart.new('graph') do |hc|
       hc.title :text => @diagramm.name #, :style => "{font-size: 30px;}"}
 
-      y_achsen_zaehler = 1
+      y_achsen_zaehler = 0
       y_achsen = []
       @diagramm.einheiten.each do |einheit|
-        y_achsen << {labels: {format: "{value} #{einheit.name}"}, title: {text: einheit.beschreibung}, opposite: (y_achsen_zaehler > 1)}
+        y_achsen << {
+          labels: {format: "{value} #{einheit.name}"}, 
+          min: einheit.min, 
+          max: einheit.max, 
+          title: {text: einheit.beschreibung}, 
+          opposite: (y_achsen_zaehler > 0)
+        }
         emd[einheit].each_with_index do |diaquen, dia_idx|
           diaquen = [diaquen] unless diaquen.respond_to? :each
           diaquen.each_with_index do |diaque, idx|
@@ -337,6 +345,59 @@ class DiagrammeController < ApplicationController
     end
 =end
      #(kurve)
+  end
+
+  # nur eine Test-Action für Chartkick. Funktioniert, aber Chartkick ist einfach zu unflexibel
+  def ajja
+    @diagramm = Diagramm.find(params[:id])
+    p "params[:id]"
+    p params[:id]
+    p @diagramm
+    emd = @diagramm.einheiten_mit_diaquen
+    #@chart = OFC::OpenFlashChart.new
+
+    
+      #hc.title :text => @diagramm.name #, :style => "{font-size: 30px;}"}
+
+      alle_linien = nil
+      y_achsen_zaehler = 0
+      y_achsen = []
+      alle_linien = @diagramm.einheiten.map do |einheit|
+        y_achsen << {labels: {format: "{value} #{einheit.name}"}, title: {text: einheit.beschreibung}, opposite: (y_achsen_zaehler > 1)}
+        emd[einheit].map do |diaquen|
+          diaquen = [diaquen] unless diaquen.respond_to? :each
+            diaquen.map do |diaque|
+            aufgefuellte_linien_daten = {}
+            #kurve = Kurve.new(diaque, Zeit.finde_oder_neu(Time.new(2015,3,1, 11, 0), 3600*34))
+            kurve = Kurve.new(diaque, akt_zeit)
+            l_daten = kurve.linien_daten
+            p l_daten
+            letzter_wert = 0
+            l_daten.each_with_index do |wert, i|
+              z = kurve.von + ((kurve.bis - kurve.von) * i) / l_daten.size
+              aufgefuellte_linien_daten[z.to_s] ||= letzter_wert = (wert || letzter_wert) 
+            end
+#            hc.series type: 'line', name: diaque.quelle.name, point_start: kurve.von.to_i*1000, data: aufgefuellte_linien_daten
+ #           hc.y_axis y_achsen_zaehler
+            y_achsen_zaehler += 1
+            { name: diaque.quelle.name, data: aufgefuellte_linien_daten }
+          end
+        end
+      end.flatten
+  #    hc.x_axis type: 'datetime'
+      #hc.x_axis :categories => setze_xlabels(17) + ["e"] #, :labels => {:rotation => 315}
+   #   hc.y_axis y_achsen
+#      f.title({:text => "Werte vom #{tag}"}) #Problem: Wenn mehr als ein Tag angezeigt wird, wird als Titel nur Datum eines Tages angezeigt 
+    #end      
+    p :alle_linien
+    p alle_linien
+    render :json => alle_linien
+      #{"2013-02-10"=> 11, "2013-02-11"=> 6, "2013-02-12"=> 12, "2013-02-13"=> 5}#, 
+#                     library:
+ #                       {title:   "Company Performance",
+  #                       x_axis:   {title: "Date", gridlines: {count:3,color:"#CCC"}, format:"dd/MM/yy"}}, 
+   #                  discrete: true
+    #                ]#.to_json
   end
 
   def showfix

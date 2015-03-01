@@ -1,4 +1,31 @@
-# TODO Operate on the page object
-#page.replace :grafik_bereich, :partial => "grafik"
-
-#document.graph:___.update
+//document.body.childNodes[17].firstChild.textContent = ("<%= @highchart.series_data[0][:data].inspect %>");
+//neu_json = '<%=raw @highchart.series_data.to_json %>';
+//neu_json = '<%=raw @highchart.to_json %>';
+//alert(neu_json);
+//$("#fehlerausgabe_div").html(" <b>ok" +  "</b>");// json: " + neu_json);
+try{
+  <%= raw high_chart("div_diagramm", @highchart).gsub(/<[^<>]+>/,'') %>
+//  neue_daten = JSON.parse( neu_json );
+} catch(e) {
+  alert(e);
+  $("#fehlerausgabe_div").html("Fehler: <b>" + e + "</b>");
+}
+//chart = window.chart_div_diagramm;
+/*
+try {
+  for (index = 0; index < neue_daten.length; index++) {
+    //chart.series[index].setData(neue_daten[index]["data"], false);
+    window.chart_div_diagramm = new HighCharts.Chart( neue_daten );
+  }    
+} catch(e) {
+  $("#fehlerausgabe_div").html("Fehler beim Ersetzen: <b>" + e + "</b> json: " + neu_json);	
+}
+*/
+//window.chart_div_diagramm.redraw();
+//chart.redraw();
+try {
+  $("#aktuelle_zeit").html("<%= j(render('aktuelle_zeit')) %>");
+} catch(e) {
+  //alert(e);
+  $("#fehlerausgabe_div").html("Fehler beim Zeit-Aktualisieren: <b>" + e + "</b>");
+}
