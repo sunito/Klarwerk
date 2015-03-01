@@ -22,6 +22,7 @@ Klarwerk::Application.routes.draw do
   resources :diaquen
   
   match 'diagramme/:id/showfix' => 'diagramme#showfix', :as => :showfix
+  match 'diagramme/:id/ajja' => 'diagramme#ajja', :as => :ajja
   
   match 'expert_modus/:zustand' => 'expert#schalten', :as => :expert_modus
   match 'diagramme/:id/dauer/:dauer' => 'diagramme#dauer', :as => :quelle_rein
