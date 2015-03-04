@@ -317,7 +317,7 @@ class DiagrammeController < ApplicationController
             aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
               neue_liste << (wert || neue_liste.last)
             end
-            hc.series type: 'line', name: diaque.quelle.name, point_start: point_start, data: aufgefuellte_linien_daten
+            hc.series type: 'line', name: diaque.quelle.name, point_start: point_start, point_interval: kurve.x_schritt * 1000, data: aufgefuellte_linien_daten
             hc.y_axis y_achsen_zaehler
             y_achsen_zaehler += 1
           end
