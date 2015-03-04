@@ -4,7 +4,11 @@
 //alert(neu_json);
 //$("#fehlerausgabe_div").html(" <b>ok" +  "</b>");// json: " + neu_json);
 try{
-  <%= raw high_chart("div_diagramm", @highchart).gsub(/<[^<>]+>/,'') %>
+  <%= raw high_chart("div_diagramm_neu", @highchart).gsub(/<[^<>]+>/,'') %>
+    chart_quelle = window.chart_div_diagramm_neu;
+    chart_ziel = window.chart_div_diagramm;
+    chart_ziel.series[0].setData(chart_quelle.series[0].yData, true);
+    //chart_ziel.series[0].pointStart = chart_quelle.series[0].pointStart, true);
 //  neue_daten = JSON.parse( neu_json );
 } catch(e) {
   alert(e);
