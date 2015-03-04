@@ -308,14 +308,16 @@ class DiagrammeController < ApplicationController
           title: {text: einheit.beschreibung}, 
           opposite: (y_achsen_zaehler > 0)
         }
+        point_start = nil
         emd[einheit].each_with_index do |diaquen, dia_idx|
           diaquen = [diaquen] unless diaquen.respond_to? :each
           diaquen.each_with_index do |diaque, idx|
             kurve = Kurve.new(diaque, akt_zeit)
+            point_start ||= kurve.von.to_i*1000
             aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
               neue_liste << (wert || neue_liste.last)
             end
-            hc.series type: 'line', name: diaque.quelle.name, point_start: kurve.von.to_i*1000, data: aufgefuellte_linien_daten
+            hc.series type: 'line', name: diaque.quelle.name, point_start: point_start, data: aufgefuellte_linien_daten
             hc.y_axis y_achsen_zaehler
             y_achsen_zaehler += 1
           end
