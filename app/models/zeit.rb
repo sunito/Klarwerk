@@ -11,13 +11,16 @@ class Zeit < ActiveRecord::Base
   has_many :diagramme
 
   def biszeit
-    bis || Time.now
+      bis = Time.at((Messpunkt.find(1).sekzeit)+3600*12)
   end
+
   def vonzeit
-    biszeit - (dauer || 0)
+    biszeit  - (dauer || 0)
   end
-
-
+    def zeitjetzt
+      self.bis = Time.now
+      save!
+  end
   def self.finde_oder_neu(bis, dauer)
     p ["finde_oder_neu bis,dauer=", bis, dauer]
     erg = self.find_by_bis_and_dauer(bis, dauer)
@@ -59,7 +62,7 @@ public
     self.dauer = next_einrastpunkt(self.dauer, DAUER_EINRASTPUNKTE_ABWAERTS)
     save!
   end
-
+  
   def kuerzer
     erg = self.clone
     erg.kuerzer!

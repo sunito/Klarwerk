@@ -51,7 +51,14 @@ class DiagrammeController < ApplicationController
     #render :inline => @chart
     render_zeit_update
   end
-
+  def anfangszeit(anfang)
+    if anfang then
+      akt_zeit.biszeit
+    else
+      akt_zeit.zeitjetzt
+    end
+    render_zeit_update
+  end
 
   def dauer
     akt_zeit.dauer = params[:dauer]

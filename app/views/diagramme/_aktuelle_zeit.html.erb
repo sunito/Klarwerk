@@ -24,11 +24,17 @@
             &nbsp; <%= link_to dauer_lesbar(dauer), :remote=>true, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" }) %> &nbsp;
           <% end %>
         <% end %>
+        
+      </TD>
       </TD>
       <TD valign="top" width="10%" align="right">
       </TD>
+      <TD  valign="top" width="15%"  align="left">
+        <%= link_to "Anfangszeit", url_for(action: "anfangszeit(true)", id: params[:id], format: "js"), :remote=>true %> 
+        <%= link_to "Aktuelle Zeit", url_for(action: "anfangszeit(false)", id: params[:id], format: "js"), :remote=>true %> 
+      </TD>
       <TD  valign="top" width="15%"  align="center">
-        <%= link_to image_tag("arrow_left3.png", :class => "navi_button"), 
+        <%= link_to image_tag("files/links.png"), 
                     url_for(action: "links", id: params[:id], format: "js"), :remote=>true %> 
         <!--edit_kurve_path(@kurve) % | -->
         <!--%= @chart.link_to_remote_ofc_load image_tag("arrow_left3.png",  :class => "gruenlink"), "my_chart_js_1", url_for({ :action => "links", :id => params[:id], :format => "json" }) %--> <!--edit_kurve_path(@kurve) % | -->
