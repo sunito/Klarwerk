@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130928004755) do
+ActiveRecord::Schema.define(:version => 20150306081525) do
 
   create_table "diagramme", :force => true do |t|
     t.string   "name"
@@ -38,6 +38,12 @@ ActiveRecord::Schema.define(:version => 20130928004755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "gequantelt"
+  end
+
+  create_table "messpunkte", :force => true do |t|
+    t.integer "sekzeit"
+    t.float   "zahl"
+    t.integer "quelle_id"
   end
 
   create_table "quellen", :force => true do |t|
