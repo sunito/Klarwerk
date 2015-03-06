@@ -1,9 +1,20 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  zeit: 2008-10-14 10:15:25
-  wert: MyString
+  id: 1
+  sekzeit: 1243279625
+  zahl: 14
 
 two:
-  zeit: 2008-10-14 10:15:25
-  wert: MyString
+  id: 2
+  sekzeit: 1243278000
+  zahl: 19
+
+new1:
+  sekzeit: 1425672887
+  zahl: 3.1415926535
+
+new2:
+  sekzeit: 1425675887
+  zahl: 3.5
+

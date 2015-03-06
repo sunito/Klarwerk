@@ -1,4 +1,4 @@
-require 'version'
+#require 'version'
 
 module Klarwerk
 end
