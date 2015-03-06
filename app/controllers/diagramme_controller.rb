@@ -23,7 +23,7 @@ class DiagrammeController < ApplicationController
 
   private
   def render_zeit_update
-    chart_kurven
+    ##chart_kurven
     highchart_kurven
     #render :action => "update_zeit.rjs", :layout => false
     render :action => "grafik_aktualisierer.js.erb", :layout => false
@@ -83,6 +83,9 @@ class DiagrammeController < ApplicationController
 
   def skala_chart
     p :skala
+    return "skala_chart ist nicht implementiert"
+
+    
     #g = Graph.new
     chart = OpenFlashChart.new( "" ) do |g|
       #g.title(" ", '{font-size: 26px;}')
@@ -268,7 +271,7 @@ class DiagrammeController < ApplicationController
     end
   end
 
-  def chart_kurven
+  def xx_chart_kurven
     #self.extend OFC
     @diagramm = Diagramm.find(params[:id])
     #@chart = OFC::OpenFlashChart.new
@@ -419,7 +422,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme/1.xml
   def show
     akt_zeit
-    chart_kurven
+    #chart_kurven
     highchart_kurven
     init_diaquenauswahl
     # macht folgende Zeile �berfl�ssig
