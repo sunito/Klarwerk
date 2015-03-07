@@ -9,7 +9,7 @@ class ZeitTest < ActiveSupport::TestCase
 
   def test_biszeit
     assert_equal nil, Zeit.die_aktuelle.bis, "die_aktuelle Zeit hat bis-Wert =nil"
-    assert_equal Time.now, Zeit.die_aktuelle.biszeit, "biszeit == Time.now"    
+    assert_in_delta Time.now, Zeit.die_aktuelle.biszeit, 1.seconds, "biszeit == Time.now"    
     assert_equal nil, Zeit.die_aktuelle.bis, "nach Aufruf von Zeit#biszeit ist der bis-Wert immernoch nil"
   end
 
