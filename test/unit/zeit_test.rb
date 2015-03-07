@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ZeitTest < ActiveSupport::TestCase
   def setup
-
+    Zeit.die_aktuelle = Zeit::STANDARDZEIT
   end
 
   def test_biszeit
