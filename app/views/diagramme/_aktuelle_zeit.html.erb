@@ -30,7 +30,7 @@
       <TD valign="top" width="10%" align="right">
       </TD>
       <TD  valign="top" width="15%"  align="left">
-        <%= link_to "Anfangszeit", url_for(action: "anfangszeit(true)", id: params[:id], format: "js"), :remote=>true %> 
+        <%= link_to "Anfangszeit", url_for(action: "anfangszeit", anfang: true, id: params[:id], format: "js"), :remote=>true %> 
         <%= link_to "Aktuelle Zeit", url_for(action: "anfangszeit(false)", id: params[:id], format: "js"), :remote=>true %> 
       </TD>
       <TD  valign="top" width="15%"  align="center">

@@ -9,6 +9,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme.xml
   def index
     session[:akt_zeit] = Zeit::STANDARDZEIT
+    # test 
     @diagramme = Diagramm.find(:all)
   end
 
@@ -51,8 +52,10 @@ class DiagrammeController < ApplicationController
     #render :inline => @chart
     render_zeit_update
   end
-  def anfangszeit(anfang)
-    if anfang then
+#  def anfangszeit(anfang)
+  def anfangszeit
+    #if anfang then
+    if params[:anfang] then
       akt_zeit.biszeit
     else
       akt_zeit.zeitjetzt
