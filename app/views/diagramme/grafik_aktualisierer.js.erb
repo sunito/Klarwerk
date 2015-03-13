@@ -3,17 +3,23 @@
 //neu_json = '<%=raw @highchart.to_json %>';
 //alert(neu_json);
 //$("#fehlerausgabe_div").html(" <b>ok" +  "</b>");// json: " + neu_json);
+/*
 try{
   <%= raw high_chart("div_diagramm_neu", @highchart).gsub(/<[^<>]+>/,'') %>
     chart_quelle = window.chart_div_diagramm_neu;
+    document.getElementById('div_diagramm_neu').style.visibility = 'hidden'; 
+    //alert( $("#div_diagramm_neu" ) );
+    //.style.visibility = 'hidden'; 
     chart_ziel = window.chart_div_diagramm;
     chart_ziel.series[0].setData(chart_quelle.series[0].yData, true);
+
     //chart_ziel.series[0].pointStart = chart_quelle.series[0].pointStart, true);
 //  neue_daten = JSON.parse( neu_json );
 } catch(e) {
   alert(e);
   $("#fehlerausgabe_div").html("Fehler: <b>" + e + "</b>");
 }
+*/
 //chart = window.chart_div_diagramm;
 /*
 try {
@@ -27,9 +33,34 @@ try {
 */
 //window.chart_div_diagramm.redraw();
 //chart.redraw();
+
+
+try{
+    json_obj = '<%=  erg=(@highchart.to_json); raw(erg) %>';
+    //alert( json_obj );
+    neue_daten = JSON.parse( json_obj );
+    //document.getElementById('div_diagramm_neu').style.visibility = 'none'; 
+    //alert( neue_daten );
+    //.style.visibility = 'hidden'; 
+    chart_ziel = window.chart_div_diagramm;
+    //chart_ziel.pointStart = neue_daten.series_data[0].point_start;
+    chart_ziel.series[0].update({
+      data: (neue_daten.series_data[0]["data"]),
+      pointStart: neue_daten.series_data[0].point_start
+    }, true);
+
+
+//  neue_daten = JSON.parse( neu_json );
+} catch(e) {
+  alert(e);
+  $("#fehlerausgabe_div").html("Fehler: <b>" + e + "</b>");
+}
+
+
 try {
   $("#aktuelle_zeit").html("<%= j(render('aktuelle_zeit')) %>");
 } catch(e) {
   //alert(e);
   $("#fehlerausgabe_div").html("Fehler beim Zeit-Aktualisieren: <b>" + e + "</b>");
 }
+  

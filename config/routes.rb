@@ -11,7 +11,11 @@ Klarwerk::Application.routes.draw do
   resources :messpunkte
   resources :einheiten
 
-
+resources :diagramme do
+  member do
+    get 'anfangzeit'
+  end
+end
  
   resources :quellen
   match 'quellen/:id/aktiv_umschalten' => 'quellen#aktiv_umschalten', :as => :aktiv_umschalten

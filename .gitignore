@@ -13,3 +13,5 @@ Thumbs.db
 /tmp
 /.bundle
 .DS_Store
+*.sublime-workspace
+*.sublime-project

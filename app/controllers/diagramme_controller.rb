@@ -31,9 +31,9 @@ class DiagrammeController < ApplicationController
   end
 
   public
-  def links
-    akt_zeit.zurueck!
-    render_zeit_update
+  #def links
+    #akt_zeit.zurueck!
+    #render_zeit_update
 
     #    chart_kurven
     #    respond_to do |format|
@@ -44,24 +44,39 @@ class DiagrammeController < ApplicationController
     #        render :inline => @chart
     #      }
     #    end
-  end
+  #end
 
-  def rechts
-    akt_zeit.weiter!
+  #def rechts
+    #akt_zeit.weiter!
     #chart_kurven
     #render :inline => @chart
-    render_zeit_update
-  end
-#  def anfangszeit(anfang)
-  def anfangszeit
-    #if anfang then
-    if params[:anfang] then
-      akt_zeit.biszeit
-    else
-      akt_zeit.zeitjetzt
+    #render_zeit_update
+  #end
+  def verschieben
+    if params[:anfang] == "links" then
+      akt_zeit.zurueck!
+    elsif params[:anfang] == "rechts" then 
+      akt_zeit.weiter!
+    elsif params[:anfang] == "anfang" then 
+      session[:akt_zeit].bis = Time.at((Messpunkt.find(1).sekzeit)+3600*12)
+    else 
+      session[:akt_zeit].bis = Time.now
     end
     render_zeit_update
   end
+
+
+  #def anfangszeit
+   # p :EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+    #if params[:anfang] then
+     # puts  ":anfang=" + params[:anfang].inspect
+      #session[:akt_zeit].bis = Time.at((Messpunkt.find(1).sekzeit)+3600*12)
+    #else
+      #puts  ":anfang=false" + params[:anfang].inspect
+      #session[:akt_zeit].bis = Time.now
+    #end
+    #render_zeit_update
+  #end
 
   def dauer
     akt_zeit.dauer = params[:dauer]
