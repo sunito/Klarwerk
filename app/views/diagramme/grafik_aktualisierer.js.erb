@@ -43,11 +43,14 @@ try{
     //alert( neue_daten );
     //.style.visibility = 'hidden'; 
     chart_ziel = window.chart_div_diagramm;
+    //alert(neue_daten.series_data.length);
     //chart_ziel.pointStart = neue_daten.series_data[0].point_start;
-    chart_ziel.series[0].update({
-      data: (neue_daten.series_data[0]["data"]),
-      pointStart: neue_daten.series_data[0].point_start
-    }, true);
+    for (var i = 0; i < neue_daten.series_data.length; i++) {
+      chart_ziel.series[i].update({
+        data: (neue_daten.series_data[i]["data"]),
+        pointStart: neue_daten.series_data[i].point_start
+      }, true);
+    }
 
 
 //  neue_daten = JSON.parse( neu_json );
