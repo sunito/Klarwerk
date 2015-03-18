@@ -252,7 +252,7 @@ class DiagrammeController < ApplicationController
       line.text = diaque.quelle.name
       line.font_size = 20
       line.width = 3
-      line.colour = diaque.farbe || diaque.quelle.farbe
+      line.colour = diaque.anzuzeigende_farbe
       line.dot_size = 5
       aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
         neue_liste << (wert || neue_liste.last)
@@ -326,16 +326,8 @@ class DiagrammeController < ApplicationController
     @highchart = LazyHighCharts::HighChart.new('graph') do |hc|
       hc.title :text => @diagramm.name #, :style => "{font-size: 30px;}"}
 
-      y_achsen_zaehler = 0
       y_achsen = []
       @diagramm.einheiten.each do |einheit|
-        y_achsen << {
-          labels: {format: "{value} #{einheit.name}"}, 
-          min: einheit.min, 
-          max: einheit.max, 
-          title: {text: einheit.beschreibung}, 
-          opposite: (y_achsen_zaehler > 0)
-        }
         point_start = nil
         emd[einheit].each_with_index do |diaquen, dia_idx|
           diaquen = [diaquen] unless diaquen.respond_to? :each
@@ -348,14 +340,22 @@ class DiagrammeController < ApplicationController
             hc.series ({     
               type: 'line'   , 
               name: diaque.quelle.name, 
+              color: "#" + diaque.anzuzeigende_farbe,
               point_start: point_start, 
               point_interval: kurve.x_schritt * 1000, 
-              data: aufgefuellte_linien_daten, 
-              y_axis: y_achsen_zaehler
+              y_axis: y_achsen.size,
+              data: aufgefuellte_linien_daten
             })
-            y_achsen_zaehler += 1
           end
         end
+        y_achsen << {
+          labels: {format: "{value} #{einheit.name}"}, 
+          min: einheit.min, 
+          max: einheit.max, 
+          title: {text: einheit.beschreibung}, 
+          opposite: (y_achsen.size > 0)
+        }
+
       end
       hc.x_axis type: 'datetime'
       #hc.x_axis :categories => setze_xlabels(17) + ["e"] #, :labels => {:rotation => 315}

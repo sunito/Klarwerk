@@ -15,4 +15,4 @@ two:
   variablen_art: MyString
   beschreibung: MyText
   einheit_id: 2
-#  einheit: MyString
+  farbe: "2233FF"

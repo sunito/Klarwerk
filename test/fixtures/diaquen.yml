@@ -3,6 +3,7 @@
 one:
   quelle_id: 1
   diagramm_id: 111
+  farbe: "001122"
 
 two:
   quelle_id: 2
