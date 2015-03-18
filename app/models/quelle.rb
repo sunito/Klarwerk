@@ -1,8 +1,16 @@
 class Quelle < ActiveRecord::Base
   has_many :messpunkte
   belongs_to :einheit
-  attr_accessible :adresse, :name, :farbe, :variablen_art, :beschreibung, :einheit, :aktiv, :einheit_id
+  attr_accessible :adresse, :name, :farbe, :farbe_mit_raute, :variablen_art, :beschreibung, :einheit, :aktiv, :einheit_id
   
+  def farbe_mit_raute= neue_farbe
+    self.farbe = neue_farbe[1,6]
+  end
+
+  def farbe_mit_raute
+    "#" + self.farbe
+  end
+
   def aktiv
     status && status > 0
   end

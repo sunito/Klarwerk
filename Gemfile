@@ -17,9 +17,14 @@ end
 gem 'execjs'
 gem 'therubyracer', :platforms => :ruby
 
+gem 'simple_form'
+
 gem 'jquery-rails'
 gem 'lazy_high_charts'
 #gem 'chartkick'
+gem 'jquery-minicolors-rails'
+#gem 'jquery-simplecolorpicker-rails'
+
 
 group :development do
   # bundler requires these gems in development

@@ -17,3 +17,6 @@
 //= require highcharts/highcharts                                                           
 //= require highcharts/highcharts-more                                                         
 //= require highcharts/highstock
+//= require jquery.minicolors
+//= require jquery.minicolors.simple_form
+// require jquery.simplecolorpicker.js

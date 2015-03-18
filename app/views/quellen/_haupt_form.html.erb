@@ -3,10 +3,14 @@
 <%= javascript_include_tag 'picky_color' %>
 <%= stylesheet_link_tag 'picky_color' %>
 
-<%= form_for(@quelle) do |f| %>
+<%= simple_form_for(@quelle) do |f| %>
 <% if @quelle.errors.full_messages != []%>
   <%= @quelle.errors.full_messages %>
   <% end %>
+
+<script type="text/javascript">
+//  $ -> $('input[type=text]').minicolors()  
+</script>
   
 <table  class="listenkopf">
   <tr><td>
@@ -19,7 +23,10 @@
   </td></tr>
   <tr><td>
     <%= f.label :farbe %></td><td>
-    <%= raw(f.picky_color :farbe, :size => 6) %>
+    <!--%= f.input :farbe, collection: {green: '#7bd148',  bold_blue:  '#5484ed'}, selected: '#7bd148' %-->
+    <%= f.input :farbe_mit_raute, as: :minicolors, label: '.' %>
+    <!--%= f.minicolors :farbe_mit_raute %-->
+    <!--%= raw(f.picky_color :farbe, :size => 6) %-->
   </td></tr>
   <tr><td>
     <%= f.label :variablen_art %></td><td>
