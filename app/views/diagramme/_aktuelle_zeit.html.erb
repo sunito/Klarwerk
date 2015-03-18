@@ -21,7 +21,7 @@
           <% elsif dauer.nil? then %>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           <% else %>
-            &nbsp; <%= link_to dauer_lesbar(dauer), :remote=>true, :url => url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" }) %> &nbsp;
+            &nbsp; <%= link_to dauer_lesbar(dauer), url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" }), :remote=>true %> &nbsp;
           <% end %>
         <% end %>
         
