@@ -73,4 +73,13 @@ class ZeitTest < ActiveSupport::TestCase
     assert_equal "5 min", dauer_lesbar(300)
     assert_equal "12 Std.", Zeit.die_aktuelle.dauer_lesbar
   end
+
+  def test_laenger
+    z1 = zeiten(:one)
+    dauer1 = z1.dauer
+    assert_equal dauer1, z1.dauer
+    z2 = z1.laenger
+    assert_equal dauer1, z1.dauer, "Orig-Objekt sollte unverändert bleiben!!!"
+    assert_equal 3600,   z2.dauer, "ANdere Zeit sollte länger werden"
+  end
 end

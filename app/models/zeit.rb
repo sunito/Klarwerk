@@ -43,7 +43,7 @@ private
 public
 
   def jetzt
-    erg = self.clone
+    erg = self.dup
     erg.bis = nil
     erg.save!
     erg
@@ -60,7 +60,7 @@ public
   end
   
   def kuerzer
-    erg = self.clone
+    erg = self.dup
     erg.kuerzer!
     erg
   end
@@ -71,7 +71,7 @@ public
   end
 
   def laenger
-    erg = self.clone #ass.finde_oder_neu(bis, dauer)
+    erg = self.dup #ass.finde_oder_neu(bis, dauer)
     erg.laenger!
     erg
   end
