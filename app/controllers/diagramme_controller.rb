@@ -2,6 +2,7 @@ class DiagrammeController < ApplicationController
   OFC = self
   
   def akt_zeit
+
     session[:akt_zeit] ||= Zeit.die_aktuelle
   end
 
@@ -9,6 +10,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme.xml
   def index
     session[:akt_zeit] = Zeit::STANDARDZEIT
+    session[:akt_zeit].bis = Time.at((Messpunkt.find(1).sekzeit)+3600*12)
     # test 
     @diagramme = Diagramm.find(:all)
   end
