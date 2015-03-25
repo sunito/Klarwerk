@@ -9,9 +9,13 @@
     }
   <% end %>
 </style>
-<% form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
-  <%= @diagramm.errors.full_messages %>
-
+<%= @diagramm.inspect %>
+<%= form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
+<!-- Errormessages Ausblenden wenn leer -->
+  <% if @diagramm.errors.full_messages != []%>
+    <%= @diagramm.errors.full_messages %>
+  <%end%>
+  
 <TABLE width="66%">
   <TR>
     <TD width="33%" VAlign="top">
@@ -29,7 +33,6 @@
         <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
         <TR>
           <TD WIDTH="100%">
-
           <DIV id="quellen_auswahl_listen">
            <%= render :partial => "quellen_auswahl_listen" %>
           </DIV>

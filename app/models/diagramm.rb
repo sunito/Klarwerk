@@ -1,5 +1,7 @@
 class Diagramm < ActiveRecord::Base
   has_many :diaquen
+  attr_accessible :name, :beschreibung
+  attr_accessible :diaquen_attributes
   accepts_nested_attributes_for :diaquen
   
   has_many :quellen, :through => :diaquen

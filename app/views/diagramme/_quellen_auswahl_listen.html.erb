@@ -2,8 +2,8 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 %>
-
-<%  fields_for @diagramm do |f| %>
+Test
+<%=  simple_fields_for @diagramm do |f| %>
   <TABLE BGCOLOR="#EEEEEE" WIDTH="100%" Border="1" CELLPADDING=5 CELLSPACING=1><TR>
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
       <% @freie_quellen.each do |quelle| %>
@@ -14,12 +14,12 @@
     </TD>
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
       <% @ausgewaehlte_diaquen.each do |diaque| %>
-      <% f.fields_for :diaquen,  diaque do |diaque_f| %>
+      <%= f.simple_fields_for :diaquen,  diaque do |diaque_f| %>
         <table><tr>
           <td>
             <%= link_to "<<", :remote=>true, :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
           </td><td width="62">
-            <%= diaque_f.picky_color :farbe, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
+            <%= diaque_f.input :farbe_mit_raute, as: :minicolors, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
           </td><td>
             <font color="#<%=  diaque.farbe %>"><%=h diaque.quelle.name %></font>
           </td>
