@@ -2,31 +2,52 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 %>
-Test
+<style type="text/css">
+  div#Quellentabelle td {border-collapse: collapse; border-bottom: 1px solid #FF8450;}
+  
+  div#Quellentabelle tr:nth-child(odd) {
+    background: #eee
+  }
+  div#Quellentabelle tr:hover {background: rgba(220,160,140,0.3); }
+</style>
 <%=  simple_fields_for @diagramm do |f| %>
   <TABLE BGCOLOR="#EEEEEE" WIDTH="100%" Border="1" CELLPADDING=5 CELLSPACING=1><TR>
     <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
-      <% @freie_quellen.each do |quelle| %>
-        <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
-        <%= link_to ">>", :remote=>true,  :url =>quelle_rein_path(@diagramm.id, quelle.id), :update => "quellen_auswahl_listen" %>
-      <BR>
+      <div id="Quellentabelle">
+        <TABLE CELLPADDING=5 CELLSPACING=1 WIDTH="100%">
+        <% @freie_quellen.each do |quelle| %>
+          <TD> 
+            <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
+          </TD>
+          <TD>
+              <%= link_to image_tag("files/for.png", :size => "70x40", :alt => 'nach links',  :class => "navi_button"), :remote=>true,  :url =>quelle_rein_path(@diagramm.id, quelle.id), :update => "quellen_auswahl_listen" %>
+          </TD><TR>
+      </div>
       <% end %>
+    </TABLE>
     </TD>
-    <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
+    <TD BGCOLOR="#FFFFF3" WIDTH="100%" Valign="top">
+      <div id="Quellentabelle">
+      <table WIDTH="100%">
       <% @ausgewaehlte_diaquen.each do |diaque| %>
       <%= f.simple_fields_for :diaquen,  diaque do |diaque_f| %>
-        <table><tr>
+        <tr>
           <td>
-            <%= link_to "<<", :remote=>true, :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
-          </td><td width="62">
+            <%= link_to image_tag("files/back.png", :size => "70x40", :alt => 'nach links',  :class => "navi_button"), :remote=>true, :url => quelle_raus_path(@diagramm.id, diaque.quelle_id), :update => "quellen_auswahl_listen" %>
+          </td>
+          <td>
+          <br>
             <%= diaque_f.input :farbe_mit_raute, as: :minicolors, :size => 6, :default => diaque.quelle.farbe, :type => "hidden" %><br>
           </td><td>
             <font color="#<%=  diaque.farbe %>"><%=h diaque.quelle.name %></font>
           </td>
-        </tr></table>
-      <BR>
+        </tr>
+      
       <% end %>
       <% end %>
+      </table>
+      </div>
     </TD>
+
   </TR></TABLE>
 <% end %>
