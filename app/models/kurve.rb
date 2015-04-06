@@ -32,7 +32,12 @@ class Kurve
     end
   end
 
-
+  def linien_daten_aufgefuellt
+    linien_daten.inject([]) do |neue_liste, wert|
+      wert ||= neue_liste.last
+      neue_liste << wert
+    end
+  end    
 
   def linien_daten
     @linien_daten ||= begin

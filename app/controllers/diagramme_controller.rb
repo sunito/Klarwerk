@@ -304,31 +304,50 @@ class DiagrammeController < ApplicationController
     @diagramm = Diagramm.find(params[:id])
     emd = @diagramm.einheiten_mit_diaquen
     #@chart = OFC::OpenFlashChart.new
-
+    p :EMDDDDDDDD
+    p emd.size
+    p emd
     @highchart = LazyHighCharts::HighChart.new('graph') do |hc|
       hc.title :text => @diagramm.name #, :style => "{font-size: 30px;}"}
 
       y_achsen = []
       @diagramm.einheiten.each do |einheit|
+
         point_start = nil
-        emd[einheit].each_with_index do |diaquen, dia_idx|
-          diaquen = [diaquen] unless diaquen.respond_to? :each
-          diaquen.each_with_index do |diaque, idx|
-            kurve = Kurve.new(diaque, akt_zeit)
-            point_start ||= kurve.von.to_i*1000
-            aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
-              neue_liste << (wert || neue_liste.last)
+
+        p emd[einheit].size
+        p einheit
+        p emd[einheit]
+        emd[einheit].each_with_index do |diaque, dia_idx|
+          raise "diaque ist ein Array!!!!!!!!!" if diaque.respond_to? :each
+          #diaquen.each_with_index do |diaque, idx|
+
+            dual_streck_fkt = if einheit.name =~ /aus.*ein/i
+              einheit = @diagramm.haupt_einheit
+              max = einheit.max
+              min = einheit.min
+              binaer_anzahl = 10
+              #binaer_hoehe = 1.0 / binaer_anzahl/ 2
+              proc {|z| z && min + (max-min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
             end
+
+            kurve = Kurve.new(diaque, akt_zeit)
+            p kurve.linien_daten  
+            point_start ||= kurve.von.to_i*1000
+            aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt.map do |wert|
+              dual_streck_fkt ? dual_streck_fkt[wert] : wert
+            end
+
             hc.series ({     
               type: 'line'   , 
-              name: diaque.quelle.name, 
+              name: "#{dia_idx}" + diaque.quelle.name, 
               color: "#" + diaque.anzuzeigende_farbe,
               point_start: point_start, 
               point_interval: kurve.x_schritt * 1000, 
               y_axis: y_achsen.size,
               data: aufgefuellte_linien_daten
             })
-          end
+          #end
         end
         y_achsen << {
           labels: {format: "{value} #{einheit.name}"}, 
