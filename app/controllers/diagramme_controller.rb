@@ -10,7 +10,7 @@ class DiagrammeController < ApplicationController
   # GET /diagramme.xml
   def index
     session[:akt_zeit] = Zeit::STANDARDZEIT
-    session[:akt_zeit].bis = Time.at((Messpunkt.find(1).sekzeit)+3600*12)
+    session[:akt_zeit].bis = Time.at(Messpunkt.last.sekzeit)
     # test 
     @diagramme = Diagramm.find(:all)
   end
