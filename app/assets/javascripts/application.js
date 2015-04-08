@@ -20,3 +20,13 @@
 //= require jquery.minicolors
 //= require jquery.minicolors.simple_form
 // require jquery.simplecolorpicker.js
+
+$(function() {
+  $(document)
+    .on('ajax:success', '[data-remote][data-replace]', function(event, data) {
+      var $this = $(this);
+      $($this.data('replace')).html(data);
+      $this.trigger('ajax:replaced');
+    });
+});
+
