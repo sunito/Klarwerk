@@ -3,15 +3,16 @@ class Diaque < ActiveRecord::Base
 
   belongs_to :quelle
   belongs_to :diagramm
-	def farbe_mit_raute= neue_farbe
-    	self.farbe = neue_farbe[1,6]
-  	end
+  def farbe_mit_raute= neue_farbe
+      self.farbe = neue_farbe[1,6]
+  end
 
-  	def farbe_mit_raute
-    	"#" + self.farbe
- 	end
-  	def anzuzeigende_farbe
-  		farbe || quelle.farbe
-  	end
+  def farbe_mit_raute
+      "#" + self.farbe.to_s
+  end
+
+  def anzuzeigende_farbe
+    farbe || quelle.farbe
+  end
 
 end
