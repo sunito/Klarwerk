@@ -1,26 +1,18 @@
 
 <%= javascript_include_tag "jquery.minicolors.simple_form" %>
-
-<style type="text/css">
-  div#Quellentabelle td {border-collapse: collapse; border-bottom: 1px solid #FF8450;}
-  
-  div#Quellentabelle tr:nth-child(odd) {
-    background: #eee
-  }
-  div#Quellentabelle tr:hover {background: rgba(220,160,140,0.3); }
-</style>
+<%= stylesheet_link_tag "table.css" %>
 
 <%=  simple_fields_for @diagramm do |f| %>
 
-  <TABLE BGCOLOR="#EEEEEE" WIDTH="100%" Border="1" CELLPADDING=5 CELLSPACING=1><TR>
-    <TD BGCOLOR="#FFFFF3" WIDTH="50%" Valign="top">
+  <TABLE WIDTH="100%" CELLPADDING=5><TR>
+    <TD  WIDTH="50%" Valign="top">
       <div id="Quellentabelle">
         <table WIDTH="100%"> <!--CELLPADDING=5 CELLSPACING=1 -->
           <% @freie_quellen.each do |quelle| %>
             <tr><td> 
               <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
             </td><td>
-                <%= link_to image_tag("files/for.png", :size => "70x40", :alt => 'nach links',  :class => "navi_button"),  
+                <%= link_to image_tag("files/for.png", :size => "50x30", :alt => 'nach links',  :class => "navi_button"),  
                             quelle_rein_path(@diagramm.id, quelle.id), 
                             :remote=>true, 
                             :"data-replace" => "#quellen_auswahl_listen" %>
@@ -30,13 +22,13 @@
       </div>
     </TD>
 
-    <TD BGCOLOR="#FFFFF3" WIDTH="100%" Valign="top">
+    <TD WIDTH="100%" Valign="top">
       <div id="Quellentabelle">
         <table WIDTH="100%">
           <% @ausgewaehlte_diaquen.each do |diaque| %>
             <%= f.simple_fields_for :diaquen,  diaque do |diaque_f| %>
               <tr><td>
-                <%= link_to image_tag("files/back.png", :size => "70x40", :alt => 'nach links',  :class => "navi_button"), 
+                <%= link_to image_tag("files/back.png", :size => "50x30", :alt => 'nach links',  :class => "navi_button"), 
                             quelle_raus_path(@diagramm.id, diaque.quelle_id), 
                             :remote=>true, 
                             :"data-replace" => "#quellen_auswahl_listen" %>

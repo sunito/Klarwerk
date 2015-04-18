@@ -1,5 +1,5 @@
 <%= javascript_include_tag :defaults %>
-
+<%= stylesheet_link_tag "table.css" %>
 
 <style type="text/css">
   <% Quelle.all.each do |q| %>
@@ -9,6 +9,7 @@
     }
   <% end %>
 </style>
+
 <%= @diagramm.inspect %>
 <%= form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
 <!-- Errormessages Ausblenden wenn leer -->
@@ -16,32 +17,39 @@
     <%= @diagramm.errors.full_messages %>
   <%end%>
   
-  <TABLE width="66%">
-  <TR>
-    <TD width="33%" VAlign="top">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %><BR>
-    </TD>
-    <TD width="66%" VAlign="top">
-     <%= f.label :beschreibung %><br />
-    <%= f.text_field :beschreibung,:cols=>50,:rows=>3 %>
-    </TD>
-  </TR>
-  <TR>
-    <TD colspan ="2" VAlign="top">
-      <TABLE BGCOLOR="#F3F3E3" WIDTH="100%" BORDER=0 CELLPADDING=1 CELLSPACING=1>
-        <TR><TH COLSPAN=2>Wahl der darzustellenden Messgr&ouml;&szlig;en</TH></TR>
-        <TR>
-          <TD WIDTH="100%">
-          <DIV id="quellen_auswahl_listen">
-           <%= render :partial => "quellen_auswahl_listen" %>
-          </DIV>
-         </TD>
-        </TR>
-      </TABLE>
-    </TD>
-  </TR>
-</TABLE>
+  <TABLE width="66%" style="border: solid 3px gray; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px">
+    <CAPTION>Name und Beschreibung des Diagrammes </CAPTION>      
+    <TR>
+      <TD width="33%" VAlign="top">
+        <%= f.label :name %><br />
+        <%= f.text_field :name %><BR>
+      </TD>
+      <TD width="66%" VAlign="top">
+        <%= f.label :beschreibung %><br />
+        <%= f.text_field :beschreibung,:cols=>50,:rows=>3 %>
+      </TD>
+    </TR>
+    <TR>
+      <TD width="100%" colspan ="2" VAlign="top">
+        <TABLE width="100%" style="border: solid 3px gray; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px">
+          <CAPTION>Wahl der darzustellenden Messgr&ouml;&szlig;en</CAPTION>  
+          <TH width="50%">
+            <B>Deaktiviert</B>
+          </TH>
+          <TH>
+            <B>Akiviert</B>
+          </TH> 
+          <TR>
+            <TD WIDTH="100%" colspan ="2">
+              <DIV id="quellen_auswahl_listen">
+                <%= render :partial => "quellen_auswahl_listen" %>
+              </DIV>
+            </TD>
+          </TR>
+        </TABLE>
+      </TD>
+    </TR>
+  </TABLE>
 <%= f.submit "Speichern" %>
 <!--%= submit_tag("Abbrechen", { :name => 'reset', :id => 'reset_button', :type => "reset",:onclick=>"window.location.reload()"}) %-->
 <% end %>

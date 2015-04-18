@@ -1,0 +1,49 @@
+<style type="text/css">
+table {
+    background:#e9eae8;
+    background:rgba(105,115,100,.15);
+    -webkit-border-radius:0 0 10px 10px;
+    -moz-border-radius:0 0 10px 10px;
+    border-radius:0 0 10px 10px;
+    border-collapse:collapse;
+    border-spacing:0;
+    text-align:left;
+  }
+  caption {
+    background:#656e70;
+    background:-webkit-gradient(linear, left top, left bottom, from(#656e70),
+  color-stop(50%, #515b5c), color-stop(50.1%, #465153), to(#323e40));
+    background:-moz-linear-gradient(top, #656e70, #515b5c 50%, #465153 50.1%, #323e40);
+    background:linear-gradient(top, #656e70, #515b5c 50%, #465153 50.1%, #323e40);
+    -webkit-border-radius:10px 10px 0 0;
+    -moz-border-radius:10px 10px 0 0;
+    border-radius:10px 10px 0 0;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    padding:10px 0 10px 10px;
+    text-align:left;
+    text-shadow:0 -1px 1px rgba(0,0,0,.5);
+  }
+  th {
+    background:#7aae5e;
+    border-bottom:1px solid rgba(255,255,255,.7);
+    -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    -moz-box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    -o-box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    padding:6px 10px;
+  }
+
+  div#Quellentabelle td {
+    border-collapse: collapse; 
+    border-bottom: 1px solid #FF8450;
+  }
+  
+  div#Quellentabelle tr:nth-child(odd) {
+    background: #eee
+  }
+  div#Quellentabelle tr:hover {
+    background: rgba(220,160,140,0.3); 
+  }
+</style>
