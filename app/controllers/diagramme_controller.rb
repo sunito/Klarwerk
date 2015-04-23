@@ -500,7 +500,7 @@ class DiagrammeController < ApplicationController
     @diagramm.save!
     diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
     diaque.farbe ||= quelle.farbe
-
+    diaque.save!
     init_diaquenauswahl_fuer_view
     render :partial => "quellen_auswahl_listen", :layout => false
   end
@@ -508,10 +508,8 @@ class DiagrammeController < ApplicationController
   def quelle_raus
     @diagramm = Diagramm.find(params[:id])
     quelle = Quelle.find params[:quelle_id].to_i
-
     @diagramm.quellen.delete quelle
     @diagramm.save!
-
     init_diaquenauswahl_fuer_view
     render :partial => "quellen_auswahl_listen", :layout => false
   end
