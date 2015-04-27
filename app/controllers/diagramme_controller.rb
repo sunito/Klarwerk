@@ -362,6 +362,12 @@ class DiagrammeController < ApplicationController
       #hc.x_axis :categories => setze_xlabels(17) + ["e"] #, :labels => {:rotation => 315}
       hc.y_axis y_achsen
 #      f.title({:text => "Werte vom #{tag}"}) #Problem: Wenn mehr als ein Tag angezeigt wird, wird als Titel nur Datum eines Tages angezeigt 
+      hc.legend ({
+            align: 'left',
+            verticalAlign: 'top',
+            floating: true,
+            x: 90
+        })
     end      
     @streckungs_funktion = nil
     #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
