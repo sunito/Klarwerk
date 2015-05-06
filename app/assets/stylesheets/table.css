@@ -5,7 +5,7 @@ table {
     -webkit-border-radius:0 0 10px 10px;
     -moz-border-radius:0 0 10px 10px;
     border-radius:0 0 10px 10px;
-    border-collapse:collapse;
+    border-collapse: collapse;
     border-spacing:0;
     text-align:left;
   }
@@ -36,8 +36,11 @@ table {
   }
 
   div#Quellentabelle td {
-    border-collapse: collapse; 
+    
     border-bottom: 1px solid #FF8450;
+  }
+  div#Quellentabelle table {
+    border-collapse: collapse;
   }
   
   div#Quellentabelle tr:nth-child(odd) {
