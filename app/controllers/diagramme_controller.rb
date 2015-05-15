@@ -24,8 +24,12 @@ class DiagrammeController < ApplicationController
 
   end
 
+  def chart_update
+    render_chart_update
+  end
+
   private
-  def render_zeit_update
+  def render_chart_update
     ##chart_kurven
     highchart_kurven
     #render :action => "update_zeit.rjs", :layout => false
@@ -44,7 +48,7 @@ class DiagrammeController < ApplicationController
     else 
       session[:akt_zeit].bis = Time.now
     end
-    render_zeit_update
+    render_chart_update
   end
 
 
@@ -57,7 +61,7 @@ class DiagrammeController < ApplicationController
       #puts  ":anfang=false" + params[:anfang].inspect
       #session[:akt_zeit].bis = Time.now
     #end
-    #render_zeit_update
+    #render_chart_update
   #end
 
   def dauer
@@ -65,7 +69,7 @@ class DiagrammeController < ApplicationController
     #render :inline => @chart
     p [:dauer, params[:dauer]]
     #render :template => "update_zeit"
-    render_zeit_update
+    render_chart_update
   end
 
   def zoom_out
@@ -73,12 +77,12 @@ class DiagrammeController < ApplicationController
     #render :inline => @chart
     p :zoomout
     #render :template => "update_zeit"
-    render_zeit_update
+    render_chart_update
   end
 
   def zoom_in
     akt_zeit.kuerzer!
-    render_zeit_update
+    render_chart_update
   end
 
   def skala_chart
@@ -507,8 +511,7 @@ class DiagrammeController < ApplicationController
     diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
     diaque.farbe ||= quelle.farbe
     diaque.save!
-    init_diaquenauswahl_fuer_view
-    render :partial => "quellen_auswahl_listen", :layout => false
+    render_quellenselektor
   end
 
   def quelle_raus
@@ -516,9 +519,16 @@ class DiagrammeController < ApplicationController
     quelle = Quelle.find params[:quelle_id].to_i
     @diagramm.quellen.delete quelle
     @diagramm.save!
+    render_quellenselektor
+  end
+
+  def render_quellenselektor
+    #render_chart_update # doppeltes Rendern funktioniert nicht!
     init_diaquenauswahl_fuer_view
+
     render :partial => "quellen_auswahl_listen", :layout => false
   end
+
 
   def xxxxx_quellenfarbe
     @diagramm = Diagramm.find(params[:id])
