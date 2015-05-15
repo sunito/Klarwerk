@@ -44,4 +44,18 @@
     </TD>
   </TR></TABLE>
 
+
 <% end %>
+
+<div id="ergebnis_temp"></div>
+
+<script type="text/javascript">
+  $('#diagramm_diaquen_attributes_0_farbe_mit_raute').minicolors({
+    change: function(hex, opacity) {
+        //alert(hex + ' - ' + opacity);
+        console.log(hex + ' - ' + opacity);
+        $("#ergebnis_temp").load( "http://localhost:3000/diagramme/chart_update/1" );
+    },
+    changeDelay: 44
+  });
+</script>
