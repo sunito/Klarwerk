@@ -25,6 +25,7 @@
     <TD WIDTH="100%" Valign="top">
       <div id="Quellentabelle">
         <table WIDTH="100%">
+          <% nummer = -1 %>
           <% @ausgewaehlte_diaquen.each do |diaque| %>
             <%= f.simple_fields_for :diaquen,  diaque do |diaque_f| %>
               <tr><td>
@@ -37,6 +38,23 @@
               </td><td>
                 <font color="#<%= diaque.farbe %>"> <%=h diaque.quelle.name %> </font>
               </td></tr>
+              <script type="text/javascript">
+
+                $('#diagramm_diaquen_attributes_<%= nummer += 1 %>_farbe_mit_raute').minicolors({
+                  change: function(hex, opacity) {
+                      //alert(hex + ' - ' + opacity);
+                      console.log(hex + ' - ' + opacity);
+                      var farbe = hex.replace("#", "");
+                      var link = '<%= url_for({ :action => "chart_update", :id => diaque.diagramm_id }) %>';
+                      //var link = 'http://localhost:3000/diagramme/chart_update/1'
+                      link = link + '?farbe=' + farbe;
+                       // Probleme mit Raute bei Übergabe als Parameter in Rails 
+                      $.post(link);
+                      //$.ajax("diagramm/chart_update");
+                  },
+                  changeDelay: 44
+                });
+              </script>
             <% end %>
           <% end %>
         </table>
@@ -55,8 +73,9 @@
         //alert(hex + ' - ' + opacity);
         console.log(hex + ' - ' + opacity);
         var farbe = hex.replace("#", "");
-        //url_for({ :action => "dauer", :id => params[:id], :dauer => dauer, :format => "js" })
-        var link = 'http://localhost:3000/diagramme/chart_update/1?farbe=' + farbe;
+        var link = '<%= url_for({ :action => "chart_update", :id => 1 }) %>';
+        //var link = 'http://localhost:3000/diagramme/chart_update/1'
+        link = link + '?farbe=' + farbe;
          // Probleme mit Raute bei Übergabe als Parameter in Rails 
         $.post(link);
         //$.ajax("diagramm/chart_update");
