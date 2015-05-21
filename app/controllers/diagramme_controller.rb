@@ -24,7 +24,7 @@ class DiagrammeController < ApplicationController
 
   end
 
-  def chart_update
+  def xx_chart_update
     @farbe = params[:farbe]
     @diagramm = Diagramm.find(params[:id])
     diaque = @diagramm.diaquen.first
@@ -33,7 +33,7 @@ class DiagrammeController < ApplicationController
     render_chart_update
   end
 
-  private
+  #private
   def render_chart_update
     ##chart_kurven
     highchart_kurven

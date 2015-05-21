@@ -74,6 +74,18 @@ class MesspunkteController < ApplicationController
       end
     end
   end
+  def test
+    Quellen.all.each do |quelle|
+      zeitraum = Zeit.new 
+      zeitraum.finde_oder_neu(Time.now, 1.min)
+      messpunkte = Messpunkt.finde_fuer_quelle_und_zeit(quelle, zeitraum)
+      p "messpunkte"
+      #messpunkte << Messpunkt.where(:quelle_id => quelle.id).last
+      #for(i = 0; i < 10; i++) do 
+      #  if Messpunkt.where(:quelle_id => quelle.id )[i]
+      #end 
+    end  
+  end   
 
   # DELETE /messpunkte/1
   # Test

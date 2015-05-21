@@ -45,7 +45,7 @@
                       //alert(hex + ' - ' + opacity);
                       console.log(hex + ' - ' + opacity);
                       var farbe = hex.replace("#", "");
-                      var link = '<%= url_for({ :action => "chart_update", :id => diaque.diagramm_id }) %>';
+                      var link = '<%= url_for({ :controller => "diaquen", :action => "ajax_update", :id => diaque }) %>';
                       //var link = 'http://localhost:3000/diagramme/chart_update/1'
                       link = link + '?farbe=' + farbe;
                        // Probleme mit Raute bei Übergabe als Parameter in Rails 

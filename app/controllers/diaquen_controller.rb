@@ -71,6 +71,16 @@ class DiaquenController < ApplicationController
     end
   end
 
+   def ajax_update
+    @farbe = params[:farbe]
+    @diaque = Diaque.find(params[:id])
+    @diaque.farbe = @farbe
+    @diaque.save!
+    redirect_to :controller => "diagramme", :action => "render_chart_update", :id => @diaque.diagramm_id
+    
+  end
+
+
   # DELETE /diaquen/1
   # DELETE /diaquen/1.xml
   def destroy
