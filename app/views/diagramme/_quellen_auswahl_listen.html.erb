@@ -6,13 +6,13 @@
 
   <TABLE WIDTH="100%" CELLPADDING=5><TR>
     <TD  WIDTH="50%" Valign="top">
-      <div id="Quellentabelle">
-        <table WIDTH="100%"> <!--CELLPADDING=5 CELLSPACING=1 -->
+      <div id="Quellentabelle" style="height:350px; overflow:auto;">
+        <table WIDTH="100%" height=31><!--CELLPADDING=5 CELLSPACING=1 -->
           <% @freie_quellen.each do |quelle| %>
             <tr><td> 
               <font color="#<%=  quelle.farbe %>"><%=h quelle.name %></font>
             </td><td>
-                <%= link_to image_tag("files/for.png", :size => "50x30", :alt => 'nach links',  :class => "navi_button"),  
+                <%= link_to image_tag("files/for.png", :size => "35x20", :alt => 'nach links',  :class => "navi_button"),  
                             quelle_rein_path(@diagramm.id, quelle.id), 
                             :remote=>true, 
                             :"data-replace" => "#quellen_auswahl_listen" %>
@@ -29,7 +29,7 @@
           <% @ausgewaehlte_diaquen.each do |diaque| %>
             <%= f.simple_fields_for :diaquen,  diaque do |diaque_f| %>
               <tr><td>
-                <%= link_to image_tag("files/back.png", :size => "50x30", :alt => 'nach links',  :class => "navi_button"), 
+                <%= link_to image_tag("files/back.png", :size => "35x20", :alt => 'nach links',  :class => "navi_button"), 
                             quelle_raus_path(@diagramm.id, diaque.quelle_id), 
                             :remote=>true, 
                             :"data-replace" => "#quellen_auswahl_listen" %>
@@ -44,13 +44,10 @@
                   change: function(hex, opacity) {
                       //alert(hex + ' - ' + opacity);
                       console.log(hex + ' - ' + opacity);
-                      var farbe = hex.replace("#", "");
+                      var farbe = hex.replace("#", ""); // Probleme mit Raute bei Übergabe als Parameter in Rails 
                       var link = '<%= url_for({ :controller => "diaquen", :action => "ajax_update", :id => diaque }) %>';
-                      //var link = 'http://localhost:3000/diagramme/chart_update/1'
                       link = link + '?farbe=' + farbe;
-                       // Probleme mit Raute bei Übergabe als Parameter in Rails 
                       $.post(link);
-                      //$.ajax("diagramm/chart_update");
                   },
                   changeDelay: 44
                 });
@@ -61,11 +58,7 @@
       </div>
     </TD>
   </TR></TABLE>
-
-
 <% end %>
-
-<div id="ergebnis_temp"></div>
 
 <script type="text/javascript">
   $('#diagramm_diaquen_attributes_0_farbe_mit_raute').minicolors({
