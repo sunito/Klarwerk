@@ -54,7 +54,10 @@
     change: function(hex, opacity) {
         //alert(hex + ' - ' + opacity);
         console.log(hex + ' - ' + opacity);
-        $("#ergebnis_temp").load( "http://localhost:3000/diagramme/chart_update/1" );
+        var link = 'http://localhost:3000/diagramme/chart_update/1?farbe=' + hex;
+        link = link.replace("#", ""); // Probleme mit Raute bei Übergabe als Parameter in Rails 
+        $.post(link);
+        //$.ajax("diagramm/chart_update");
     },
     changeDelay: 44
   });

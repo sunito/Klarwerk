@@ -8,6 +8,7 @@ Klarwerk::Application.routes.draw do
 
   get "diagramm/index"
 
+
   resources :messpunkte
   resources :einheiten
 

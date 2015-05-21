@@ -25,6 +25,11 @@ class DiagrammeController < ApplicationController
   end
 
   def chart_update
+    @farbe = params[:farbe]
+    @diagramm = Diagramm.find(params[:id])
+    diaque = @diagramm.diaquen.first
+    diaque.farbe = @farbe
+    diaque.save!
     render_chart_update
   end
 
@@ -341,7 +346,6 @@ class DiagrammeController < ApplicationController
             aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt.map do |wert|
               dual_streck_fkt ? dual_streck_fkt[wert] : wert
             end
-
             hc.series ({     
               type: 'line'   , 
               name: "#{dia_idx}" + diaque.quelle.name, 
