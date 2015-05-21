@@ -9,8 +9,6 @@
     }
   <% end %>
 </style>
-
-<%= @diagramm.inspect %>
 <%= form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
 <!-- Errormessages Ausblenden wenn leer -->
   <% if @diagramm.errors.full_messages != []%>
@@ -50,6 +48,5 @@
       </TD>
     </TR>
   </TABLE>
-<%= f.submit "Speichern" %>
 <!--%= submit_tag("Abbrechen", { :name => 'reset', :id => 'reset_button', :type => "reset",:onclick=>"window.location.reload()"}) %-->
 <% end %>
