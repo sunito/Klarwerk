@@ -72,10 +72,12 @@ class DiaquenController < ApplicationController
   end
 
    def ajax_update
-    @farbe = params[:farbe]
-    @diaque = Diaque.find(params[:id])
-    @diaque.farbe = @farbe
-    @diaque.save!
+    if params[:farbe] != nil 
+      @farbe = params[:farbe]
+      @diaque = Diaque.find(params[:id])
+      @diaque.farbe = @farbe
+      @diaque.save!
+    end 
     redirect_to :controller => "diagramme", :action => "render_chart_update", :id => @diaque.diagramm_id
     
   end

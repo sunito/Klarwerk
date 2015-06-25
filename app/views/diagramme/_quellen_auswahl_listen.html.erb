@@ -1,8 +1,5 @@
-
 <%= javascript_include_tag "jquery.minicolors.simple_form" %>
-
 <%=  simple_fields_for @diagramm do |f| %>
-
   <TABLE WIDTH="100%" CELLPADDING=5><TR>
     <TD  WIDTH="50%" Valign="top">
       <div id="Quellentabelle" style="height:350px; overflow:auto;">
@@ -57,21 +54,11 @@
       </div>
     </TD>
   </TR></TABLE>
-<% end %>
-
-<script type="text/javascript">
-  $('#diagramm_diaquen_attributes_0_farbe_mit_raute').minicolors({
-    change: function(hex, opacity) {
-        //alert(hex + ' - ' + opacity);
-        console.log(hex + ' - ' + opacity);
-        var farbe = hex.replace("#", "");
-        var link = '<%= url_for({ :action => "chart_update", :id => 1 }) %>';
+  <script type="text/javascript">
+        var link = '<%= url_for({:controller => "diagramme", :action => "render_chart_update", :id => @diagramm.id}) %>';
         //var link = 'http://localhost:3000/diagramme/chart_update/1'
-        link = link + '?farbe=' + farbe;
          // Probleme mit Raute bei Übergabe als Parameter in Rails 
         $.post(link);
         //$.ajax("diagramm/chart_update");
-    },
-    changeDelay: 44
-  });
-</script>
+  </script>
+<% end %>

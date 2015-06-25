@@ -59,16 +59,45 @@ try{
     chart_ziel = window.chart_div_diagramm;
     //alert(neue_daten.series_data.length);
     //chart_ziel.pointStart = neue_daten.series_data[0].point_start;
+    if (neue_daten.options.y_axis.length < chart_ziel.yAxis.length){
+      chart_ziel.yAxis[chart_ziel.yAxis.length-1].remove();
+    }
+    if (neue_daten.options.y_axis.length > chart_ziel.yAxis.length){
+      chart_ziel.addAxis({}, false); //keine xAchse
+    }
+    $("#debugausgabe_y_axis_div").html("Achse: <b>" + JSON.stringify(neue_daten.options) + "</b>");
+    for (var i = 0; i < neue_daten.options.y_axis.length; i++) {
+      chart_ziel.yAxis[i].update({
+        labels:     neue_daten.options.y_axis[i].labels,
+        min:        neue_daten.options.y_axis[i].min,
+        max:        neue_daten.options.y_axis[i].max,
+        title:      neue_daten.options.y_axis[i].title,
+        opposite:   neue_daten.options.y_axis[i].opposite
+      }, false);
+    }
+    if (neue_daten.series_data.length < chart_ziel.series.length){
+      chart_ziel.series[chart_ziel.series.length-1].remove();
+    }
+    if (neue_daten.series_data.length > chart_ziel.series.length){
+      chart_ziel.addSeries({});
+    }
     for (var i = 0; i < neue_daten.series_data.length; i++) {
+      $("#debugausgabe_series_div").html("Linie: <b>" + JSON.stringify(neue_daten.series_data[0]) + "</b>");
       chart_ziel.series[i].update({
-        data:         (neue_daten.series_data[i]["data"]),
+        data:         neue_daten.series_data[i]["data"],
         pointStart:   neue_daten.series_data[i].point_start,
-        color:        neue_daten.series_data[i].color
+        color:        neue_daten.series_data[i].color,
+        name:         neue_daten.series_data[i].name,
+        yAxis:        neue_daten.series_data[i].y_axis
       }, false);
       
     }
     chart_ziel.redraw();
-
+    
+/*Bugs: y-Achse 1 / 2 ...  gleich
+beim Einfügen / Hinzufügen mancher Quellen: "TypeError: undefined is not an object (evaluating 'chart_ziel.series[i].update')"
+Kurven werden oft nicht vollständig neu gezeichnet
+Letzte Quellen / Kurve wird nicht aus dem Diagramm entfernt */
 
 //  neue_daten = JSON.parse( neu_json );
 } catch(e) {

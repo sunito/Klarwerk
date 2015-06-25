@@ -1,6 +1,10 @@
 class DiagrammeController < ApplicationController
   OFC = self
-  
+  require 'net/http'
+  require 'uri'
+  require 'open-uri'
+  require 'rubygems'
+  #require 'pry'
   def akt_zeit
 
     session[:akt_zeit] ||= Zeit.die_aktuelle
@@ -25,11 +29,13 @@ class DiagrammeController < ApplicationController
   end
 
   def xx_chart_update
-    @farbe = params[:farbe]
     @diagramm = Diagramm.find(params[:id])
-    diaque = @diagramm.diaquen.first
-    diaque.farbe = @farbe
-    diaque.save!
+    if (params[:farbe] != nil)
+      @farbe = params[:farbe]
+      diaque = @diagramm.diaquen.first
+      diaque.farbe = @farbe
+      diaque.save!
+    end     
     render_chart_update
   end
 
@@ -37,6 +43,7 @@ class DiagrammeController < ApplicationController
   def render_chart_update
     ##chart_kurven
     highchart_kurven
+    puts JSON.pretty_generate(@highchart)
     #render :action => "update_zeit.rjs", :layout => false
     render :action => "grafik_aktualisierer.js.erb", :layout => false
   end
@@ -332,14 +339,13 @@ class DiagrammeController < ApplicationController
           #diaquen.each_with_index do |diaque, idx|
 
             dual_streck_fkt = if einheit.name =~ /aus.*ein/i
-              einheit = @diagramm.haupt_einheit
-              max = einheit.max
-              min = einheit.min
+              einh = @diagramm.haupt_einheit
+              max = einh.max
+              min = einh.min
               binaer_anzahl = 10
               #binaer_hoehe = 1.0 / binaer_anzahl/ 2
               proc {|z| z && min + (max-min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
             end
-
             kurve = Kurve.new(diaque, akt_zeit)
             p kurve.linien_daten  
             point_start ||= kurve.von.to_i*1000
@@ -357,6 +363,8 @@ class DiagrammeController < ApplicationController
             })
           #end
         end
+        p :vor_ende
+        p einheit
         y_achsen << {
           labels: {format: "{value} #{einheit.name}"}, 
           min: einheit.min, 
@@ -376,7 +384,10 @@ class DiagrammeController < ApplicationController
             floating: true,
             x: 90
         })
+      p :y_achsen
+      p y_achsen
     end      
+
     @streckungs_funktion = nil
     #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
     #chart.set_title(@diagramm.name)
@@ -509,7 +520,6 @@ class DiagrammeController < ApplicationController
   def quelle_rein
     @diagramm = Diagramm.find(params[:id])
     quelle = Quelle.find params[:quelle_id].to_i
-
     @diagramm.quellen << quelle
     @diagramm.save!
     diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
@@ -529,7 +539,6 @@ class DiagrammeController < ApplicationController
   def render_quellenselektor
     #render_chart_update # doppeltes Rendern funktioniert nicht!
     init_diaquenauswahl_fuer_view
-
     render :partial => "quellen_auswahl_listen", :layout => false
   end
 
