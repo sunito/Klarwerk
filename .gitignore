@@ -9,6 +9,7 @@ Thumbs.db
 *.tgz
 *.lock
 *.sqlite3
+*.old
 # new from Rails 3:
 /tmp
 /.bundle

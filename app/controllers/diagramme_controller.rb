@@ -339,7 +339,8 @@ class DiagrammeController < ApplicationController
           #diaquen.each_with_index do |diaque, idx|
 
             dual_streck_fkt = if einheit.name =~ /aus.*ein/i
-              einh = @diagramm.haupt_einheit
+              #einh = @diagramm.haupt_einheit
+              einh = einheit
               max = einh.max
               min = einh.min
               binaer_anzahl = 10
@@ -352,38 +353,59 @@ class DiagrammeController < ApplicationController
             aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt.map do |wert|
               dual_streck_fkt ? dual_streck_fkt[wert] : wert
             end
-            hc.series ({     
-              type: 'line'   , 
-              name: "#{dia_idx}" + diaque.quelle.name, 
-              color: "#" + diaque.anzuzeigende_farbe,
-              point_start: point_start, 
-              point_interval: kurve.x_schritt * 1000, 
-              y_axis: y_achsen.size,
-              data: aufgefuellte_linien_daten
-            })
-          #end
+            #if einheit.beschreibung == "Aus und Ein (!bin!)" && emd.size > 1 #Bezug auf andere y-Achse nehmen, sofern vorhanden
+            #  hc.series ({     
+            #    type: 'line'   , 
+            #    name: "#{dia_idx}" + diaque.quelle.name, 
+            #    color: "#" + diaque.anzuzeigende_farbe,
+            #    point_start: point_start, 
+            #    point_interval: kurve.x_schritt * 1000, 
+            #    y_axis: y_achsen.size-1,
+            #    data: aufgefuellte_linien_daten
+            #  })
+            #else
+              hc.series ({     
+                type: 'line'   , 
+                name: "#{dia_idx}" + diaque.quelle.name, 
+                color: "#" + diaque.anzuzeigende_farbe,
+                point_start: point_start, 
+                point_interval: kurve.x_schritt * 1000, 
+                y_axis: y_achsen.size,
+                data: aufgefuellte_linien_daten
+              })
+            #end
         end
         p :vor_ende
         p einheit
+        achse_disabled = (einheit.name =~ /aus.*ein/i)
+        #if einheit.beschreibung == "Aus und Ein (!bin!)" #Bei binären Einheiten keine neue y-Achse hinzufügen, außer es ist die einzige
         y_achsen << {
-          labels: {format: "{value} #{einheit.name}"}, 
+          labels: {enabled: (not achse_disabled), format: "{value} #{einheit.name}"}, 
           min: einheit.min, 
           max: einheit.max, 
-          title: {text: einheit.beschreibung}, 
+          title: {text: (achse_disabled ? nil : einheit.beschreibung)}, 
           opposite: (y_achsen.size > 0)
         }
-
+        #if einheit.beschreibung != "Aus und Ein (!bin!)" || emd.size == 1 #Bei binären Einheiten keine neue y-Achse hinzufügen, außer es ist die einzige
+        #  y_achsen << {
+        #    labels: {enabled: false, format: "{value} #{einheit.name}"}, 
+        #    min: einheit.min, 
+        #    max: einheit.max, 
+        #    title: {text: nil}, 
+        #    opposite: (y_achsen.size > 0)
+        #  }
+        #end
       end
       hc.x_axis type: 'datetime'
       #hc.x_axis :categories => setze_xlabels(17) + ["e"] #, :labels => {:rotation => 315}
       hc.y_axis y_achsen
 #      f.title({:text => "Werte vom #{tag}"}) #Problem: Wenn mehr als ein Tag angezeigt wird, wird als Titel nur Datum eines Tages angezeigt 
       hc.legend ({
-            align: 'left',
-            verticalAlign: 'top',
-            floating: true,
-            x: 90
-        })
+        align: 'left',
+        verticalAlign: 'top',
+        floating: true,
+        x: 90
+      })
       p :y_achsen
       p y_achsen
     end      

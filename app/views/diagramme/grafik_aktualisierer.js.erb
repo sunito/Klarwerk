@@ -1,4 +1,4 @@
-//document.body.childNodes[17].firstChild.textContent = ("<%= @highchart.series_data[0][:data].inspect %>");
+//document.body.childNodes[17].firstChild.textContent = ("<>%= @highchart.series_data[0][:data].inspect %>");
 //neu_json = '<%=raw @highchart.series_data.to_json %>';
 //neu_json = '<%=raw @highchart.to_json %>';
 //alert(neu_json);
@@ -59,13 +59,14 @@ try{
     chart_ziel = window.chart_div_diagramm;
     //alert(neue_daten.series_data.length);
     //chart_ziel.pointStart = neue_daten.series_data[0].point_start;
+    var len_anfang = chart_ziel.series.length;
     if (neue_daten.options.y_axis.length < chart_ziel.yAxis.length){
       chart_ziel.yAxis[chart_ziel.yAxis.length-1].remove();
     }
     if (neue_daten.options.y_axis.length > chart_ziel.yAxis.length){
       chart_ziel.addAxis({}, false); //keine xAchse
     }
-    $("#debugausgabe_y_axis_div").html("Achse: <b>" + JSON.stringify(neue_daten.options) + "</b>");
+    //$("#debugausgabe_y_axis_div").html("Achse: <b>" + JSON.stringify(neue_daten.options) + "</b>");
     for (var i = 0; i < neue_daten.options.y_axis.length; i++) {
       chart_ziel.yAxis[i].update({
         labels:     neue_daten.options.y_axis[i].labels,
@@ -75,17 +76,22 @@ try{
         opposite:   neue_daten.options.y_axis[i].opposite
       }, false);
     }
+    var len_vorher = chart_ziel.series.length;
     if (neue_daten.series_data.length < chart_ziel.series.length){
       chart_ziel.series[chart_ziel.series.length-1].remove();
     }
-    if (neue_daten.series_data.length > chart_ziel.series.length){
+    while (neue_daten.series_data.length > chart_ziel.series.length){
       chart_ziel.addSeries({});
     }
+    var len_nachher = chart_ziel.series.length;
+    //$("#debugausgabe_series_div").html("Linie: <b>" + JSON.stringify(neue_daten) + "</b>");
+    //$("#kurz_debug_div").html("<b> a:" + len_anfang + "  v:" + len_vorher + " n: " + len_nachher + "</b>");
     for (var i = 0; i < neue_daten.series_data.length; i++) {
-      $("#debugausgabe_series_div").html("Linie: <b>" + JSON.stringify(neue_daten.series_data[0]) + "</b>");
+      //$("#kurz_debug_div").append( "<br> i: " + i +  " l: " + chart_ziel.series.length + "");
       chart_ziel.series[i].update({
         data:         neue_daten.series_data[i]["data"],
         pointStart:   neue_daten.series_data[i].point_start,
+        pointInterval:   neue_daten.series_data[i].point_interval,
         color:        neue_daten.series_data[i].color,
         name:         neue_daten.series_data[i].name,
         yAxis:        neue_daten.series_data[i].y_axis
@@ -93,12 +99,6 @@ try{
       
     }
     chart_ziel.redraw();
-    
-/*Bugs: y-Achse 1 / 2 ...  gleich
-beim Einfügen / Hinzufügen mancher Quellen: "TypeError: undefined is not an object (evaluating 'chart_ziel.series[i].update')"
-Kurven werden oft nicht vollständig neu gezeichnet
-Letzte Quellen / Kurve wird nicht aus dem Diagramm entfernt */
-
 //  neue_daten = JSON.parse( neu_json );
 } catch(e) {
   alert(e);
