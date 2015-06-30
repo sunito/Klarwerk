@@ -97,224 +97,6 @@ class DiagrammeController < ApplicationController
     render_chart_update
   end
 
-  def skala_chart
-    p :skala
-    return "skala_chart ist nicht implementiert"
-
-    
-    #g = Graph.new
-    chart = OpenFlashChart.new( "" ) do |g|
-      #g.title(" ", '{font-size: 26px;}')
-      linie = Line.new(2, '#FFFFFF')
-      linie.key(" ", 10)
-      [1,2].each do |w|
-        linie.add_data_tip( w, "")
-      end
-      g.data_sets << linie
-
-      g.set_x_labels(["00:00:00"])
-      g.set_x_label_style(10,'#FFFFFF',2,5)
-      #        g.set_inner_background '#FFFFFF'
-      g.set_bg_color '#FFFFFF'
-
-      @diamo = Kurve.new(@diagramm)
-
-      skala = @diamo.skalen[1]
-      p :skala => skala
-      setze_y_achse(g, skala)
-    end
-    chart
-  end
-
-  def setze_skalen(chart)
-    emq = @diagramm.einheiten_mit_diaquen
-
-    einheit = @diagramm.haupt_einheit
-    return if not einheit
-
-    #self.extend OFC
-    y_legende = OFC::YLegend.new
-    y_legende.text = einheit.name
-    #y_legende.style = ("{font-size: 20px; color: #{emq[einheit].first.farbe}}")
-
-    y_achse = OFC::YAxis.new
-    #chart.y_legend = (y_legende)
-
-    abstand = (einheit.max - einheit.min) / 20.0
-    grob = 10   **   ((abstand/1.6).to_i.to_s.size - 1)
-    abstand = (abstand / grob).round * grob
-    y_achse.min = einheit.min
-    y_achse.max = einheit.max
-    y_achse.steps = einheit.schritt_fuer_anzahl(20)
-    chart.y_axis = y_achse
-
-    warn ["EZZZZZZZZZZZZZZZZZZZ444ZZZZZZZZZZZZZZZZZ", @diagramm.zweite_skala?]
-    if @diagramm.zweite_skala? then
-      zweite_einheit = @diagramm.einheiten[1]
-      @streckungs_funktion = proc do |orig_wert|
-        orig_wert && (einheit.min + (orig_wert - zweite_einheit.min) * einheit.hub / zweite_einheit.hub)
-      end
-      warn ["EZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", einheit.hub, zweite_einheit.hub]
-      warn @streckungs_funktion[100]
-      
-      #      y_legende = YLegendRight.new(einheit.name)
-      #      #y_legende.set_style("{font-size: 20px; color: #778877}")
-      #      #y_legende.style = '{font-size: 70px; color: #778877}'
-      #      y_legende.set_style("{font-size: 20px; color: #{emq[zweite_einheit].first.farbe}}")
-      #      chart.set_y_legend_right  y_legende
-      #      #chart.set_y_legend_right( 'Free Ram (MB)' ,40 , '#164166' )
-
-
-      y_achse = YAxisRight.new
-      #y_achse = YAxis.new
-      #y_achse.set_range(einheit.min, einheit.max, einheit.schritt_fuer_anzahl(20))
-      # Workaraund
-      g = zweite_einheit.groeszenordnung
-      y_achse.min = zweite_einheit.min #/ g
-      y_achse.max = zweite_einheit.max #/ g
-
-      schritt_weite = zweite_einheit.schritt_fuer_anzahl(20)
-      #y_achse.steps = 20 #zweite_einheit.schritt_fuer_anzahl(20)
-      y_achse.labels = (zweite_einheit.min.to_i..zweite_einheit.max.to_i).to_a.map {|i| i % schritt_weite == 0 ? i : nil}.compact
-      #p [:abstand, abstand]
-      chart.y_axis_right = y_achse
-
-    end
-  end
-
-  def setze_xlabels(label_steps = 10) 
-    #x_achse.set_range(kurve.von, kurve.bis, 60)
-
-    
-    #      x_labels = OFC::XAxisLabels.new
-    #      #x_labels.style
-    #      x_labels.set_vertical()
-    #      x_labels.steps = label_steps
-    #      x_labels.rotate = 270
-
-    diff = akt_zeit.dauer
-    require 'kurve'
-    anz = GLOBAL_X_ANZAHL
-
-    
-    x_labelslabels = (0..anz).map do |i|
-      if i % label_steps == 0
-        text = (akt_zeit.vonzeit + i*diff / anz).strftime("%b-%d\n%H:%M")
-      else
-        text = ""
-      end
-      #OFC::XAxisLabel.new #("abla") #, '#0000ff', 10, 'diagonal')
-      text
-    end.compact
-
-    format = case diff
-    when (0 .. 18.hours)
-      "%H:%M"
-    when (18.hours .. 4.weeks)
-      "%b-%d\n %H:%M"
-    else
-      "%b-%d, %H--"
-    end
-    x_label_texte = (0..anz).map do |i|
-      if i % label_steps == 0
-        (akt_zeit.vonzeit + i*diff / anz).strftime(format)
-      else
-        ""
-      end
-    end
-
-    x_labels = OFC::XAxisLabels.new
-    #x_labels.set_vertical()
-    x_labels.steps = label_steps
-    x_labels.rotate = 315
-    x_labels.labels = x_label_texte
-    #x_labels.labels = x_labelslabels #x_label_texte
-
-    x_achse = OFC::XAxis.new
-    x_achse.labels = x_labels
-    x_achse.steps = label_steps
-    #x_achse.set_range(0, anz, 10)
-
-    @chart.x_axis = x_achse
-    #chart.x_label_style(10, '#9933CC',2,2)
-    #chart.set_x_label_style(10, '#9933CC',2,2)
-    x_label_texte
-  end
-
-  def linien_hinzu(diaquen, streck_fkt_param)
-    diaquen.each_with_index do |diaque, idx|
-
-      kurve = Kurve.new(diaque, akt_zeit)
-
-      line = OFC::Line.new   #([:a,:b,:c])#(2) #, "#FF0000")
-      line.text = diaque.quelle.name
-      line.font_size = 20
-      line.width = 3
-      line.colour = diaque.anzuzeigende_farbe
-      line.dot_size = 5
-      aufgefuellte_linien_daten = kurve.linien_daten.inject([]) do |neue_liste, wert|
-        neue_liste << (wert || neue_liste.last)
-      end
-
-      dual_streck_fkt = if diaque.quelle.einheit.name =~ /aus.*ein/i
-        einheit = @diagramm.haupt_einheit
-        max = einheit.max
-        min = einheit.min
-        binaer_anzahl = 10
-        #binaer_hoehe = 1.0 / binaer_anzahl/ 2
-        proc {|z| z && min + (max-min) * (binaer_anzahl - idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
-      end
-      streck_fkt = dual_streck_fkt || if streck_fkt_param
-        if dual_streck_fkt
-          sf = dual_streck_fkt
-          #proc {|z| streck_fkt_param[sf[z]]}
-        else
-          line.attach_to_right_y_axis
-          streck_fkt_param
-          nil
-        end       
-      end
-      line.values = aufgefuellte_linien_daten.map do |z|
-        #p ["z, z-streck", z, (streck_fkt &&  streck_fkt[z])];
-        (streck_fkt ? streck_fkt[z] : z)
-      end
-      #@chart.attach_to_y_right_axis(line.id)
-      #line.attach
-      # Funktioniert nicht:
-      # chart.tool_tip = ('#x_label# [#val#]<br>#tip#')
-      #@chart.set_tooltip("NULL", 2) #"["abs"]*30"NULL""
-      @chart.add_element line
-    end
-  end
-
-  def xx_chart_kurven
-    #self.extend OFC
-    @diagramm = Diagramm.find(params[:id])
-    #@chart = OFC::OpenFlashChart.new
-    @chart = OpenFlashChart.new
-    @chart.title = {:text => @diagramm.name , :style => "{font-size: 30px;}"}
-    @chart.elements = []
-    @streckungs_funktion = nil
-    #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
-    #chart.set_title(@diagramm.name)
-
-    setze_skalen(@chart)
-    
-    streck_fkt = nil
-    emd = @diagramm.einheiten_mit_diaquen
-    
-    @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|      
-      linien_hinzu(diaquen, streck_fkt)
-      line = OFC::Line.new
-      line.text = "      "
-      line.colour = "ffffff"
-      @chart.add_element line
-      streck_fkt = @streckungs_funktion
-    end
-
-    setze_xlabels #(kurve)
-  end
-
   def highchart_kurven
     #self.extend OFC
     @diagramm = Diagramm.find(params[:id])
@@ -338,42 +120,30 @@ class DiagrammeController < ApplicationController
           raise "diaque ist ein Array!!!!!!!!!" if diaque.respond_to? :each
           #diaquen.each_with_index do |diaque, idx|
 
-            dual_streck_fkt = if einheit.name =~ /aus.*ein/i
-              #einh = @diagramm.haupt_einheit
-              einh = einheit
-              max = einh.max
-              min = einh.min
-              binaer_anzahl = 10
-              #binaer_hoehe = 1.0 / binaer_anzahl/ 2
-              proc {|z| z && min + (max-min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
-            end
-            kurve = Kurve.new(diaque, akt_zeit)
-            p kurve.linien_daten  
-            point_start ||= kurve.von.to_i*1000
-            aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt.map do |wert|
-              dual_streck_fkt ? dual_streck_fkt[wert] : wert
-            end
-            #if einheit.beschreibung == "Aus und Ein (!bin!)" && emd.size > 1 #Bezug auf andere y-Achse nehmen, sofern vorhanden
-            #  hc.series ({     
-            #    type: 'line'   , 
-            #    name: "#{dia_idx}" + diaque.quelle.name, 
-            #    color: "#" + diaque.anzuzeigende_farbe,
-            #    point_start: point_start, 
-            #    point_interval: kurve.x_schritt * 1000, 
-            #    y_axis: y_achsen.size-1,
-            #    data: aufgefuellte_linien_daten
-            #  })
-            #else
-              hc.series ({     
-                type: 'line'   , 
-                name: "#{dia_idx}" + diaque.quelle.name, 
-                color: "#" + diaque.anzuzeigende_farbe,
-                point_start: point_start, 
-                point_interval: kurve.x_schritt * 1000, 
-                y_axis: y_achsen.size,
-                data: aufgefuellte_linien_daten
-              })
-            #end
+          dual_streck_fkt = if einheit.name =~ /aus.*ein/i
+            #einh = @diagramm.haupt_einheit
+            einh = einheit
+            max = einh.max
+            min = einh.min
+            binaer_anzahl = 10
+            #binaer_hoehe = 1.0 / binaer_anzahl/ 2
+            proc {|z| z && min + (max-min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
+          end
+          kurve = Kurve.new(diaque, akt_zeit)
+          p kurve.linien_daten  
+          point_start ||= kurve.von.to_i*1000
+          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt.map do |wert|
+            dual_streck_fkt ? dual_streck_fkt[wert] : wert
+          end
+          hc.series ({     
+            type: 'line'   , 
+            name: "#{dia_idx}" + diaque.quelle.name, 
+            color: "#" + diaque.anzuzeigende_farbe,
+            point_start: point_start, 
+            point_interval: kurve.x_schritt * 1000, 
+            y_axis: y_achsen.size,
+            data: aufgefuellte_linien_daten
+          })
         end
         p :vor_ende
         p einheit
@@ -386,20 +156,9 @@ class DiagrammeController < ApplicationController
           title: {text: (achse_disabled ? nil : einheit.beschreibung)}, 
           opposite: (y_achsen.size > 0)
         }
-        #if einheit.beschreibung != "Aus und Ein (!bin!)" || emd.size == 1 #Bei binären Einheiten keine neue y-Achse hinzufügen, außer es ist die einzige
-        #  y_achsen << {
-        #    labels: {enabled: false, format: "{value} #{einheit.name}"}, 
-        #    min: einheit.min, 
-        #    max: einheit.max, 
-        #    title: {text: nil}, 
-        #    opposite: (y_achsen.size > 0)
-        #  }
-        #end
       end
       hc.x_axis type: 'datetime'
-      #hc.x_axis :categories => setze_xlabels(17) + ["e"] #, :labels => {:rotation => 315}
       hc.y_axis y_achsen
-#      f.title({:text => "Werte vom #{tag}"}) #Problem: Wenn mehr als ein Tag angezeigt wird, wird als Titel nur Datum eines Tages angezeigt 
       hc.legend ({
         align: 'left',
         verticalAlign: 'top',
@@ -409,26 +168,6 @@ class DiagrammeController < ApplicationController
       p :y_achsen
       p y_achsen
     end      
-
-    @streckungs_funktion = nil
-    #chart << BarGlass.new( :values => (1..10).sort_by{rand} )
-    #chart.set_title(@diagramm.name)
-
-#    setze_skalen(@chart)
-=begin    
-    streck_fkt = nil
-    emd = @diagramm.einheiten_mit_diaquen
-    
-    @diagramm.einheiten.map{|e| emd[e]}.each do |diaquen|      
-      linien_hinzu(diaquen, streck_fkt)
-      line = OFC::Line.new
-      line.text = "      "
-      line.colour = "ffffff"
-      @chart.add_element line
-      streck_fkt = @streckungs_funktion
-    end
-=end
-     #(kurve)
   end
 
   def showfix
@@ -449,9 +188,6 @@ class DiagrammeController < ApplicationController
     @titelzeile = @diagramm.name + " - KabDiag"
     respond_to do |format|
       format.html {
-      }
-      format.skala {
-        render :text => skala_chart, :layout => false
       }
       format.json {
         p @chart
