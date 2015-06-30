@@ -32,6 +32,11 @@ class Kurve
     end
   end
 
+  def linien_daten_aufgefuellt_mit_bin_anpassung(idx)
+    linien_daten_aufgefuellt
+
+  end    
+
   def linien_daten_aufgefuellt
     linien_daten.inject([]) do |neue_liste, wert|
       wert ||= neue_liste.last

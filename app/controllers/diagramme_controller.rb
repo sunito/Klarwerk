@@ -1,12 +1,8 @@
-class DiagrammeController < ApplicationController
-  OFC = self
-  require 'net/http'
-  require 'uri'
-  require 'open-uri'
-  require 'rubygems'
-  #require 'pry'
-  def akt_zeit
+class DiagrammeController < ApplicationController  
+  
+  BINAER_ANZAHL = 10
 
+  def akt_zeit
     session[:akt_zeit] ||= Zeit.die_aktuelle
   end
 
@@ -19,31 +15,10 @@ class DiagrammeController < ApplicationController
     @diagramme = Diagramm.find(:all)
   end
 
-  def xx_erstelle_graph
-    hoehe = 600
-    @graph = open_flash_chart_object( "80%", hoehe, url_for( :action => 'show', :format => :json ) )
-    if @diagramm.zweite_skala? then
-      @zusatz_skala = open_flash_chart_object( 55, hoehe, url_for( :action => 'show', :format => :skala ) )
-    end
-
-  end
-
-  def xx_chart_update
-    @diagramm = Diagramm.find(params[:id])
-    if (params[:farbe] != nil)
-      @farbe = params[:farbe]
-      diaque = @diagramm.diaquen.first
-      diaque.farbe = @farbe
-      diaque.save!
-    end     
-    render_chart_update
-  end
-
   #private
   def render_chart_update
     ##chart_kurven
     highchart_kurven
-    puts JSON.pretty_generate(@highchart)
     #render :action => "update_zeit.rjs", :layout => false
     render :action => "grafik_aktualisierer.js.erb", :layout => false
   end
@@ -98,57 +73,35 @@ class DiagrammeController < ApplicationController
   end
 
   def highchart_kurven
-    #self.extend OFC
     @diagramm = Diagramm.find(params[:id])
     emd = @diagramm.einheiten_mit_diaquen
-    #@chart = OFC::OpenFlashChart.new
-    p :EMDDDDDDDD
-    p emd.size
-    p emd
     @highchart = LazyHighCharts::HighChart.new('graph') do |hc|
       hc.title :text => @diagramm.name #, :style => "{font-size: 30px;}"}
-
       y_achsen = []
       @diagramm.einheiten.each do |einheit|
-
-        point_start = nil
-
-        p emd[einheit].size
-        p einheit
-        p emd[einheit]
         emd[einheit].each_with_index do |diaque, dia_idx|
           raise "diaque ist ein Array!!!!!!!!!" if diaque.respond_to? :each
-          #diaquen.each_with_index do |diaque, idx|
-
-          dual_streck_fkt = if einheit.name =~ /aus.*ein/i
-            #einh = @diagramm.haupt_einheit
-            einh = einheit
-            max = einh.max
-            min = einh.min
-            binaer_anzahl = 10
-            #binaer_hoehe = 1.0 / binaer_anzahl/ 2
-            proc {|z| z && min + (max-min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
-          end
           kurve = Kurve.new(diaque, akt_zeit)
-          p kurve.linien_daten  
-          point_start ||= kurve.von.to_i*1000
-          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt.map do |wert|
-            dual_streck_fkt ? dual_streck_fkt[wert] : wert
+          #aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt
+          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt_mit_bin_anpassung(dia_idx)
+          if einheit.name =~ /aus.*ein/i
+            #einh = @diagramm.haupt_einheit
+            binaer_anzahl = BINAER_ANZAHL
+            #binaer_hoehe = 1.0 / binaer_anzahl/ 2
+            dual_streck_fkt = proc {|z| z && einheit.min + (einheit.max-einheit.min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
+            aufgefuellte_linien_daten.map! { |wert| dual_streck_fkt[wert] }
           end
           hc.series ({     
-            type: 'line'   , 
-            name: "#{dia_idx}" + diaque.quelle.name, 
-            color: "#" + diaque.anzuzeigende_farbe,
-            point_start: point_start, 
+            type:           'line'   , 
+            name:           "#{dia_idx}" + diaque.quelle.name, 
+            color:          "#" + diaque.anzuzeigende_farbe,
+            point_start:    kurve.von.to_i * 1000, 
             point_interval: kurve.x_schritt * 1000, 
-            y_axis: y_achsen.size,
-            data: aufgefuellte_linien_daten
+            y_axis:         y_achsen.size,
+            data:           aufgefuellte_linien_daten
           })
         end
-        p :vor_ende
-        p einheit
         achse_disabled = (einheit.name =~ /aus.*ein/i)
-        #if einheit.beschreibung == "Aus und Ein (!bin!)" #Bei binären Einheiten keine neue y-Achse hinzufügen, außer es ist die einzige
         y_achsen << {
           labels: {enabled: (not achse_disabled), format: "{value} #{einheit.name}"}, 
           min: einheit.min, 
@@ -160,13 +113,12 @@ class DiagrammeController < ApplicationController
       hc.x_axis type: 'datetime'
       hc.y_axis y_achsen
       hc.legend ({
-        align: 'left',
+        align:         'left',
         verticalAlign: 'top',
-        floating: true,
-        x: 90
+        floating:      true,
+        x:             90,
+        y:             15
       })
-      p :y_achsen
-      p y_achsen
     end      
   end
 
