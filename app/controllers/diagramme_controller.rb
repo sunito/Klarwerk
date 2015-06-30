@@ -83,14 +83,14 @@ class DiagrammeController < ApplicationController
           raise "diaque ist ein Array!!!!!!!!!" if diaque.respond_to? :each
           kurve = Kurve.new(diaque, akt_zeit)
           #aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt
-          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt_mit_bin_anpassung(dia_idx)
-          if einheit.name =~ /aus.*ein/i
+          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt_mit_bin_anpassung(diaque, dia_idx)
+          #if einheit.name =~ /aus.*ein/i
             #einh = @diagramm.haupt_einheit
-            binaer_anzahl = BINAER_ANZAHL
+            #binaer_anzahl = BINAER_ANZAHL
             #binaer_hoehe = 1.0 / binaer_anzahl/ 2
-            dual_streck_fkt = proc {|z| z && einheit.min + (einheit.max-einheit.min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
-            aufgefuellte_linien_daten.map! { |wert| dual_streck_fkt[wert] }
-          end
+            #dual_streck_fkt = proc {|z| z && einheit.min + (einheit.max-einheit.min) * (binaer_anzahl - dia_idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl } 
+            #aufgefuellte_linien_daten.map! { |wert| dual_streck_fkt[wert] }
+          #end
           hc.series ({     
             type:           'line'   , 
             name:           "#{dia_idx}" + diaque.quelle.name, 
