@@ -83,7 +83,7 @@ class DiagrammeController < ApplicationController
           raise "diaque ist ein Array!!!!!!!!!" if diaque.respond_to? :each
           kurve = Kurve.new(diaque, akt_zeit)
           #aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt
-          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt_mit_bin_anpassung(diaque, dia_idx)
+          aufgefuellte_linien_daten = kurve.linien_daten_aufgefuellt_mit_bin_anpassung(dia_idx)
           #if einheit.name =~ /aus.*ein/i
             #einh = @diagramm.haupt_einheit
             #binaer_anzahl = BINAER_ANZAHL

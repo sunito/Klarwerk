@@ -34,7 +34,7 @@ BINAER_ANZAHL = 10
     end
   end
 
-  def linien_daten_aufgefuellt_mit_bin_anpassung(dique, idx)
+  def linien_daten_aufgefuellt_mit_bin_anpassung(idx)
     einheit = Einheit.find(Quelle.find(diaque.quelle_id).einheit_id)
     if einheit.name =~ /aus.*ein/i
       binaer_anzahl = BINAER_ANZAHL
