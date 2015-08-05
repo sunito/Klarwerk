@@ -46,9 +46,9 @@
                             :remote=>true, 
                             :"data-replace" => "#quellen_auswahl_listen" %>
               </td><td>
-                <%= diaque_f.input :farbe_mit_raute, as: :minicolors, :size => 6, :default => diaque.quelle.farbe %>
+                <%= diaque_f.input :farbe_mit_raute, as: :minicolors, :size => 6, :default => diaque.anzuzeigende_farbe %>
               </td><td>
-                <font color="#<%= diaque.farbe %>"> <%=h diaque.quelle.name %> </font>
+                <font color="#<%= diaque.anzuzeigende_farbe %>"> <%=h diaque.quelle.name %> </font>
               </td></tr>
               <script type="text/javascript">
                 try {
