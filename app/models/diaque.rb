@@ -8,7 +8,7 @@ class Diaque < ActiveRecord::Base
   end
 
   def farbe_mit_raute
-      "#" + self.farbe.to_s
+      "#" + self.anzuzeigende_farbe.to_s
   end
 
   def anzuzeigende_farbe
