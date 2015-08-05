@@ -6,7 +6,7 @@ GLOBAL_X_ANZAHL = 300
 Kurve =  Struct.new(:diaque, :zeit, :x_anzahl)
 class Kurve 
 
-BINAER_ANZAHL = 10
+  BINAER_ANZAHL = 10
 
   def initialize(diaque, diagramm_zeit = nil)
     diagramm_zeit = diaque.diagramm.zeit unless diagramm_zeit
@@ -35,7 +35,8 @@ BINAER_ANZAHL = 10
   end
 
   def linien_daten_aufgefuellt_mit_bin_anpassung(idx)
-    einheit = Einheit.find(Quelle.find(diaque.quelle_id).einheit_id)
+    #einheit = Einheit.find(Quelle.find(diaque.quelle_id).einheit_id)
+    einheit = diaque.quelle.einheit
     if einheit.name =~ /aus.*ein/i
       binaer_anzahl = BINAER_ANZAHL
       dual_streck_fkt = proc {|z| z && einheit.min + (einheit.max-einheit.min) * (binaer_anzahl - idx - 0.7 + (z>0 ? 0.5 : 0)  )  / binaer_anzahl }   
