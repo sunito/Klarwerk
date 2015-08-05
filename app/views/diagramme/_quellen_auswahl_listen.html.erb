@@ -1,8 +1,24 @@
+<script type="text/javascript">
+  $('#minicolors_debug_div').prepend("<hr>");
+  $(".minicolors-input").each(function( i ) {
+    //$('#minicolors_debug_div').prepend($( this ).text() + "<br> ");  
+    $('#minicolors_debug_div').prepend("Am Anfang" +  i);  
+  });
+</script>
 <%= javascript_include_tag "jquery.minicolors.simple_form" %>
+<script type="text/javascript">
+  $(".minicolors-input").each(function(i){
+    input = $(this);
+    input.data('minicolors-initialized', false);
+  });
+</script>
+<script type="text/javascript">
+  $('#minicolors_debug_div').prepend("<br>");
+</script>
 <%=  simple_fields_for @diagramm do |f| %>
   <TABLE WIDTH="100%" CELLPADDING=5><TR>
     <TD  WIDTH="50%" Valign="top">
-      <div id="Quellentabelle" style="height:350px; overflow:auto;">
+      <div id="Quellentabelle" style="height:150px; overflow:auto;">
         <table WIDTH="100%" height=31><!--CELLPADDING=5 CELLSPACING=1 -->
           <% @freie_quellen.each do |quelle| %>
             <tr><td> 
@@ -35,18 +51,26 @@
                 <font color="#<%= diaque.farbe %>"> <%=h diaque.quelle.name %> </font>
               </td></tr>
               <script type="text/javascript">
-
-                $('#diagramm_diaquen_attributes_<%= nummer += 1 %>_farbe_mit_raute').minicolors({
-                  change: function(hex, opacity) {
-                      //alert(hex + ' - ' + opacity);
-                      console.log(hex + ' - ' + opacity);
-                      var farbe = hex.replace("#", ""); // Probleme mit Raute bei Übergabe als Parameter in Rails 
-                      var link = '<%= url_for({ :controller => "diaquen", :action => "ajax_update", :id => diaque }) %>';
-                      link = link + '?farbe=' + farbe;
-                      $.post(link);
-                  },
-                  changeDelay: 44
-                });
+                try {
+                  $('#minicolors_debug_div').prepend("<%= nummer += 1 %>");
+                  $('#diagramm_diaquen_attributes_<%= nummer %>_farbe_mit_raute').minicolors({
+                    change: function(hex, opacity) {
+                        console.log(hex + ' - ' + opacity);
+                        var farbe = hex.replace("#", ""); // Probleme mit Raute bei Übergabe als Parameter in Rails 
+                        var link = '<%= url_for({ :controller => "diaquen", :action => "ajax_update", :id => diaque}) %>';
+                        link = link + '?farbe=' + farbe;
+                         $.ajax({
+                          type:   'POST',
+                          url:    link,
+                          async:  true
+                        });
+                    },
+                    changeDelay: 44
+                  });
+                } catch(e) {
+                  alert(e);
+                  $("#fehlerausgabe_div").html("Fehler beim Farbe aktualisieren: <b>" + e + "</b>");
+                }
               </script>
             <% end %>
           <% end %>
@@ -54,11 +78,14 @@
       </div>
     </TD>
   </TR></TABLE>
-  <script type="text/javascript">
-        var link = '<%= url_for({:controller => "diagramme", :action => "render_chart_update", :id => @diagramm.id}) %>';
-        //var link = 'http://localhost:3000/diagramme/chart_update/1'
-         // Probleme mit Raute bei Übergabe als Parameter in Rails 
-        $.post(link);
-        //$.ajax("diagramm/chart_update");
-  </script>
 <% end %>
+<script type="text/javascript">
+      var link = '<%= url_for({:controller => "diagramme", :action => "render_chart_update", :id => @diagramm.id}) %>';
+      $.post(link);
+</script>
+<script type="text/javascript">
+  $('#minicolors_debug_div').prepend("<hr>");
+  $(".minicolors-input").each(function( i ) {
+    $('#minicolors_debug_div').prepend("Am Ende, Objekt Nr.: " +  i + " hat die Farbe:  " + JSON.stringify($(this).val()) + "<br>" + JSON.stringify($(this).data('minicolors-settings')) + "<br>");  
+  });
+</script>
