@@ -9,8 +9,11 @@
 <script type="text/javascript">
   $(".minicolors-input").each(function(i){
     input = $(this);
-    input.data('minicolors-initialized', false);
-  });
+    input.removeData();
+    //input.data('minicolors-initialized', false);
+    //input.data('minicolors-settings', {});
+    //input.data('minicolors', null);
+   });
 </script>
 <script type="text/javascript">
   $('#minicolors_debug_div').prepend("<br>");
