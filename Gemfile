@@ -36,6 +36,8 @@ group :test do
   gem 'rspec'
   # gem 'faker'
 end
+gem 'test-unit'
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
