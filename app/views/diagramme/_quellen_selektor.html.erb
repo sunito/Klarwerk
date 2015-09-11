@@ -1,5 +1,6 @@
 <%= javascript_include_tag :defaults %>
 <%= stylesheet_link_tag "table.css" %>
+<%= javascript_include_tag "jquery.minicolors.simple_form" %>
 
 <style type="text/css">
   <% Quelle.all.each do |q| %>
@@ -9,6 +10,8 @@
     }
   <% end %>
 </style>
+<div id="minicolors_debug_div">
+</div>
 <%= form_for(@diagramm, :html => {:name => "qual_der_wahl", :onsubmit => "MarkiereErgebnisse()"}) do |f| %>
 <!-- Errormessages Ausblenden wenn leer -->
   <% if @diagramm.errors.full_messages != []%>
@@ -50,5 +53,7 @@
   </TABLE>
 <!--%= submit_tag("Abbrechen", { :name => 'reset', :id => 'reset_button', :type => "reset",:onclick=>"window.location.reload()"}) %-->
 <% end %>
-<div id="minicolors_debug_div">
-</div>
+<div id="hilfsdiv"/>
+<script type="text/javascript">
+  $('#hilfsdiv').prepend($('#minicolors_debug_div'));
+</script>

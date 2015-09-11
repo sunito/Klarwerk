@@ -5,16 +5,7 @@
     $('#minicolors_debug_div').prepend("Am Anfang" +  i);  
   });
 </script>
-<%= javascript_include_tag "jquery.minicolors.simple_form" %>
-<script type="text/javascript">
-  $(".minicolors-input").each(function(i){
-    input = $(this);
-    input.data('minicolors-initialized', false);
-  });
-</script>
-<script type="text/javascript">
-  $('#minicolors_debug_div').prepend("<br>");
-</script>
+
 <%=  simple_fields_for @diagramm do |f| %>
   <TABLE WIDTH="100%" CELLPADDING=5><TR>
     <TD  WIDTH="50%" Valign="top">
@@ -50,12 +41,19 @@
               </td><td>
                 <font color="#<%= diaque.farbe %>"> <%=h diaque.quelle.name %> </font>
               </td></tr>
+            <% end %>
+          <% end %>
+          <% nummer = -1 %>
+          <% @ausgewaehlte_diaquen.each do |diaque| %>
+            <%= f.simple_fields_for :diaquen,  diaque do |diaque_f| %>
               <script type="text/javascript">
                 try {
                   $('#minicolors_debug_div').prepend("<%= nummer += 1 %>");
                   $('#diagramm_diaquen_attributes_<%= nummer %>_farbe_mit_raute').minicolors({
+                  //$('input[data-minicolors]').minicolors({
                     change: function(hex, opacity) {
-                        console.log(hex + ' - ' + opacity);
+                        $("#minicolors_debug_div").prepend(hex + " - <%= diaque.id%> - <%=diaque.farbe%> <br>");
+                        //console.log(hex + ' - ' + opacity);
                         var farbe = hex.replace("#", ""); // Probleme mit Raute bei Übergabe als Parameter in Rails 
                         var link = '<%= url_for({ :controller => "diaquen", :action => "ajax_update", :id => diaque}) %>';
                         link = link + '?farbe=' + farbe;
