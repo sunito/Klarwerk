@@ -76,10 +76,10 @@ class WerteNotierer
 #    loop do 
     begin
       1_000_000_000_000.times do |i|
-        puts
-        print "##{i}: "
+        print "##{i}: #{Time.now.strftime('%H:%M:%S')} "
         speichere_aktuelle_systemwerte
-        sleep 60
+        puts
+        sleep 60 * 60
         # sleep 1.hour
       end
     rescue
@@ -94,8 +94,8 @@ class WerteNotierer
     ausgabe = `df /dev/sda1`
     _platten_name, _max, aktuell, _rest = ausgabe.lines.to_a.last.split(" ")
     wert = aktuell.to_f / 1024
-    @bei_werteingang.call("22/disk1", wert)
     print wert
+    @bei_werteingang.call("22/disk1", wert.round)
   end
 
   def stop
