@@ -116,28 +116,13 @@ class WerteNotierer
         adresse = adresse.split("/").zip([2,1,3]).map do |teil_adr, stellen|
           "%0#{stellen}d" % teil_adr.to_i
         end.join("/")
-        #adr_teile[2] = ("00" + adr_teile[2])[-3..-1]
-        #adresse = adr_teile.join("/")
-        print Time.now.strftime("%F %T         ")
-        print adresse + ": "
-        print werte.join("").to_i(16).to_s   +   " "
-        float_wert = case werte.size 
-        when 0 then
-          -42.0
-        when 1 then 
-          werte[0].to_i(16)
-        when 2 then 
-          int_roh = werte.join("").to_i(16)
-          negativ  = (int_roh & 0x8000) > 0
-          exponent = (int_roh & 0x7800) >> 11
-          mantisse = (int_roh & 0x07FF)
-          mantisse -= (1 << 11) if negativ 
-          (mantisse << exponent) / 100.0
-        else
-          raise "Zu viele (#{werte.size} Stück) Hexwerte (#{werte}) in Eibd-Zeile: #{w}"
-        end.to_f
+        
+        print Time.now.strftime("%F %T         ") + adresse + ": " + werte.join("").to_i(16).to_s   +   " "
+
+        float_wert = eibzahl2float(werte)
 
         @bei_werteingang.call(adresse, float_wert)
+        
         print float_wert
       end
     rescue
@@ -146,6 +131,24 @@ class WerteNotierer
       $prot_datei.puts $!.backtrace.first(16)
     end
 
+  end
+
+  def eibzahl2float(hexwerte)
+    case hexwerte.size 
+    when 0 then
+      -42.0
+    when 1 then 
+      hexwerte[0].to_i(16)
+    when 2 then 
+      int_roh = hexwerte.join("").to_i(16)
+      negativ  = (int_roh & 0x8000) > 0
+      exponent = (int_roh & 0x7800) >> 11
+      mantisse = (int_roh & 0x07FF)
+      mantisse -= (1 << 11) if negativ 
+      (mantisse << exponent) / 100.0
+    else
+      raise "Zu viele (#{hexwerte.size} Stück) Hexwerte (#{hexwerte}) in Eibd-Zeile: #{w}"
+    end.to_f
   end
 
   def stop
