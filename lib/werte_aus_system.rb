@@ -157,5 +157,5 @@ class MesspunktDb1 < Messpunkt
   establish_connection Rails.configuration.database_configuration["db1"]
 end
 
-wn = WerteNotierer.new(MesspunktDb1)
+wn = WerteNotierer.new(Messpunkt, MesspunktDb1)
 wn.start
