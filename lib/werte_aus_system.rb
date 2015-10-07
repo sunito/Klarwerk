@@ -92,7 +92,7 @@ class WerteNotierer
 
   def speichere_aktuelle_systemwerte
     ausgabe = `df /dev/sda1`
-    _platten_name, _max, aktuell, _rest = ausgabe.lines.last.split(" ")
+    _platten_name, _max, aktuell, _rest = ausgabe.lines.to_a.last.split(" ")
     wert = aktuell.to_f / 1024
     @bei_werteingang.call(adresse "22/disk1", wert)
     print wert
