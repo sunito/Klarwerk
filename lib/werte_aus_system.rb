@@ -76,10 +76,11 @@ class WerteNotierer
 #    loop do 
     begin
       1_000_000_000_000.times do |i|
-        puts
-        print "##{i}: "
+        print "##{i}: #{Time.now.strftime('%H:%M:%S')} "
         speichere_aktuelle_systemwerte
-        sleep 60
+        # sleep 60
+        sleep 60 * 60
+        puts
         # sleep 1.hour
       end
     rescue
@@ -94,8 +95,8 @@ class WerteNotierer
     ausgabe = `df /dev/sda1`
     _platten_name, _max, aktuell, _rest = ausgabe.lines.to_a.last.split(" ")
     wert = aktuell.to_f / 1024
-    @bei_werteingang.call("22/disk1", wert)
     print wert
+    @bei_werteingang.call("22/disk1", wert.round)
   end
 
   def stop
@@ -157,5 +158,5 @@ class MesspunktDb1 < Messpunkt
   establish_connection Rails.configuration.database_configuration["db1"]
 end
 
-wn = WerteNotierer.new(MesspunktDb1)
+wn = WerteNotierer.new(Messpunkt, MesspunktDb1)
 wn.start
