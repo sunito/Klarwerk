@@ -79,7 +79,7 @@ class WerteNotierer
         puts
         print "##{i}: "
         speichere_aktuelle_systemwerte
-        sleep 1.minute
+        sleep 60
         # sleep 1.hour
       end
     rescue
