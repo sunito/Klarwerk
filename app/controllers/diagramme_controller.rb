@@ -231,6 +231,9 @@ class DiagrammeController < ApplicationController
     @diagramm = Diagramm.find(params[:id])
     quelle = Quelle.find params[:quelle_id].to_i
     print "rein quelle="; p quelle
+    @diagramm.quellen.each do |q|
+      print "rein q="; p q
+    end
     @diagramm.quellen << quelle
     @diagramm.save!
     diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
