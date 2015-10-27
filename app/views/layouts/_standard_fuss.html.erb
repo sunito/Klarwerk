@@ -2,16 +2,16 @@
   <tr>
     <td bgcolor="#FFFFF3">
       
-        <table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999">
+        <table border=0 CELLSPACING=0 CELLPADDING=3>
                       <tr>
                           <% if session[:expert_modus] then %>
-                          <td bgcolor="#FFFFF3">
+                          <td>
                               <%= link_to " Diagramme ", {:controller => :diagramme, :action => :index}, :class => "kopflink" %>
                           </td>
-                          <td bgcolor="#FFFFF3">
+                          <td>
                               <%= link_to " Messgrößen ", {:controller => :quellen, :action => :index}, :class => "kopflink" %>
                           </td>
-                          <td bgcolor="#FFFFF3">
+                          <td>
                               <%= link_to " Einheiten ", {:controller => :einheiten, :action => :index}, :class => "kopflink" %>
                           </td>
                           <% end %>
