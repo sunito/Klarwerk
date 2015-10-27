@@ -230,6 +230,7 @@ class DiagrammeController < ApplicationController
   def quelle_rein
     @diagramm = Diagramm.find(params[:id])
     quelle = Quelle.find params[:quelle_id].to_i
+    print "rein quelle="; p quelle
     @diagramm.quellen << quelle
     @diagramm.save!
     diaque = @diagramm.diaquen.find_by_quelle_id(quelle.id)
@@ -241,6 +242,7 @@ class DiagrammeController < ApplicationController
   def quelle_raus
     @diagramm = Diagramm.find(params[:id])
     quelle = Quelle.find params[:quelle_id].to_i
+    print "raus quelle="; p quelle
     @diagramm.quellen.delete quelle
     @diagramm.save!
     render_quellenselektor
