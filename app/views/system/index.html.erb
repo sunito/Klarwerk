@@ -1,0 +1,11 @@
+<h1>System-Info</h1>
+
+<h3>Dienste</h3>
+
+<table>
+<% @dienste.each do |dienst| %>
+   <tr>
+     <td> <%=dienst.name%> </td><td> <%=dienst.status%> </td><td> </td>
+   </tr>
+<% end %>
+</table>
