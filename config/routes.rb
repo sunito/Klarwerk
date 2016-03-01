@@ -2,6 +2,8 @@
 Klarwerk::Application.routes.draw do
 
 
+  get "system/index"
+
   get "probier/probier"
 
   get "probier_controller/probier_view"

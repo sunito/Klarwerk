@@ -10,7 +10,7 @@ require wurzel + '/app/models/einheit'
 require wurzel + '/app/models/quelle'
 require wurzel + '/config/initializers/inflections'
 
-log_dateiname=wurzel + "/log/wert-sp_#{Time.now.strftime('%Y%m%d-%H%M')}.log"
+log_dateiname=wurzel + "/log/wert-sy_#{Time.now.strftime('%Y%m%d-%H%M')}.log"
 $prot_datei = File.open(log_dateiname, "w")
 
 puts "Werte-Aufnehmer gestartet
@@ -21,21 +21,8 @@ if :log
   $stderr = $prot_datei
 end
 
-unless `ps -ef`  =~ /eibd /
-  $eibd = IO.popen("eibd  -t1023 -i ipt:192.168.1.5")
-  puts "eibd gestartet"
-  sleep 0.3
-end  
-$socket_listener = IO.popen("groupsocketlisten ip:localhost")
-puts "listener gestartet"
 
 
-class Float
-  alias :altes_to_s :to_s
-  def to_s
-    altes_to_s.gsub(",", ".")
-  end
-end
 
 class WerteNotierer
   def initialize(*dyn_klassen)
@@ -51,18 +38,6 @@ class WerteNotierer
       p dy_klass.connection
     end
 
-=begin
-    conn =
-      {
-                :adapter => "sqlite3",
-                :database => "db/klarwerk_dev.sqlite3",
-                :pool =>  5,
-                :timeout =>  5000,
-      }
-=end
-
-#    Quelle.establish_connection(conn)
- #   Einheit.establish_connection(conn)
   end
 
   attr_reader :stopsignal_erhalten
@@ -101,29 +76,12 @@ class WerteNotierer
 #    loop do 
     begin
       1_000_000_000_000.times do |i|
+        print "##{i}: #{Time.now.strftime('%H:%M:%S')} "
+        speichere_aktuelle_systemwerte
+        # sleep 60
+        sleep 60 * 60
         puts
-        print "##{i}: "
-        w = $socket_listener.gets
-        puts w.inspect
-        #next if i < 10
-        break if w.nil?
-
-        adresse = w.split[4].chomp(":")
-        werte = begin w.split[5,6] || [-17] rescue [-42] end
-        #print "Werte >>#{werte.inspect}<<"
-        #puts
-        
-        adresse = adresse.split("/").zip([2,1,3]).map do |teil_adr, stellen|
-          "%0#{stellen}d" % teil_adr.to_i
-        end.join("/")
-        
-        print Time.now.strftime("%F %T         ") + adresse + ": " + werte.join("").to_i(16).to_s   +   " "
-
-        float_wert = eibzahl2float(werte)
-
-        @bei_werteingang.call(adresse, float_wert)
-        
-        print float_wert
+        # sleep 1.hour
       end
     rescue
       puts "Abbruch #{$!}"
@@ -133,22 +91,12 @@ class WerteNotierer
 
   end
 
-  def eibzahl2float(hexwerte)
-    case hexwerte.size 
-    when 0 then
-      -42.0
-    when 1 then 
-      hexwerte[0].to_i(16)
-    when 2 then 
-      int_roh = hexwerte.join("").to_i(16)
-      negativ  = (int_roh & 0x8000) > 0
-      exponent = (int_roh & 0x7800) >> 11
-      mantisse = (int_roh & 0x07FF)
-      mantisse -= (1 << 11) if negativ 
-      (mantisse << exponent) / 100.0
-    else
-      raise "Zu viele (#{hexwerte.size} Stück) Hexwerte (#{hexwerte}) in Eibd-Zeile: #{w}"
-    end.to_f
+  def speichere_aktuelle_systemwerte
+    ausgabe = `df /dev/sda1`
+    _platten_name, _max, aktuell, _rest = ausgabe.lines.to_a.last.split(" ")
+    wert = aktuell.to_f / 1024
+    print wert
+    @bei_werteingang.call("22/disk1", wert.round)
   end
 
   def stop
