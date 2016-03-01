@@ -1,11 +1,49 @@
-<h1>System-Info</h1>
+<!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <br>
+<div class="card" style="width:80%; margin: auto; text-align: center;">
+	<i class="large material-icons red-text text-accent-4">settings_power</i>
+	<h1>System-Info</h1>
 
-<h3>Dienste</h3>
+	<h3>Dienste</h3>
+	<%alles_an = true%>
+	<%@dienste.each do |dienst|%>
+	<%if dienst.status == false && alles_an == true%>
+	<% alles_an = false%>
+	<%= raw ' <i class="material-icons light-green-text text-accent-3">error</i> Achtung!'%>
+	<%end%>
+	<%end%>
+	<%if alles_an == true%>
+	<%= raw ' <i class="material-icons light-green-text text-accent-3">done</i> Alle Dienste laufen!'%>
+	<%end%>
 
-<table>
-<% @dienste.each do |dienst| %>
-   <tr>
-     <td> <%=dienst.name%> </td><td> <%=dienst.status%> </td><td> </td>
-   </tr>
-<% end %>
-</table>
+	<table class="striped bordered blue lighten-4" style="width:80%; margin: auto;">
+		<thead>
+			<tr >
+				<th data-field="dienst" style="background:white;">Dienst / Server</th>
+				<th width="3%" style="background:white;"></th>
+				<th data-field="status" style="background:white;">Status</th>
+				<th style="background:white;"></th>
+			</tr>
+		</thead>
+	<% @dienste.each do |dienst| %>
+	   <tr>
+	     <td> 
+	     	<%=dienst.name%> 
+	     </td>
+	     <td width="3%">
+	     	<%if dienst.status == true%>
+	     	<%= raw ' <i class="material-icons light-green-text text-accent-3">done</i>' %>
+	     	<% end %>
+	     </td>
+	     <td width="40%">
+	     	 <%=dienst.status%>
+	    </td>
+	    <td>
+	    </td>
+	   </tr>
+	<% end %>
+	</table>
+	<br>
+</div>
