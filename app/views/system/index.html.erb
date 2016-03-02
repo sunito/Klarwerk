@@ -24,7 +24,7 @@
 				<th data-field="dienst" style="background:white;">Dienst / Server</th>
 				<th width="3%" style="background:white;"></th>
 				<th data-field="status" style="background:white;">Status</th>
-				<th style="background:white;"></th>
+				<th style="background:white;"> Aktionen</th>
 			</tr>
 		</thead>
 	<% @dienste.each do |dienst| %>
@@ -35,15 +35,74 @@
 	     <td width="3%">
 	     	<%if dienst.status == true%>
 	     	<%= raw ' <i class="material-icons light-green-text text-accent-3">done</i>' %>
+	     	<%elsif dienst.status == false%>
+	     	<%= raw ' <i class="material-icons red-text text-accent-1-text">error</i>' %>
 	     	<% end %>
 	     </td>
 	     <td width="40%">
-	     	 <%=dienst.status%>
+	     	<div id="<%=dienst.name%>" class="status">
+	     	 	 <%if dienst.status == true%>
+			     	<%= raw ' Aktiv' %>
+			     	<%elsif dienst.status == false%>
+			     	<%= raw ' Nicht aktiv' %>
+		     	<% end %>
+		    </div>
 	    </td>
 	    <td>
+	    	<div id="<%=dienst.name%>" class="button">
+	    		<button onclick="start_stop_dienst('<%=dienst.name%>')">
+		     	 	<%if dienst.status == true%>
+		     	 	<%= raw ' <i class="material-icons light-green-text text-accent-3">stop</i> Stop' %>
+		     	 	<%= raw '<button onclick="neustart_dienst(\''+ dienst.name + ' \')"> <i class="material-icons light-green-text text-accent-3">settings_backup_restore</i> Neustart </button>'%>
+		     	 	<%elsif dienst.status == false%>
+		     	 	<%= raw ' <i class="material-icons light-green-text text-accent-3">settings_power</i> Start' %>
+		     	 	<%end%>
+		     	</button>
+
+		    </div>
+	     	
 	    </td>
 	   </tr>
 	<% end %>
 	</table>
+	<script>
+	/*function ajax_god(dienst, action){
+		var link = '<%= url_for({ :controller => "system", :action => "ajax_update"}) %>';
+		link = link + '?dienst=' + dienst + '&action=' + action;
+		alert(link);
+		$.post( link, function( data ) {
+		alert("sucess");
+		  alert(data);
+		});
+	}
+	function dienst_neustarten(dienst){
+		var link = '<%= url_for({ :controller => "system", :action => "ajax_dienst_restart"}) %>';
+		link = link + '?dienst=' + dienst;
+		alert(link);
+		$.post( link, function( data ) {
+		alert("sucess");
+		  
+		});
+	}
+	*/
+	function start_stop_dienst(dienst){
+		alert(dienst);
+		var link = '<%= url_for({ :controller => "system", :action => "ajax_dienst_start_stop"}) %>';
+		$.post( link, function( data ) {
+		alert("sucess");
+		  $('#'+dienst+".status").html('Die gewünschte Aktion für den Dienst: ' + dienst + " wurde angestoßen - bitte laden Sie die Seite neu!");
+		  $('#'+dienst+".button").html("");
+		});
+	}
+	function neustart_dienst(dienst){
+		alert(dienst);
+		var link = '<%= url_for({ :controller => "system", :action => "ajax_dienst_neustart"}) %>';
+		$.post( link, function( data ) {
+			alert("sucess");
+		  	$('#'+dienst+".status").html('Die gewünschte Aktion für den Dienst: ' + dienst + " wurde angestoßen - bitte laden Sie die Seite neu!");
+		  	$('#'+dienst+".button").html("");
+		});
+	}
+	</script>
 	<br>
 </div>
