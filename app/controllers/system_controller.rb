@@ -1,16 +1,25 @@
 class SystemController < ApplicationController
+  NICHT_AUSSCHALTBAR = %w[
+    server
+    rails-server
+  ]
   DIENSTE = %w[
     server
     rails-server
   	eibd-server
     werte-speicherer
     werte-system
+    simple
   ]
-  class Dienst < Struct.new(:name, :status)
+  class Dienst < Struct.new(:name, :status, :ausschaltbar)
   end
 
   def index
   	@dienste = DIENSTE.map do |dienst_name|
+      ausschaltbar = true
+      if NICHT_AUSSCHALTBAR.include? dienst_name
+        ausschaltbar = false
+      end
   	  status_abfrage_erg = "on"
       god_status = (`god status #{dienst_name}`)
       god_status = god_status.split(':')[1]
@@ -21,9 +30,8 @@ class SystemController < ApplicationController
         dienst_status = true
       elsif god_status.include? "unmonitored"
         dienst_status = false
-        
       end
-  	  Dienst.new(dienst_name, dienst_status)
+  	  Dienst.new(dienst_name, dienst_status, ausschaltbar)
   	end
   end
 

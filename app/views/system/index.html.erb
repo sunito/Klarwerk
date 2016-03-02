@@ -50,14 +50,16 @@
 	    </td>
 	    <td>
 	    	<div id="<%=dienst.name%>" class="button">
-	    		<button onclick="start_stop_dienst('<%=dienst.name%>')">
-		     	 	<%if dienst.status == true%>
-		     	 	<%= raw ' <i class="material-icons light-green-text text-accent-3">stop</i> Stop' %>
-		     	 	<%= raw '<button onclick="neustart_dienst(\''+ dienst.name + ' \')"> <i class="material-icons light-green-text text-accent-3">settings_backup_restore</i> Neustart </button>'%>
+		     	 	<%if dienst.status == true && dienst.ausschaltbar%>
+		     	 	<%= raw '<button onclick="start_stop_dienst(\''+dienst.name+'\')"> <i class="material-icons light-green-text text-accent-3">stop</i> Stop' %>
 		     	 	<%elsif dienst.status == false%>
-		     	 	<%= raw ' <i class="material-icons light-green-text text-accent-3">settings_power</i> Start' %>
+		     	 	<%= raw '<button onclick="start_stop_dienst(\''+dienst.name+'\')"> <i class="material-icons light-green-text text-accent-3">settings_power</i> Start'  %>
+		     	 	</button>
 		     	 	<%end%>
-		     	</button>
+		     	 	<%if dienst.status == true%>
+		     	 	<%= raw '<button onclick="neustart_dienst(\''+ dienst.name + '\')"> <i class="material-icons light-green-text text-accent-3">settings_backup_restore</i> Neustart </button>'%>
+		     	 	<%end%>
+		     	
 
 		    </div>
 	     	
