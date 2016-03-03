@@ -40,6 +40,7 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.6.0)
+    god (0.13.7)
     hash-deep-merge (0.1.1)
     hike (1.2.3)
     i18n (0.7.0)
@@ -133,6 +134,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
   execjs
+  god
   jquery-minicolors-rails
   jquery-rails
   lazy_high_charts

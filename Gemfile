@@ -37,6 +37,7 @@ group :test do
   # gem 'faker'
 end
 gem 'test-unit'
+gem 'god'
 
 
 # To use ActiveModel has_secure_password
