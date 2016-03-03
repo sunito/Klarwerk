@@ -1,4 +1,5 @@
 class SystemController < ApplicationController
+  VOR_GOD = "unset RUBYOPT; export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/kw/bin:/home/kw/.rvm/bin; unset GEM_PATH GEM_HOME _ORIGINAL_GEM_PATH BUNDLE_BIN_PATH RUBYLIB"
   NICHT_AUSSCHALTBAR = %w[
     server
     rails-server
@@ -15,14 +16,30 @@ class SystemController < ApplicationController
   end
 
   def index
-  	@dienste = DIENSTE.map do |dienst_name|
+    @dienste = DIENSTE[1,2].map do |dienst_name|
       ausschaltbar = true
       if NICHT_AUSSCHALTBAR.include? dienst_name
         ausschaltbar = false
       end
   	  status_abfrage_erg = "on"
-      god_status = (`god status #{dienst_name}`)
+#      god_ruby = "~/.rvm/rubies/ruby-2.2.1/bin/ruby"
+      god_ruby = "/usr/bin/ruby1.8"
+      god_ruby = "ruby"
+#      god_anweis = "/home/kw/.rvm/gems/ruby-2.2.1/bin/god"
+      god_anweis ="/usr/local/bin/god" 
+      god_anweis ="god" 
+      erg = nil
+   #   erg = (`#{god_ruby} -e "p ENV"`)
+      puts erg
+   #   system "#{god_ruby} -e 'p ENV'"
+#      system "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/kw/bin:/home/kw/.rvm/bin ;unset GEM_PATH GEM_HOME _ORIGINAL_GEM_PATH BUNDLE_BIN_PATH RUBYLIB RUBYOPT;env;ruby -e'p 42' "
+      #system "unset RUBYOPT;env;ruby -e'p 42' "
+      god_status = "xxx: down"
+      puts `#{VOR_GOD} ;env ;#{god_ruby} -e'p 42'`
+      #god_status = (`#{anweis_vorbereitung} ;#{god_ruby} #{god_anweis} status #{dienst_name}`)
+      god_status = (`#{VOR_GOD} ;#{god_anweis} status #{dienst_name}`)
       god_status = god_status.split(':')[1]
+      puts "STATUS von #{dienst_name} ########################################"
       p god_status
       if god_status == nil
         dienst_status = false
@@ -58,12 +75,12 @@ class SystemController < ApplicationController
       `god stop #{params[:dienst]}`
     else
       p '#{params[:dienst]} wird gestartet'
-      `god start #{params[:dienst]}`
+      `#{VOR_GOD} ;god start #{params[:dienst]}`
     end
     render :action => "datenverarbeiter.js.erb",  :layout => false
   end
   def ajax_dienst_neustart
-    `god restart #{params[:dienst]}`
+    `#{VOR_GOD} ;god restart #{params[:dienst]}`
     render :action => "datenverarbeiter.js.erb",  :layout => false
   end
 end
