@@ -16,7 +16,8 @@ class SystemController < ApplicationController
   end
 
   def index
-    @dienste = DIENSTE[1,2].map do |dienst_name|
+    #@dienste = DIENSTE[1,2].map do |dienst_name|
+    @dienste = DIENSTE.map do |dienst_name|
       ausschaltbar = true
       if NICHT_AUSSCHALTBAR.include? dienst_name
         ausschaltbar = false
@@ -52,7 +53,8 @@ class SystemController < ApplicationController
   	end
   end
 
-  def ajax_update
+  # wird nicht verwendet
+  def xx_ajax_update
     p params[:action]
     if(params[:action] == "restart")
       `god restart #{params[:dienst]}`
@@ -62,23 +64,29 @@ class SystemController < ApplicationController
     p god_dienste
     render :action => "datenverarbeiter.js.erb",  :layout => false, :locals => {:god_status => god_dienste}
   end
-  def ajax_dienst_neustarten
+
+  # wird nicht verwendet
+  def xx_ajax_dienst_neustarten
     god_status = `god stop #{params[:dienst]}`
     render :action => "datenverarbeiter.js.erb",  :layout => false, :locals => {:god_status => god_status}
   end
-  def get_status
+
+  # wird nicht verwendet
+  def xx_get_status
     god_status = `god status #{params[:dienst]}`
   end
+
   def ajax_dienst_start_stop
-    if `god status #{params[:dienst]}`.include? "up"
+    if `#{VOR_GOD} ;god status #{params[:dienst]}`.include? "up"
       p '#{params[:dienst]} wird gestoppt'
-      `god stop #{params[:dienst]}`
+      `#{VOR_GOD} ;god stop #{params[:dienst]}`
     else
       p '#{params[:dienst]} wird gestartet'
       `#{VOR_GOD} ;god start #{params[:dienst]}`
     end
     render :action => "datenverarbeiter.js.erb",  :layout => false
   end
+
   def ajax_dienst_neustart
     `#{VOR_GOD} ;god restart #{params[:dienst]}`
     render :action => "datenverarbeiter.js.erb",  :layout => false
