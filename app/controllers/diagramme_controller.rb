@@ -119,6 +119,7 @@ class DiagrammeController < ApplicationController
         x:             90,
         y:             15
       })
+      hc.chart(height: 700)
     end      
   end
 

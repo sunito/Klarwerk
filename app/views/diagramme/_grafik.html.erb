@@ -21,5 +21,12 @@
     </script>
 </div>
   <%= render :partial => "aktuelle_zeit" %>
-
-
+<script type="text/javascript">
+  function highchart_anpassung(){
+    height = $(window).height() / 100 * 70;
+    width = $(window).width();
+    chart_div_diagramm.setSize(width, height);
+  }
+  $(window).resize(highchart_anpassung);
+  $(window).load(highchart_anpassung);
+</script>
