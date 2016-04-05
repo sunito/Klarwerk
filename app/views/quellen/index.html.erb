@@ -1,16 +1,18 @@
-<h1>Messgr&ouml;&szlig;en</h1>
+<h1 style="text-align: center;">Messgr&ouml;&szlig;en <i class="material-icons medium">input</i></h1>
 
-<table cellspacing="0" cellpadding="8">
-  <tr class="listenkopf">
-    <TD>Adresse </TD>
-    <TD>Name</TD>
-    <TD>Typ</TD>
-    <TD>Einheit</TD>
-    <TD>Aktiv</TD>
-    <TD></TD>
-    <TD></TD>
-    <TD>Beschreibung</TD>
-  </tr>
+<TABLE class="striped">
+  <thead>
+    <tr class="listenkopf">
+      <th>Adresse</th>
+      <th>Name</th>
+      <th>Typ</th>
+      <th>Einheit</th>
+      <th>Aktiv</th>
+      <th></th>
+      <th></th>
+      <th>Beschreibung</th>
+    </tr>
+  </thead>
 <% [@aktive_quellen, @inaktive_quellen].each do |quellen_array| %>
   <% for quelle in quellen_array %>
     <tr  class="<%= cycle('', 'un') + 'gerade'%>">
