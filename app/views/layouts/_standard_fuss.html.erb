@@ -1,27 +1,34 @@
-<table border=0 CELLSPACING=0 CELLPADDING=3 bgcolor="#999999" width="100%">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+<style>ul li a{
+	color: black;
+}
+</style>
+<div class="card blue lighten-5" style="margin: 1%;">
+<table width="100%">
   <tr>
-    <td bgcolor="#FFFFF3">
-      
-        <table border=0 CELLSPACING=0 CELLPADDING=3>
-                      <tr>
-                          <% if session[:expert_modus] then %>
-                          <td>
-                              <%= link_to " Diagramme ", {:controller => :diagramme, :action => :index}, :class => "kopflink" %>
-                          </td>
-                          <td>
-                              <%= link_to " Messgrößen ", {:controller => :quellen, :action => :index}, :class => "kopflink" %>
-                          </td>
-                          <td>
-                              <%= link_to " Einheiten ", {:controller => :einheiten, :action => :index}, :class => "kopflink" %>
-                          </td>
-                          <td>
-                              <%= link_to " System ",    {:controller => :system, :action => :index}, :class => "kopflink" %>
-                          </td>
-                          <% end %>
-                      </tr>
-                  </table>
+    <td>
+      <% if session[:expert_modus] then %>
+        <nav>
+          <div class="nav-wrapper blue lighten-4">
+            <ul id="nav-mobile" class="left">
+              <li>
+                  <%= link_to " Diagramme ", {:controller => :diagramme, :action => :index}, :class => "kopflink" %>
+              </li>
+              <li>
+                  <%= link_to " Messgrößen ", {:controller => :quellen, :action => :index}, :class => "kopflink" %>
+              </li>
+              <li>
+                  <%= link_to " Einheiten ", {:controller => :einheiten, :action => :index}, :class => "kopflink" %>
+              </li>
+              <li>
+                  <%= link_to " System ",    {:controller => :system, :action => :index}, :class => "kopflink" %>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      <% end %>
     </td>
-    <td align="right" bgcolor="#FFFFF3">
+    <td align="right">
       <div id="expert_bereich" xxonmouseout="window.location.reload()">
         <!--%= link_to_remote 'Expertenmodus aktivieren', :url => expert_modus_url("ein"), :update => "expert_bereich"%-->
         <%=  render :partial => "expert/expert_bereich" %>
@@ -30,3 +37,4 @@
     </td>
   </tr>
 </table>
+</div>
