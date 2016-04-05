@@ -1,16 +1,17 @@
-<h1>Diagramm-Liste</h1>
+<h1 style="text-align: center;">Diagramm-Liste <i class="material-icons medium">trending_up</i></h1>
 
-<TABLE cellspacing="0" cellpadding="8">
-  <!--BGCOLOR="#999999" -->
-  <TR class="listenkopf">
-    <TD  > Name </TD>
-    <TD  > Messgr&ouml;&szlig;en </TD>
-     <% if session[:expert_modus] then %>
-    <TD  > &nbsp; </TD>
-    <TD  > &nbsp; </TD>
-    <% end %>
-    <TD > Beschreibung </TD>
-  </TR>
+<TABLE class="striped">
+  <thead>
+    <TR class="listenkopf">
+      <th>Name </th>
+      <th> Messgr&ouml;&szlig;en </th>
+       <% if session[:expert_modus] then %>
+      <th> &nbsp; </th>
+      <th> &nbsp; </th>
+      <% end %>
+      <th> Beschreibung </th>
+    </TR>
+  </thead>
 <% for diagramm in @diagramme %>
   <tr  class="<%= cycle('', 'un') + 'gerade'%>">
     <td  ><%= link_to diagramm.name, showfix_path(diagramm) %></td>

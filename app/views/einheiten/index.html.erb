@@ -1,15 +1,17 @@
-<h1>Einheiten</h1>
+<h1 style="text-align: center;">Einheiten <i class="material-icons medium">explicit</i></h1>
 
-<table cellspacing="0" cellpadding="8">
-  <tr class="listenkopf">
-    <TD>Bezeichnung</th></TD>
-    <TD>Min</TD>
-    <TD>Max</TD>
-    <TD>Gequantelt?</TD>
-    <TD></TD>
-    <TD></TD>
-    <TD>Beschreibung</TD>
-  </tr>
+<TABLE class="striped">
+  <thead>
+    <tr class="listenkopf">
+      <th>Bezeichnung</th>
+      <th>Min</th>
+      <th>Max</th>
+      <th>Gequantelt?</th>
+      <th></th>
+      <th></th>
+      <th>Beschreibung</th>
+    </tr>
+  </thead>
 
 <% for einheit in @einheiten %>
   <tr  class="<%= cycle('', 'un') + 'gerade'%>">
