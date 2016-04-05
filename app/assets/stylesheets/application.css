@@ -12,3 +12,5 @@
  *= require_tree .
  *= require jquery.minicolors
  */
+ @import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css");
+ @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
