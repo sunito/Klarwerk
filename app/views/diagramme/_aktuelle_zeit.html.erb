@@ -3,7 +3,6 @@
 
 # To change this template, choose Tools | Templates
 %>
-
 <div id="aktuelle_zeit">
   <TABLE width="100%">
     <TR>
@@ -29,19 +28,25 @@
       </TD>
       <TD valign="top" width="10%" align="right">
       </TD>
-      <TD  valign="top" width="15%"  align="left">
-        <%= link_to "Anfangszeit", url_for(action: "verschieben", anfang: "anfang", id: params[:id], format: "js"), :remote=>true %> 
-        <%= link_to "Aktuelle Zeit", url_for(action: "verschieben", anfang: "aktuell", id: params[:id], format: "js"), :remote=>true %> 
+      <TD  valign="top" width="8%"  align="left">
+        <%= link_to raw("<div style='text-align: center;'><i class='fa fa-fast-backward fa-4x'></i><br>Anfangszeit</div>"),
+         url_for(action: "verschieben", anfang: "anfang", id: params[:id], format: "js"), :remote=>true %> 
       </TD>
-      <TD  valign="top" width="15%"  align="center">
-        <%= link_to image_tag("files/links.png", :size => "100x40", :alt => 'nach links',  :class => "navi_button"), 
+      <TD  valign="top" width="7%"  align="center">
+        <%= link_to raw("<div style='text-align: center;'><i class='fa fa-long-arrow-left fa-4x'></i><br>Zurück</div>"), 
                     url_for(action: "verschieben", anfang: "links", id: params[:id], format: "js"), :remote=>true %> 
         <!--edit_kurve_path(@kurve) % | -->
         <!--%= @chart.link_to_remote_ofc_load image_tag("arrow_left3.png",  :class => "gruenlink"), "my_chart_js_1", url_for({ :action => "links", :id => params[:id], :format => "json" }) %--> <!--edit_kurve_path(@kurve) % | -->
-        <%= link_to image_tag("files/rechts.png", :size => "100x40", :alt => 'nach rechts',  :class => "navi_button"), 
+     </TD>
+     <TD>
+        <%= link_to raw("<div style='text-align: center;'><i class='fa fa-long-arrow-right fa-4x'></i><br>Vorwärts</div>"),
                     url_for(:action => "verschieben", anfang: "rechts", :id => params[:id], :format => "js"), :remote=>true %>
       </TD>
       <TD WIDTH="2%"></TD>
+      <TD WIDTH="7%">
+      	<%= link_to raw("<div style='text-align: center;'><i class='fa fa-fast-forward fa-4x'></i><br>Aktuelle Zeit</div>"),
+      	 url_for(action: "verschieben", anfang: "aktuell", id: params[:id], format: "js"), :remote=>true %> 
+      </TD>
     </TR>
   </TABLE>
 </div>
