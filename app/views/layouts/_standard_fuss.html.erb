@@ -4,9 +4,9 @@
 }
 </style>
 <div class="card blue lighten-5" style="margin: 1%;">
-<table width="100%">
+<table width="100%" >
   <tr>
-    <td>
+    <td style="padding: 0% !important;">
       <% if session[:expert_modus] then %>
         <nav>
           <div class="nav-wrapper blue lighten-4">
@@ -28,7 +28,7 @@
         </nav>
       <% end %>
     </td>
-    <td align="right">
+    <td align="right" style="padding: 0% !important;">
       <div id="expert_bereich" xxonmouseout="window.location.reload()">
         <!--%= link_to_remote 'Expertenmodus aktivieren', :url => expert_modus_url("ein"), :update => "expert_bereich"%-->
         <%=  render :partial => "expert/expert_bereich" %>
